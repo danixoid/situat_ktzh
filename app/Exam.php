@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Exam extends Model
 {
 
-    protected $fillable = ['user_id','position_id','chief_id','source','task','count','mark','note'];
+    protected $fillable = ['position_id','user_id','chief_id','count','mark','note'];
 
     public function user()
     {
@@ -22,6 +22,11 @@ class Exam extends Model
     public function quest()
     {
         return $this->belongsTo(\App\Quest::class);
+    }
+
+    public function position()
+    {
+        return $this->belongsTo(\App\Position::class);
     }
 
 }

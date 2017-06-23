@@ -16,9 +16,14 @@
 
                     <div class="panel-body">
 
-                        <form id="form_create_quest" class="form-horizontal" action="{!! route('quest.update',['id' => $quest->id]) !!}" method="POST">
+                        <form id="form_create_exam" class="form-horizontal" action="{!! route('exam.update',['id' => $exam->id]) !!}" method="POST">
                             {!! csrf_field() !!}
                             {!! method_field("PUT")  !!}
+
+                            <div class="form-group">
+                                <label class="control-label col-md-3">{!! trans('interface.user') !!}</label>
+                                <div class="col-md-9">{!! $exam->user->name !!}</div>
+                            </div>
 
                             <div class="form-group">
                                 <label class="col-md-3 control-label">{!! trans('interface.position') !!}</label>
@@ -29,23 +34,25 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="col-md-3 control-label">{!! trans('interface.source') !!}</label>
+                                <label class="col-md-3 control-label">{!! trans('interface.chief') !!}</label>
                                 <div class="col-md-9">
-                                    <textarea id="source" rows="6" class="form-control" name="source">{!! $quest->source !!}</textarea>
+                                    <select class="form-control select2-single" name="chief_id" id="chief">
+                                    </select>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="col-md-3 control-label">{!! trans('interface.task') !!}</label>
+                                <label class="col-md-3 control-label">{!! trans('interface.exams') !!}</label>
                                 <div class="col-md-9">
-                                    <textarea id="task" rows="6" class="form-control" name="task">{!! $quest->task !!}</textarea>
+                                    <select class="form-control select2-multiple" multiple name="quest_id" id="quest">
+                                    </select>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="col-md-3 control-label">{!! trans('interface.timer') !!}</label>
+                                <label class="col-md-3 control-label">{!! trans('interface.ticket_count') !!}</label>
                                 <div class="col-md-3">
-                                    <input type="number" class="form-control" name="timer" value="{!! $quest->timer !!}"/>
+                                    <input type="number" class="form-control" name="count" value="{!! $exam->count !!}"/>
                                 </div>
                             </div>
 
@@ -80,9 +87,9 @@
             $("#position").select2({
                 data: [
                     {
-                        id: '{!! $quest->position->id !!}',
-                        name: '{!! $quest->position->name !!}',
-                        orgPath: '{!! $quest->position->orgPath !!}'
+                        id: '{!! $exam->position->id !!}',
+                        name: '{!! $exam->position->name !!}',
+                        orgPath: '{!! $exam->position->orgPath !!}'
                     }
                 ],
                 ajax: {
@@ -120,6 +127,91 @@
                 templateResult: formatPosition, // omitted for brevity, see the source of this page
                 templateSelection: formatPositionSelection // omitted for brevity, see the source of this page
             });
+
+            $("#chief").select2({
+                data: [
+                    {
+                        id: 0,
+                        name: '{!! trans('interface.no_value') !!}'
+                    }
+                ],
+                ajax: {
+                    url: "{!! url('/user') !!}",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            q: params.term, // search term
+                            page: params.page
+                        };
+                    },
+                    processResults: function (data, params) {
+                        params.page = params.page || 1;
+                        return {
+                            results: data.data,
+                            pagination: {
+                                more: (params.page * 30) < data.length
+                            }
+                        };
+                    },
+                    cache: true
+                },
+                theme: "bootstrap",
+                placeholder: '{!! trans('interface.select_user') !!}',
+                allowClear: true,
+                language: '{!! config()->get('app.locale') !!}',
+                escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
+                minimumInputLength: 2,
+                templateResult: formatUser, // omitted for brevity, see the source of this page
+                templateSelection: formatUserSelection, // omitted for brevity, see the source of this page
+            });
+
+            $("#quest").select2({
+                data: [
+                    {
+                        id: 0,
+                        shortSource: '{!! trans('interface.no_value') !!}',
+                        shortTask: '{!! trans('interface.no_value') !!}'
+                    }
+                ],
+                ajax: {
+                    url: "{!! url('/quest') !!}",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            text: params.term, // search term
+                            page: params.page
+                        };
+                    },
+                    processResults: function (data, params) {
+                        params.page = params.page || 1;
+                        return {
+                            results: data.data,
+                            pagination: {
+                                more: (params.page * 30) < data.length
+                            }
+                        };
+                    },
+                    cache: true
+                },
+                theme: "bootstrap",
+                placeholder: '{!! trans('interface.select_user') !!}',
+                allowClear: true,
+                language: '{!! config()->get('app.locale') !!}',
+                escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
+                minimumInputLength: 2,
+                minimumSelectionLength: 2,
+                maximumSelectionLength: 2,
+                formatSelectionTooBig: function (limit) {
+
+                    // Callback
+
+                    return 'Too many selected items';
+                }
+                templateResult: formatQuest, // omitted for brevity, see the source of this page
+                templateSelection: formatQuestSelection, // omitted for brevity, see the source of this page
+            });
         });
 
 
@@ -129,6 +221,25 @@
 
         function formatPositionSelection (position) {
             return "<label class='label label-info'>" + position.orgPath + "</label> <span>" + position.name + "</span>";
+        }
+
+        function formatUser (user) {
+            return "<div class='label label-info'>" + user.name + "</div>";
+        }
+
+        function formatUserSelection (user) {
+            return "<div class='label label-info'>" + user.name + "</div>";
+        }
+
+        function formatQuest (exam) {
+            return "<div><span class='label label-info'>{!! trans('interface.source') !!}:" +
+                exam.shortSource + "</span> <span class='label label-success'>{!! trans('interface.task') !!}: " +
+                exam.shortTask + "</span></div>";
+        }
+
+        function formatQuestSelection (exam) {
+            return " <span class='label label-info'>" + exam.shortSource + "</span> " +
+                " <span class='label label-primary'>" + exam.shortTask + "</span>";
         }
 
     </script>

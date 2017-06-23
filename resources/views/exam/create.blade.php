@@ -16,7 +16,7 @@
 
                     <div class="panel-body">
 
-                        <form id="form_create_quest" class="form-horizontal" action="{!! route('quest.store') !!}" method="POST">
+                        <form id="form_create_exam" class="form-horizontal" action="{!! route('exam.store') !!}" method="POST">
                             {!! csrf_field() !!}
 
                             <div class="form-group">
@@ -28,23 +28,25 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="col-md-3 control-label">{!! trans('interface.source') !!}</label>
+                                <label class="col-md-3 control-label">{!! trans('interface.user') !!}</label>
                                 <div class="col-md-9">
-                                    <textarea id="source" rows="6" class="form-control" name="source">{!! old('source') !!}</textarea>
+                                    <select class="form-control select2-single" name="user_id" id="user">
+                                    </select>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="col-md-3 control-label">{!! trans('interface.task') !!}</label>
+                                <label class="col-md-3 control-label">{!! trans('interface.chief') !!}</label>
                                 <div class="col-md-9">
-                                    <textarea id="task" rows="6" class="form-control" name="task">{!! old('task') !!}</textarea>
+                                    <select class="form-control select2-single" name="chief_id" id="chief">
+                                    </select>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="col-md-3 control-label">{!! trans('interface.timer') !!}</label>
+                                <label class="col-md-3 control-label">{!! trans('interface.ticket_count') !!}</label>
                                 <div class="col-md-3">
-                                    <input type="number" class="form-control" name="timer" value="{!! old('timer') ?: "5" !!}"/>
+                                    <input type="number" class="form-control" name="count" value="{!! old('count') ?: "2" !!}"/>
                                 </div>
                             </div>
 
@@ -119,6 +121,46 @@
                 templateResult: formatPosition, // omitted for brevity, see the source of this page
                 templateSelection: formatPositionSelection // omitted for brevity, see the source of this page
             });
+
+            $("#user,#chief").select2({
+                data: [
+                    {
+                        id: 0,
+                        name: '{!! trans('interface.no_value') !!}'
+                    }
+                ],
+                ajax: {
+                    url: "{!! url('/user') !!}",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            q: params.term, // search term
+                            page: params.page
+                        };
+                    },
+                    processResults: function (data, params) {
+                        params.page = params.page || 1;
+                        return {
+                            results: data.data,
+                            pagination: {
+                                more: (params.page * 30) < data.length
+                            }
+                        };
+                    },
+                    cache: true
+                },
+                theme: "bootstrap",
+                placeholder: '{!! trans('interface.select_user') !!}',
+                allowClear: true,
+                language: '{!! config()->get('app.locale') !!}',
+                escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
+                minimumInputLength: 2,
+                templateResult: formatUser, // omitted for brevity, see the source of this page
+                templateSelection: formatUserSelection, // omitted for brevity, see the source of this page
+            });
+
+
         });
 
 
@@ -128,6 +170,14 @@
 
         function formatPositionSelection (position) {
             return "<label class='label label-info'>" + position.orgPath + "</label> <span>" + position.name + "</span>";
+        }
+
+        function formatUser (user) {
+            return "<div class='label label-info'>" + user.name + "</div>";
+        }
+
+        function formatUserSelection (user) {
+            return "<div class='label label-info'>" + user.name + "</div>";
         }
 
     </script>

@@ -23,7 +23,7 @@ class QuestController extends Controller
      */
     public function index()
     {
-        $count = request('count') ?: 10;
+        $count = request('page') ?: 10;
         $position_id = request('position_id');
 
         if($position_id &&  $position_id > 0) {
@@ -37,6 +37,11 @@ class QuestController extends Controller
             ->where('source','LIKE','%' . \request('text') . '%')
             ->orWhere('task','LIKE','%' . \request('text') . '%')
             ->paginate($count);
+
+        if(request()->ajax()) {
+            return $quests->toJson();
+        }
+
 
         return view('quest.index',['quests' => $quests]);
     }

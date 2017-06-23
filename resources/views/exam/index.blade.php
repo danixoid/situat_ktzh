@@ -14,15 +14,15 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <div class="row">
-                            <label class="col-md-10">{!! trans('interface.quests') !!}</label>
+                            <label class="col-md-10">{!! trans('interface.exams') !!}</label>
                             <div class="col-md-2 text-right">
-                                <a href="{!! route('quest.create') !!}" >{!! trans('interface.create') !!}</a>
+                                <a href="{!! route('exam.create') !!}" >{!! trans('interface.create') !!}</a>
                             </div>
                         </div>
                     </div>
 
                     <div class="panel-body">
-                        <form class="form-horizontal" id="form_quest_search" action="{!! route("quest.index") !!}">
+                        <form class="form-horizontal" id="form_quest_search" action="{!! route("exam.index") !!}">
 
                             <div class="form-group">
                                 <label class="col-md-3 control-label">{!! trans('interface.org') !!}</label>
@@ -61,25 +61,25 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($quests as $quest)
+                                @foreach($exams as $exam)
                                     <tr>
-                                        <td>{!! $quest->id !!}</td>
+                                        <td>{!! $exam->id !!}</td>
                                         <td>
-                                            <a href="{!! route('quest.index',['position_id' => $quest->position_id]) !!}">
-                                                <span class="label label-info">{!! $quest->position->orgPath !!}/{!! $quest->position->name !!}</span>
+                                            <a href="{!! route('exam.index',['position_id' => $exam->position_id]) !!}">
+                                                <span class="label label-info">{!! $exam->position->orgPath !!}/{!! $exam->position->name !!}</span>
 
                                             </a>
                                         </td>
-                                        <td>{{ mb_substr(mb_ereg_replace("<[^>]+>","",$quest->source),0,50) }}...</td>
-                                        <td>{{ mb_substr(mb_ereg_replace("<[^>]+>","",$quest->task),0,50) }}...</td>
-                                        <td><span class="label label-warning">{{ $quest->timer }} {{ trans('interface.minutes') }}</span></td>
-                                        <td><a href="{!! route('quest.show',['id'=>$quest->id]) !!}">{!! trans('interface.show') !!}</a></td>
+                                        <td>{{ mb_substr(mb_ereg_replace("<[^>]+>","",$exam->source),0,50) }}...</td>
+                                        <td>{{ mb_substr(mb_ereg_replace("<[^>]+>","",$exam->task),0,50) }}...</td>
+                                        <td><span class="label label-warning">{{ $exam->timer }} {{ trans('interface.minutes') }}</span></td>
+                                        <td><a href="{!! route('exam.show',['id'=>$exam->id]) !!}">{!! trans('interface.show') !!}</a></td>
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
 
-                        {{ $quests->links() }}
+                        {{ $exams->links() }}
                     </div>
                 </div>
             </div>
@@ -109,10 +109,10 @@
                     {
                         id: '{!! $position_id !!}',
                         name: '{!! ($position_id > 0)
-                            ? \App\Position::find(request('position_id'))->name
+                            ? \App\Position::find($position_id)->name
                             : trans('interface.no_value') !!}',
                         orgPath: '{!! $position_id > 0
-                            ? \App\Position::find(request('position_id'))->orgPath
+                            ? \App\Position::find($position_id)->orgPath
                             : trans('interface.no_value') !!}'
                     }
                 ],
@@ -161,7 +161,7 @@
 
                 $("#form_quest_search").find("#position").val("0");
                 $("#form_quest_search").submit();
-{{--                window.location.href = '{!! route('quest.index') !!}';--}}
+{{--                window.location.href = '{!! route('exam.index') !!}';--}}
             });
         });
 

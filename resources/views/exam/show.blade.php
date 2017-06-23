@@ -12,52 +12,39 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
-                    <div class="panel-heading">{!! trans('interface.quest') !!}</div>
+                    <div class="panel-heading">{!! trans('interface.exam') !!}</div>
 
                     <div class="panel-body form-horizontal">
 
                         <div class="form-group">
-                            <label class="control-label col-md-2">{!! trans('interface.position') !!}</label>
-                            <div class="col-md-10">
-                                <a href="{!! route('quest.index',['position_id' => $quest->position_id]) !!}">
-                                    <span class="label label-info">{!! $quest->position->orgPath !!}/{!! $quest->position->name !!}</span>
+                            <label class="control-label col-md-3">{!! trans('interface.position') !!}</label>
+                            <div class="col-md-9">
+                                <a href="{!! route('exam.index',['position_id' => $exam->position_id]) !!}">
+                                    <span class="label label-info">{!! $exam->position->orgPath !!}/{!! $exam->position->name !!}</span>
                                 </a>
 
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-md-2">{!! trans('interface.source') !!}</label>
-                            <div class="col-md-10">{!! $quest->source !!}</div>
+                            <label class="control-label col-md-3">{!! trans('interface.user') !!}</label>
+                            <div class="col-md-9">{!! $exam->user->name !!}</div>
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-md-2">{!! trans('interface.task') !!}</label>
-                            <div class="col-md-10">{!! $quest->task !!}</div>
+                            <label class="control-label col-md-3">{!! trans('interface.chief') !!}</label>
+                            <div class="col-md-9">{!! $exam->chief->name !!}</div>
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-md-2">{!! trans('interface.timer') !!}</label>
-                            <div class="col-md-10">{!! $quest->timer !!} {!! trans('interface.minutes') !!}</div>
+                            <label class="control-label col-md-3">{!! trans('interface.ticket_count') !!}</label>
+                            <div class="col-md-9">{!! $exam->count !!}</div>
                         </div>
 
                         <div class="form-group">
-                            <div class="col-md-offset-2 col-md-3">
-                                <a href="{!! route('quest.edit',['id'=>$quest->id]) !!}" class="btn btn-block btn-info">{!! trans('interface.edit') !!}</a>
+                            <div class="col-md-offset-3 col-md-3">
+                                <a href="{!! route('exam.edit',['id'=>$exam->id]) !!}" class="btn btn-block btn-info">{!! trans('interface.edit') !!}</a>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-offset-2 col-md-9">
-                                <small>
-                                    {!! ($quest->created_at == $quest->updated_at)
-                                    ? trans('interface.author') : trans('interface.editor') !!}: {!! $quest->author->name !!}
-
-                                    {!! ($quest->created_at != $quest->updated_at)
-                                    ? "<span class=\"label label-success\">" . trans('interface.edited') . " " . $quest->updated_at . "</span>"
-                                    : ""!!}
-                                </small>
-                            </div>
-
                         </div>
                     </div>
 

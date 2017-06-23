@@ -26,9 +26,8 @@ class UserController extends Controller
         $count = request('count') ?: 10;
 
         if(request()->has('q')) {
-            $users = \App\User::where('name','LIKE', request('q'). '%')
+            $users = \App\User::where('name','LIKE', '%' . request('q'). '%')
 //                ->take(request('page'))
-                ->with('parent')
                 ->paginate($count);
 
             if(request()->ajax()) {

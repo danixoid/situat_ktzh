@@ -70,8 +70,8 @@
 
                                             </a>
                                         </td>
-                                        <td>{{ mb_substr(mb_ereg_replace("<[^>]+>","",$quest->source),0,50) }}...</td>
-                                        <td>{{ mb_substr(mb_ereg_replace("<[^>]+>","",$quest->task),0,50) }}...</td>
+                                        <td>{{ $quest->shortSource }}...</td>
+                                        <td>{{ $quest->shortTask }}...</td>
                                         <td><span class="label label-warning">{{ $quest->timer }} {{ trans('interface.minutes') }}</span></td>
                                         <td><a href="{!! route('quest.show',['id'=>$quest->id]) !!}">{!! trans('interface.show') !!}</a></td>
                                     </tr>
@@ -109,10 +109,10 @@
                     {
                         id: '{!! $position_id !!}',
                         name: '{!! ($position_id > 0)
-                            ? \App\Position::find(request('position_id'))->name
+                            ? \App\Position::find($position_id)->name
                             : trans('interface.no_value') !!}',
                         orgPath: '{!! $position_id > 0
-                            ? \App\Position::find(request('position_id'))->orgPath
+                            ? \App\Position::find($position_id)->orgPath
                             : trans('interface.no_value') !!}'
                     }
                 ],
