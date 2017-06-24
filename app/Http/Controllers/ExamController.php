@@ -9,14 +9,48 @@ use Illuminate\Http\Request;
 class ExamController extends Controller
 {
     /**
+     * Instantiate a new controller instance.
+     *
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('role:admin,manager',['except' => ['index','show']]);
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $count = request('count') ?: 10;
-        $exams = \App\Exam::paginate($count);
+
+        $count = request('page') ?: 10;
+        $position_id = request('position_id');
+        $user_id = request('user_id');
+        $chief_id = request('chief_id');
+
+        $query = \App\Exam::whereNotNull('id');
+
+        if($position_id &&  $position_id > 0) {
+            $query = $query->where('position_id',request('position_id'));
+        }
+
+        if($user_id && $user_id > 0) {
+            $query = $query->where('user_id',request('user_id'));
+        }
+
+        if($chief_id && $chief_id > 0) {
+            $query = $query->where('chief_id',request('chief_id'));
+        }
+
+        $exams = $query->paginate($count);
+
+        if(request()->ajax()) {
+            return $exams->toJson();
+        }
+
         return view('exam.index',['exams' => $exams]);
     }
 
@@ -111,6 +145,8 @@ class ExamController extends Controller
     {
         $data = $request->all();
 
+        dd($data);
+
         $exam = \App\Exam::updateOrCreate(['id' => $id], $data);
 
         if(!$exam) {
@@ -142,6 +178,22 @@ class ExamController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $exam = \App\Exam::find($id);
+
+        if(!$exam) {
+
+            if(request()->ajax()) {
+                return response()->json(['success' => false, 'message' => trans('interface.failure_deleted_exam')]);
+            }
+
+            return redirect()->back()->with('warning',trans('interface.failure_deleted_exam'));
+        }
+
+        $exam->delete();
+
+        return redirect()
+            ->route('exam.index')
+            ->with('message',trans('interface.success_deleted_exam'));
+
     }
 }

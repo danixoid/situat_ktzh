@@ -18,15 +18,15 @@ class Position extends Model
 
     public function getOrgPathAttribute()
     {
-        if($this->org->org_id != null) {
-            return $this->recursiveOrg($this->org->org_id, $this->org->name);
-        }
-
-        return $this->org->name;
+        return $this->org->orgPath;
     }
 
     public function quests() {
         return $this->hasMany(\App\Quest::class);
+    }
+
+    public function exams() {
+        return $this->hasMany(\App\Exam::class);
     }
 
     public function user()
@@ -34,15 +34,4 @@ class Position extends Model
         return $this->belongsTo(\App\User::class);
     }
 
-    public function recursiveOrg($org_id,$path) {
-        $org = \App\Org::find($org_id);
-
-        $path = $org->name . "/" . $path;
-
-        if($org->org_id != null) {
-            return $this->recursiveOrg($org->org_id, $path);
-        }
-
-        return $path;
-    }
 }

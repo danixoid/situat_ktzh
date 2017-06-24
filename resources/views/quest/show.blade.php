@@ -18,7 +18,7 @@
 
                         <div class="form-group">
                             <label class="control-label col-md-2">{!! trans('interface.position') !!}</label>
-                            <div class="col-md-10">
+                            <div class="col-md-10 form-control-static">
                                 <a href="{!! route('quest.index',['position_id' => $quest->position_id]) !!}">
                                     <span class="label label-info">{!! $quest->position->orgPath !!}/{!! $quest->position->name !!}</span>
                                 </a>
@@ -28,17 +28,17 @@
 
                         <div class="form-group">
                             <label class="control-label col-md-2">{!! trans('interface.source') !!}</label>
-                            <div class="col-md-10">{!! $quest->source !!}</div>
+                            <div class="col-md-10 form-control-static">{!! $quest->source !!}</div>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label col-md-2">{!! trans('interface.task') !!}</label>
-                            <div class="col-md-10">{!! $quest->task !!}</div>
+                            <div class="col-md-10 form-control-static">{!! $quest->task !!}</div>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label col-md-2">{!! trans('interface.timer') !!}</label>
-                            <div class="col-md-10">{!! $quest->timer !!} {!! trans('interface.minutes') !!}</div>
+                            <div class="col-md-10 form-control-static">{!! $quest->timer !!} {!! trans('interface.minutes') !!}</div>
                         </div>
 
                         <div class="form-group">

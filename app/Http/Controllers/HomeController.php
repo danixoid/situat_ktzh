@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -33,7 +34,8 @@ class HomeController extends Controller
     public function home()
     {
 //        request()->user()->authorizeRoles(['employee']);
-        return view('home');
+        $exams = \App\Exam::where('user_id',Auth::user()->id)->paginate(10);
+        return view('home',['exams' => $exams]);
     }
 
     /**

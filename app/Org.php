@@ -8,7 +8,7 @@ class Org extends Model
 {
     protected $fillable = ['org_id','name'];
 
-    protected $appends = ['orgPath'];
+    protected $appends = ['orgPath','orgParent'];
 
     public function parent() {
         return $this->belongsTo(\App\Org::class,'org_id');
@@ -28,13 +28,22 @@ class Org extends Model
             return $this->recursiveOrg($this->org_id, $this->name);
         }
 
-        return $this->name;
+        return trans('interface.root');
     }
 
-    public function recursiveOrg($org_id,$path) {
+    public function getOrgParentAttribute()
+    {
+        if($this->org_id != null) {
+            return $this->recursiveOrg($this->org_id);
+        }
+
+        return trans('interface.root');
+    }
+
+    public function recursiveOrg($org_id,$path = "") {
         $org = \App\Org::find($org_id);
 
-        $path = $org->name . "/" . $path;
+        $path = $org->name . ($path ? "/" . $path : "");
 
         if($org->org_id != null) {
             return $this->recursiveOrg($org->org_id, $path);

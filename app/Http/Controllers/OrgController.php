@@ -13,7 +13,8 @@ class OrgController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth',['except' => ['index','show']]);
+        $this->middleware('auth');
+        $this->middleware('role:admin,manager',['except' => ['index','show']]);
     }
 
     /**
@@ -184,6 +185,8 @@ class OrgController extends Controller
 
         $org->delete();
 
-        return redirect()->back()->with('message',trans('interface.success_deleted_org'));
+        return redirect()
+            ->route('org.index')
+            ->with('message',trans('interface.success_deleted_org'));
     }
 }

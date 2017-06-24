@@ -14,18 +14,20 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">{!! trans('interface.positions') !!}</div>
 
-                    <div class="panel-body">
+                    <div class="panel-body form-horizontal">
 
                         <div class="form-group">
                             <label class="control-label col-md-2">{!! trans('interface.org') !!}</label>
-                            <div class="col-md-10">
-                                <pre><span class="label label-info">{!! $position->orgPath !!}/</span></pre>
+                            <div class="col-md-10 form-control-static">
+                                <span class="label label-info">{!! $position->orgPath !!}/</span>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label col-md-2">{!! trans('interface.position') !!}</label>
-                            <div class="col-md-10"><pre>{!! $position->name !!}</pre></div>
+                            <div class="col-md-10 form-control-static">
+                                {!! $position->name !!}
+                            </div>
                         </div>
 
                         <div class="form-group">
@@ -34,8 +36,6 @@
                             </div>
                             <div class="col-md-3">
                                 <a href="#" id="deletePosition" class="delete btn btn-block btn-danger">{!! trans('interface.destroy') !!}</a>
-                            </div>
-                            <div class="col-md-offset-2 col-md-3">
                             </div>
                         </div>
                     </div>

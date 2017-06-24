@@ -7,6 +7,15 @@ use Illuminate\Http\Request;
 class TicketController extends Controller
 {
     /**
+     * TicketController constructor.
+     */
+    function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('role:admin,manager',['except' => ['index','show']]);
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response

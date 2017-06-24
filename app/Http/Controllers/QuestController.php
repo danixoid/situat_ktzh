@@ -14,6 +14,7 @@ class QuestController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('role:admin,manager');
     }
 
     /**
@@ -25,18 +26,27 @@ class QuestController extends Controller
     {
         $count = request('page') ?: 10;
         $position_id = request('position_id');
+        $text = request('text');
 
         if($position_id &&  $position_id > 0) {
-            $query = \App\Position::find(request('position_id'))
-                ->quests();
+
+            $query = \App\Quest::whereHas('position',function($q) use ($position_id) {
+                return $q->whereId($position_id);
+            });
+
         } else {
             $query = \App\Quest::whereNotNull('id');
         }
 
-        $quests = $query
-            ->where('source','LIKE','%' . \request('text') . '%')
-            ->orWhere('task','LIKE','%' . \request('text') . '%')
-            ->paginate($count);
+        if($text) {
+            $query = $query
+                ->where(function($q) {
+                    return $q->where('source', 'LIKE', '%' . \request('text') . '%')
+                        ->orWhere('task', 'LIKE', '%' . \request('text') . '%');
+                });
+        }
+
+        $quests = $query->paginate($count);
 
         if(request()->ajax()) {
             return $quests->toJson();

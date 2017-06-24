@@ -18,15 +18,13 @@ class UserTableSeeder extends Seeder
         $role_admin  = Role::where("name", "admin")->first();
 
 
-        for($i = 0; $i < 20; $i++) :
-            $employee = new User();
-            $employee->name = "Иван" . $i . " Иванов" . $i;
-            $employee->email = "employee" . $i . "@example.com";
-            $employee->password = bcrypt("12345" . $i);
-            $employee->save();
-
-            $employee->roles()->attach($role_employee);
-        endfor;
+        $admin = new User();
+        $admin->name = "Данияр Карияевич";
+        $admin->email = "admin@example.com";
+        $admin->password = bcrypt("12345");
+        $admin->save();
+        
+        $admin->roles()->attach($role_admin);
 
         $manager = new User();
         $manager->name = "Марья Валильевна";
@@ -36,12 +34,15 @@ class UserTableSeeder extends Seeder
 
         $manager->roles()->attach($role_manager);
 
-        $admin = new User();
-        $admin->name = "Данияр Карияевич";
-        $admin->email = "admin@example.com";
-        $admin->password = bcrypt("12345");
-        $admin->save();
 
-        $admin->roles()->attach($role_admin);
+        for($i = 0; $i < 20; $i++) :
+            $employee = new User();
+            $employee->name = "Иван" . $i . " Иванов" . $i;
+            $employee->email = "employee" . $i . "@example.com";
+            $employee->password = bcrypt("12345" . $i);
+            $employee->save();
+
+            $employee->roles()->attach($role_employee);
+        endfor;
     }
 }

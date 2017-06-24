@@ -24,7 +24,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                        <div class="form-group{{ $errors->has('password') ? 'errors' : '' }}">
                             <label for="password" class="col-md-4 control-label">{!! trans('interface.password') !!}</label>
 
                             <div class="col-md-6">

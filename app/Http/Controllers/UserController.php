@@ -14,6 +14,7 @@ class UserController extends Controller
     public function __construct()
     {
         $this->middleware('auth',['except' => ['index','show']]);
+        $this->middleware('role:admin',['except' => ['index','show']]);
     }
 
     /**
@@ -27,6 +28,7 @@ class UserController extends Controller
 
         if(request()->has('q')) {
             $users = \App\User::where('name','LIKE', '%' . request('q'). '%')
+                ->orWhere('email','LIKE', '%' . request('q'). '%')
 //                ->take(request('page'))
                 ->paginate($count);
 
@@ -180,10 +182,10 @@ class UserController extends Controller
             return redirect()->back()->with('warning',trans('interface.failure_deleted_user'));
         }
 
-        foreach($user->positions as $position): $position->delete(); endforeach;
-
         $user->delete();
 
-        return redirect()->back()->with('message',trans('interface.success_deleted_user'));
+        return redirect()
+            ->route('user.index')
+            ->with('message',trans('interface.success_deleted_user'));
     }
 }

@@ -8,6 +8,11 @@
 @extends('layouts.app')
 
 @section('content')
+
+    <?php $position_id = request('position_id') ?: '0'; ?>
+    <?php $user_id = request('user_id') ?: '0'; ?>
+    <?php $chief_id = request('chief_id') ?: '0'; ?>
+
     <div class="container">
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
@@ -25,25 +30,26 @@
                         <form class="form-horizontal" id="form_quest_search" action="{!! route("exam.index") !!}">
 
                             <div class="form-group">
-                                <label class="col-md-3 control-label">{!! trans('interface.org') !!}</label>
+                                <label class="col-md-3 control-label">{!! trans('interface.position') !!}</label>
                                 <div class="col-md-9">
                                     <select class="form-control select2-single" name="position_id" id="position">
                                     </select>
                                 </div>
                             </div>
 
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">{!! trans('interface.user') !!}</label>
+                                <div class="col-md-9">
+                                    <select class="form-control select2-single" name="user_id" id="user">
+                                    </select>
+                                </div>
+                            </div>
 
                             <div class="form-group">
-                                <label class="col-md-3 control-label">{!! trans('interface.by_text') !!}</label>
+                                <label class="col-md-3 control-label">{!! trans('interface.chief') !!}</label>
                                 <div class="col-md-9">
-
-                                    <div class="input-group">
-                                        <input type="search" name="text" class="form-control" value="{!! request('text') !!}"
-                                               placeholder="{!! trans('interface.search') !!}">
-                                        <span class="input-group-btn">
-                                            <button type="submit" class="btn btn-default">Найти</button>
-                                        </span>
-                                    </div><!-- /input-group -->
+                                    <select class="form-control select2-single" name="chief_id" id="chief">
+                                    </select>
                                 </div>
                             </div>
 
@@ -54,9 +60,9 @@
                                 <tr>
                                     <th>№</th>
                                     <th>{!! trans('interface.position') !!}</th>
-                                    <th>{!! trans('interface.source') !!}</th>
-                                    <th>{!! trans('interface.task') !!}</th>
-                                    <th>{!! trans('interface.timer') !!}</th>
+                                    <th>{!! trans('interface.user') !!}</th>
+                                    <th>{!! trans('interface.chief') !!}</th>
+                                    <th>{!! trans('interface.quest_count') !!}</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -70,9 +76,9 @@
 
                                             </a>
                                         </td>
-                                        <td>{{ mb_substr(mb_ereg_replace("<[^>]+>","",$exam->source),0,50) }}...</td>
-                                        <td>{{ mb_substr(mb_ereg_replace("<[^>]+>","",$exam->task),0,50) }}...</td>
-                                        <td><span class="label label-warning">{{ $exam->timer }} {{ trans('interface.minutes') }}</span></td>
+                                        <td>{{ $exam->user->name }}</td>
+                                        <td>{{ $exam->chief->name }}</td>
+                                        <td>{{ $exam->count }}</td>
                                         <td><a href="{!! route('exam.show',['id'=>$exam->id]) !!}">{!! trans('interface.show') !!}</a></td>
                                     </tr>
                                 @endforeach
@@ -100,7 +106,6 @@
 
         $(function () {
 
-            <?php $position_id = request('position_id') ?: '0'; ?>
             /**
              *  SELECT2
              */
@@ -152,16 +157,93 @@
                 templateSelection: formatPositionSelection // omitted for brevity, see the source of this page
             });
 
-            $('#position').on("select2:select", function(e) {
-                $("#form_quest_search").submit();
-//                window.location.href = '?position_id=' + e.target.value;
+            $("#user").select2({
+                data: [
+                    {
+                        id: '{!! $user_id !!}',
+                        name: '{!! ($user_id > 0)
+                            ? \App\User::find($user_id)->name
+                            : trans('interface.no_value') !!}'
+                    }
+                ],
+                ajax: {
+                    url: "{!! url('/user') !!}",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            q: params.term, // search term
+                            page: params.page
+                        };
+                    },
+                    processResults: function (data, params) {
+                        params.page = params.page || 1;
+                        return {
+                            results: data.data,
+                            pagination: {
+                                more: (params.page * 30) < data.length
+                            }
+                        };
+                    },
+                    cache: true
+                },
+                theme: "bootstrap",
+                placeholder: '{!! trans('interface.select_user') !!}',
+                allowClear: true,
+                language: '{!! config()->get('app.locale') !!}',
+                escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
+                minimumInputLength: 2,
+                templateResult: formatUser, // omitted for brevity, see the source of this page
+                templateSelection: formatUserSelection, // omitted for brevity, see the source of this page
             });
 
-            $('#position').on("select2:unselect", function(e) {
+            $("#chief").select2({
+                data: [
+                    {
+                        id: '{!! $chief_id !!}',
+                        name: '{!! ($chief_id > 0)
+                            ? \App\User::find($chief_id)->name
+                            : trans('interface.no_value') !!}'
+                    }
+                ],
+                ajax: {
+                    url: "{!! url('/user') !!}",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            q: params.term, // search term
+                            page: params.page
+                        };
+                    },
+                    processResults: function (data, params) {
+                        params.page = params.page || 1;
+                        return {
+                            results: data.data,
+                            pagination: {
+                                more: (params.page * 30) < data.length
+                            }
+                        };
+                    },
+                    cache: true
+                },
+                theme: "bootstrap",
+                placeholder: '{!! trans('interface.select_user') !!}',
+                allowClear: true,
+                language: '{!! config()->get('app.locale') !!}',
+                escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
+                minimumInputLength: 2,
+                templateResult: formatUser, // omitted for brevity, see the source of this page
+                templateSelection: formatUserSelection, // omitted for brevity, see the source of this page
+            });
 
-                $("#form_quest_search").find("#position").val("0");
+            $('#position,#user,#chief').on("select2:select", function(e) {
                 $("#form_quest_search").submit();
-{{--                window.location.href = '{!! route('exam.index') !!}';--}}
+            });
+
+            $('#position,#user,#chief').on("select2:unselect", function(e) {
+                $(this).val("0");
+                $("#form_quest_search").submit();
             });
         });
 
@@ -171,6 +253,14 @@
 
         function formatPositionSelection (position) {
             return "<label class='label label-info'>" + position.orgPath + "/" + position.name + "</label>";
+        }
+
+        function formatUser (user) {
+            return "<div class='label label-info'>" + user.name + "</div>";
+        }
+
+        function formatUserSelection (user) {
+            return "<div class='label label-info'>" + user.name + "</div>";
         }
 
 

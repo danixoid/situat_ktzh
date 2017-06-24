@@ -16,43 +16,47 @@
 
                     <div class="panel-body">
 
-                        <form id="form_create_exam" class="form-horizontal" action="{!! route('exam.update',['id' => $exam->id]) !!}" method="POST">
+                        <form id="form_create_exam" class="form-horizontal" action="{!! route('ticket.create') !!}" method="POST">
                             {!! csrf_field() !!}
-                            {!! method_field("PUT")  !!}
+
+                            <input type="hidden" name="exam_id" {!! $exam->id !!}>
 
                             <div class="form-group">
                                 <label class="control-label col-md-3">{!! trans('interface.user') !!}</label>
-                                <div class="col-md-9">{!! $exam->user->name !!}</div>
+                                <div class="col-md-9 form-control-static">{!! $exam->user->name !!}</div>
                             </div>
 
                             <div class="form-group">
-                                <label class="col-md-3 control-label">{!! trans('interface.position') !!}</label>
-                                <div class="col-md-9">
-                                    <select class="form-control select2-single" name="position_id" id="position">
-                                    </select>
+                                <label class="control-label col-md-3">{!! trans('interface.position') !!}</label>
+                                <div class="col-md-9 form-control-static">
+                                    <label class="label label-info">{!! $exam->position->orgPath
+                                    !!}/{!! $exam->position->name !!}</label>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="col-md-3 control-label">{!! trans('interface.chief') !!}</label>
-                                <div class="col-md-9">
-                                    <select class="form-control select2-single" name="chief_id" id="chief">
-                                    </select>
+                                <label class="control-label col-md-3">{!! trans('interface.chief') !!}</label>
+                                <div class="col-md-9 form-control-static">{!! $exam->chief->name !!}</div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-3">{!! trans('interface.ticket_count') !!}</label>
+                                <div class="col-md-9 form-control-static">
+                                    {!! $exam->count !!}
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="col-md-3 control-label">{!! trans('interface.exams') !!}</label>
+                                <label class="col-md-3 control-label">{!! trans('interface.quests') !!}</label>
                                 <div class="col-md-9">
-                                    <select class="form-control select2-multiple" multiple name="quest_id" id="quest">
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-md-3 control-label">{!! trans('interface.ticket_count') !!}</label>
-                                <div class="col-md-3">
-                                    <input type="number" class="form-control" name="count" value="{!! $exam->count !!}"/>
+                                    @foreach(\App\Quest::where('position_id',$exam->position_id)->get() as $quest)
+                                    <div class="checkbox">
+                                        <label><input type="checkbox" value="{!! $quest->id !!}" name="quest_id[]">
+                                            <p class="text-info">{!! $quest->shortSource !!}...</p>
+                                            <p class="text-primary">{!! $quest->shortTask !!}...</p>
+                                        </label>
+                                    </div>
+                                    @endforeach
                                 </div>
                             </div>
 
@@ -103,10 +107,6 @@
                         };
                     },
                     processResults: function (data, params) {
-                        // parse the results into the format expected by Select2
-                        // since we are using custom formatting functions we do not need to
-                        // alter the remote JSON data, except to indicate that infinite
-                        // scrolling can be used
                         params.page = params.page || 1;
 
                         return {
@@ -120,7 +120,6 @@
                 },
                 theme: "bootstrap",
                 placeholder: '{!! trans('interface.select_position') !!}',
-                allowClear: true,
                 language: '{!! config()->get('app.locale') !!}',
                 escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
                 minimumInputLength: 2,
@@ -131,8 +130,8 @@
             $("#chief").select2({
                 data: [
                     {
-                        id: 0,
-                        name: '{!! trans('interface.no_value') !!}'
+                        id: '{!! $exam->chief->id !!}',
+                        name: '{!! $exam->chief->name !!}',
                     }
                 ],
                 ajax: {
@@ -158,7 +157,6 @@
                 },
                 theme: "bootstrap",
                 placeholder: '{!! trans('interface.select_user') !!}',
-                allowClear: true,
                 language: '{!! config()->get('app.locale') !!}',
                 escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
                 minimumInputLength: 2,
@@ -166,52 +164,6 @@
                 templateSelection: formatUserSelection, // omitted for brevity, see the source of this page
             });
 
-            $("#quest").select2({
-                data: [
-                    {
-                        id: 0,
-                        shortSource: '{!! trans('interface.no_value') !!}',
-                        shortTask: '{!! trans('interface.no_value') !!}'
-                    }
-                ],
-                ajax: {
-                    url: "{!! url('/quest') !!}",
-                    dataType: 'json',
-                    delay: 250,
-                    data: function (params) {
-                        return {
-                            text: params.term, // search term
-                            page: params.page
-                        };
-                    },
-                    processResults: function (data, params) {
-                        params.page = params.page || 1;
-                        return {
-                            results: data.data,
-                            pagination: {
-                                more: (params.page * 30) < data.length
-                            }
-                        };
-                    },
-                    cache: true
-                },
-                theme: "bootstrap",
-                placeholder: '{!! trans('interface.select_user') !!}',
-                allowClear: true,
-                language: '{!! config()->get('app.locale') !!}',
-                escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
-                minimumInputLength: 2,
-                minimumSelectionLength: 2,
-                maximumSelectionLength: 2,
-                formatSelectionTooBig: function (limit) {
-
-                    // Callback
-
-                    return 'Too many selected items';
-                }
-                templateResult: formatQuest, // omitted for brevity, see the source of this page
-                templateSelection: formatQuestSelection, // omitted for brevity, see the source of this page
-            });
         });
 
 
@@ -229,17 +181,6 @@
 
         function formatUserSelection (user) {
             return "<div class='label label-info'>" + user.name + "</div>";
-        }
-
-        function formatQuest (exam) {
-            return "<div><span class='label label-info'>{!! trans('interface.source') !!}:" +
-                exam.shortSource + "</span> <span class='label label-success'>{!! trans('interface.task') !!}: " +
-                exam.shortTask + "</span></div>";
-        }
-
-        function formatQuestSelection (exam) {
-            return " <span class='label label-info'>" + exam.shortSource + "</span> " +
-                " <span class='label label-primary'>" + exam.shortTask + "</span>";
         }
 
     </script>

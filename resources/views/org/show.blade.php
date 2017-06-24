@@ -19,19 +19,19 @@
 
                         <div class="form-group">
                             <label class="control-label col-md-2">{!! trans('interface.org') !!}</label>
-                            <div class="col-md-10">
-                                <span class="label label-info">{!! $org->orgPath !!}/</span>
+                            <div class="col-md-10 form-control-static">
+                                <span class="label label-info">{!! $org->orgParent !!}</span>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label col-md-2">{!! trans('interface.title') !!}</label>
-                            <div class="col-md-10">{!! $org->name !!}</div>
+                            <div class="col-md-10 form-control-static">{!! $org->name !!}</div>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label col-md-2">{!! trans('interface.positions') !!}</label>
-                            <div class="col-md-10">
+                            <div class="col-md-10 form-control-static">
                                 @if(count($org->positions) > 0)
                                     @foreach ($org->positions as $position)
                                         <a href="{!! route('position.show',['id' => $position->id]) !!}">

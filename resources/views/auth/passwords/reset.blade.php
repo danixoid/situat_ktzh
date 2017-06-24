@@ -19,7 +19,7 @@
 
                         <input type="hidden" name="token" value="{{ $token }}">
 
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                        <div class="form-group{{ $errors->has('email') ? 'errors' : '' }}">
                             <label for="email" class="col-md-4 control-label">{!! trans('interface.email_address') !!}</label>
 
                             <div class="col-md-6">

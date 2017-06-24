@@ -15,24 +15,24 @@
                     <div class="panel-heading">{!! trans('interface.user') !!}</div>
 
 
-                    <div class="panel-body">
+                    <div class="panel-body form-horizontal">
 
                         <div class="form-group">
                             <label class="control-label col-md-2">{!! trans('interface.roles') !!}</label>
-                            <div class="col-md-10">
-                                <pre>@foreach($user->roles as $role)<span class="label label-info">{!!
-                                trans('interface.' . $role->name) !!}</span> @endforeach</pre>
+                            <div class="col-md-10 form-control-static">
+                                @foreach($user->roles as $role)<span class="label label-info">{!!
+                                trans('interface.' . $role->name) !!}</span> @endforeach
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label col-md-2">{!! trans('interface.name') !!}</label>
-                            <div class="col-md-10"><pre>{!! $user->name !!}</pre></div>
+                            <div class="col-md-10 form-control-static">{!! $user->name !!}</div>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label col-md-2">{!! trans('interface.email_address') !!}</label>
-                            <div class="col-md-10"><pre>{!! $user->email !!}</pre></div>
+                            <div class="col-md-10 form-control-static">{!! $user->email !!}</div>
                         </div>
 
                         <div class="form-group">

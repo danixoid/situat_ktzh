@@ -22,7 +22,21 @@
                     </div>
 
                     <div class="panel-body">
+                        
+                        <form class="form" id="form_user_search" action="{!! route("user.index") !!}">
 
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="search" name="q" class="form-control" value="{!! request('q') !!}"
+                                           placeholder="{!! trans('interface.search') !!}">
+                                    <span class="input-group-btn">
+                                        <button type="submit" class="btn btn-default">Найти</button>
+                                    </span>
+                                </div><!-- /input-group -->
+                            </div>
+
+                        </form>
+                        
                         <table class="table table-condensed">
                             <thead>
                             <tr>
