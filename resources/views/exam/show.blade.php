@@ -20,7 +20,7 @@
                             <label class="control-label col-md-3">{!! trans('interface.position') !!}</label>
                             <div class="col-md-9 form-control-static">
                                 <a href="{!! route('exam.index',['position_id' => $exam->position_id]) !!}">
-                                    <span class="label label-info">{!! $exam->position->orgPath !!}/{!! $exam->position->name !!}</span>
+                                    <span class="text-info">{!! $exam->position->orgPath !!}/{!! $exam->position->name !!}</span>
                                 </a>
 
                             </div>
@@ -44,8 +44,8 @@
                                     @foreach($exam->quests as $quest)
                                         <li>
                                             <a href="{!! route('quest.show',['id' => $quest->id]) !!}">
-                                                <span class="label label-success">{!! $quest->shortSource !!}</span><br />
-                                                <span class="label label-default">{!! $quest->shortTask !!}</span>
+                                                <span class="text-success">{!! $quest->shortSource !!}</span><br />
+                                                <span class="text-default">{!! $quest->shortTask !!}</span>
                                             </a>
                                         </li>
                                     @endforeach

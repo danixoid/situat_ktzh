@@ -124,11 +124,11 @@
 
 
         function formatPosition (position) {
-            return "<div class='label label-info'>" + position.orgPath + "</div><div>" + position.name + "</div>";
+            return "<div class='text-info'>" + position.orgPath + "</div><div>" + position.name + "</div>";
         }
 
         function formatPositionSelection (position) {
-            return "<label class='label label-info'>" + position.orgPath + "</label> <span>" + position.name + "</span>";
+            return "<label class='text-info'>" + position.orgPath + "</label> <span>" + position.name + "</span>";
         }
 
     </script>

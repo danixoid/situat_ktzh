@@ -20,7 +20,7 @@
                         <div class="form-group">
                             <label class="control-label col-md-2">{!! trans('interface.org') !!}</label>
                             <div class="col-md-10 form-control-static">
-                                <span class="label label-info">{!! $org->orgParent !!}</span>
+                                <span class="text-info">{!! $org->orgParent !!}</span>
                             </div>
                         </div>
 
@@ -35,7 +35,7 @@
                                 @if(count($org->positions) > 0)
                                     @foreach ($org->positions as $position)
                                         <a href="{!! route('position.show',['id' => $position->id]) !!}">
-                                            <span class="label label-success">{!! $position->name !!}</span></a>
+                                            <span class="text-success">{!! $position->name !!}</span></a>
                                     @endforeach
                                 @else
                                     {!! trans('interface.not_found') !!}

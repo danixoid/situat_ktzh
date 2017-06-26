@@ -29,8 +29,8 @@ class ExamEditRequest extends FormRequest
             'user_id' => 'int|min:1',
             'chief_id' => 'int|min:1',
             'count' => 'int|min:1',
-            'mark' => 'required|int|min:0',
-            'note' => 'required|string',
+            'mark' => 'int|min:0',
+            'note' => 'string',
         ];
     }
 }

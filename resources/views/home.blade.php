@@ -21,7 +21,7 @@
                         <tbody>
                             <tr>
                                 @foreach($exams as $exam)
-                                    <td><span class="label label-info">{!! $exam->position->orgPath !!}/{!! $exam->position->name !!}</span></td>
+                                    <td><span class="text-info">{!! $exam->position->orgPath !!}/{!! $exam->position->name !!}</span></td>
                                     <td>{!! $exam->user->name !!}</td>
                                     <td>{!! $exam->count !!}</td>
                                     <td>

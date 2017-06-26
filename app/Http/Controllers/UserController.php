@@ -137,10 +137,15 @@ class UserController extends Controller
         $user = \App\User::updateOrCreate(['id' => $id], $data);
 
         if(isset($data['role_id']) && is_array($data['role_id'])) {
-            foreach ($data['role_id'] as $role_id)
             $user
                 ->roles()
-                ->attach(\App\Role::find($role_id));
+                ->detach();
+
+            foreach ($data['role_id'] as $role_id)
+                $user
+                    ->roles()
+                    ->attach(\App\Role::find($role_id));
+
         }
 
         if(!$user) {

@@ -23,16 +23,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('welcome');
-    }
-
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function home()
-    {
 //        request()->user()->authorizeRoles(['employee']);
         $exams = \App\Exam::where('user_id',Auth::user()->id)->paginate(10);
         return view('home',['exams' => $exams]);

@@ -19,7 +19,7 @@
                         <div class="form-group">
                             <label class="control-label col-md-2">{!! trans('interface.org') !!}</label>
                             <div class="col-md-10 form-control-static">
-                                <span class="label label-info">{!! $position->orgPath !!}/</span>
+                                <span class="text-info">{!! $position->orgPath !!}/</span>
                             </div>
                         </div>
 

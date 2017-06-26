@@ -51,10 +51,10 @@
                                 <tr>
                                     <td>{!! $user->id !!}</td>
                                     <td><a href="{!! route('user.show',['id' => $user->id]) !!}">{!! $user->name !!}</a></td>
-                                    <td><span class="label label-info">{!! $user->email !!}</span></td>
+                                    <td><span class="text-info">{!! $user->email !!}</span></td>
                                     <td>
                                         @foreach($user->roles as $role)
-                                            <span class="label label-info">{!!
+                                            <span class="text-info">{!!
                                                 trans('interface.' . $role->name) !!}</span>
                                         @endforeach
                                     </td>

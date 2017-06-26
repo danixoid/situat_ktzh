@@ -29,40 +29,51 @@
                             <div class="form-group">
                                 <label class="control-label col-md-3">{!! trans('interface.position') !!}</label>
                                 <div class="col-md-9 form-control-static">
-                                    <label class="label label-info">{!! $exam->position->orgPath
+                                    <label class="text-info">{!! $exam->position->orgPath
                                     !!}/{!! $exam->position->name !!}</label>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="control-label col-md-3">{!! trans('interface.chief') !!}</label>
-                                <div class="col-md-9 form-control-static">{!! $exam->chief->name !!}</div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label col-md-3">{!! trans('interface.ticket_count') !!}</label>
-                                <div class="col-md-9 form-control-static">
-                                    {!! $exam->count !!}
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-md-3 control-label">{!! trans('interface.quests') !!}</label>
+                                <label class="col-md-3 control-label">{!! trans('interface.chief') !!}</label>
                                 <div class="col-md-9">
-                                    @foreach(\App\Quest::where('position_id',$exam->position_id)->get() as $quest)
-                                    <div class="checkbox">
-                                        <label><input type="checkbox" value="{!! $quest->id !!}" name="quest_id[]">
-                                            <p class="text-info">{!! $quest->shortSource !!}...</p>
-                                            <p class="text-primary">{!! $quest->shortTask !!}...</p>
-                                        </label>
-                                    </div>
-                                    @endforeach
+                                    <select class="form-control select2-single" name="chief_id" id="chief">
+                                    </select>
                                 </div>
                             </div>
+
+                            {{--<div class="form-group">--}}
+                                {{--<label class="control-label col-md-3">{!! trans('interface.chief') !!}</label>--}}
+                                {{--<div class="col-md-9 form-control-static">{!! $exam->chief->name !!}</div>--}}
+                            {{--</div>--}}
+
+                            {{--<div class="form-group">--}}
+                                {{--<label class="control-label col-md-3">{!! trans('interface.ticket_count') !!}</label>--}}
+                                {{--<div class="col-md-9 form-control-static">--}}
+                                    {{--{!! $exam->count !!}--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
+
+                            {{--<div class="form-group">--}}
+                                {{--<label class="col-md-3 control-label">{!! trans('interface.quests') !!}</label>--}}
+                                {{--<div class="col-md-9">--}}
+                                    {{--@foreach(\App\Quest::where('position_id',$exam->position_id)->get() as $quest)--}}
+                                    {{--<div class="checkbox">--}}
+                                        {{--<label><input type="checkbox" value="{!! $quest->id !!}" name="quest_id[]">--}}
+                                            {{--<p class="text-info">{!! $quest->shortSource !!}...</p>--}}
+                                            {{--<p class="text-primary">{!! $quest->shortTask !!}...</p>--}}
+                                        {{--</label>--}}
+                                    {{--</div>--}}
+                                    {{--@endforeach--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
 
                             <div class="form-group">
                                 <div class="col-md-offset-3 col-md-3">
-                                    <button class="btn btn-block btn-danger" >{!! trans('interface.update') !!}</button>
+                                    <button type="submit" class="btn btn-block btn-danger" >{!! trans('interface.update') !!}</button>
+                                </div>
+                                <div class="col-md-3">
+                                    <a href="{!! route('exam.index') !!}" class="btn btn-block btn-info" >{!! trans('interface.cancel') !!}</a>
                                 </div>
                             </div>
                         </form>
@@ -84,48 +95,6 @@
     <script>
 
         $(function () {
-
-            /**
-             *  SELECT2
-             */
-            $("#position").select2({
-                data: [
-                    {
-                        id: '{!! $exam->position->id !!}',
-                        name: '{!! $exam->position->name !!}',
-                        orgPath: '{!! $exam->position->orgPath !!}'
-                    }
-                ],
-                ajax: {
-                    url: "{!! url('/position') !!}",
-                    dataType: 'json',
-                    delay: 250,
-                    data: function (params) {
-                        return {
-                            q: params.term, // search term
-                            page: params.page
-                        };
-                    },
-                    processResults: function (data, params) {
-                        params.page = params.page || 1;
-
-                        return {
-                            results: data,
-                            pagination: {
-                                more: (params.page * 30) < data.length
-                            }
-                        };
-                    },
-                    cache: true
-                },
-                theme: "bootstrap",
-                placeholder: '{!! trans('interface.select_position') !!}',
-                language: '{!! config()->get('app.locale') !!}',
-                escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
-                minimumInputLength: 2,
-                templateResult: formatPosition, // omitted for brevity, see the source of this page
-                templateSelection: formatPositionSelection // omitted for brevity, see the source of this page
-            });
 
             $("#chief").select2({
                 data: [
@@ -166,21 +135,12 @@
 
         });
 
-
-        function formatPosition (position) {
-            return "<div class='label label-info'>" + position.orgPath + "</div><div>" + position.name + "</div>";
-        }
-
-        function formatPositionSelection (position) {
-            return "<label class='label label-info'>" + position.orgPath + "</label> <span>" + position.name + "</span>";
-        }
-
         function formatUser (user) {
-            return "<div class='label label-info'>" + user.name + "</div>";
+            return "<div class='text-info'>" + user.name + "</div>";
         }
 
         function formatUserSelection (user) {
-            return "<div class='label label-info'>" + user.name + "</div>";
+            return "<div class='text-info'>" + user.name + "</div>";
         }
 
     </script>

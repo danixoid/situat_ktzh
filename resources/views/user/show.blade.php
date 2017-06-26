@@ -20,7 +20,7 @@
                         <div class="form-group">
                             <label class="control-label col-md-2">{!! trans('interface.roles') !!}</label>
                             <div class="col-md-10 form-control-static">
-                                @foreach($user->roles as $role)<span class="label label-info">{!!
+                                @foreach($user->roles as $role)<span class="text-info">{!!
                                 trans('interface.' . $role->name) !!}</span> @endforeach
                             </div>
                         </div>

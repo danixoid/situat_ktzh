@@ -110,11 +110,11 @@
 
 
         function formatPosition (org) {
-            return "<div class='label label-info'>" + org.orgPath + "</div>";
+            return "<div class='text-info'>" + org.orgPath + "</div>";
         }
 
         function formatPositionSelection (org) {
-            return "<label class='label label-info'>" + org.orgPath + "</label>";
+            return "<label class='text-info'>" + org.orgPath + "</label>";
         }
 
     </script>

@@ -20,7 +20,7 @@
                             <label class="control-label col-md-2">{!! trans('interface.position') !!}</label>
                             <div class="col-md-10 form-control-static">
                                 <a href="{!! route('quest.index',['position_id' => $quest->position_id]) !!}">
-                                    <span class="label label-info">{!! $quest->position->orgPath !!}/{!! $quest->position->name !!}</span>
+                                    <span class="text-info">{!! $quest->position->orgPath !!}/{!! $quest->position->name !!}</span>
                                 </a>
 
                             </div>
@@ -53,7 +53,7 @@
                                     ? trans('interface.author') : trans('interface.editor') !!}: {!! $quest->author->name !!}
 
                                     {!! ($quest->created_at != $quest->updated_at)
-                                    ? "<span class=\"label label-success\">" . trans('interface.edited') . " " . $quest->updated_at . "</span>"
+                                    ? "<span class=\"text-success\">" . trans('interface.edited') . " " . $quest->updated_at . "</span>"
                                     : ""!!}
                                 </small>
                             </div>

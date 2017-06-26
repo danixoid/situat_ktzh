@@ -39,18 +39,18 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
                         @if(Auth::check() && Auth::user()->hasAnyRole(['admin','manager']))
-                            <li><a href="{{ route('quest.index') }}">{!! trans('interface.quests') !!}</a></li>
-                            <li><a href="{{ route('exam.index') }}">{!! trans('interface.exams') !!}</a></li>
-                            <li><a href="{{ route('ticket.index') }}">{!! trans('interface.tickets') !!}</a></li>
-                            <li class="dropdown">
+                            <li{!! preg_match("/quest/",request()->path()) ? " class=\"active\"" : "" !!}><a href="{{ route('quest.index') }}">{!! trans('interface.quests') !!}</a></li>
+                            <li{!! preg_match("/exam/",request()->path()) ? " class=\"active\"" : "" !!}><a href="{{ route('exam.index') }}">{!! trans('interface.exams') !!}</a></li>
+{{--                            <li><a href="{{ route('ticket.index') }}">{!! trans('interface.tickets') !!}</a></li>--}}
+                            <li{!! preg_match("/(org)|(position)|(user)/",request()->url()) ? " class=\"active\"" : " class=\"dropdown\"" !!}>
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                     {{ trans('interface.organization_structure') }} <span class="caret"></span>
                                 </a>
 
                                 <ul class="dropdown-menu" role="menu">
-                                    <li><a href="{{ route('org.index') }}">{!! trans('interface.orgs') !!}</a></li>
-                                    <li><a href="{{ route('position.index') }}">{!! trans('interface.positions') !!}</a></li>
-                                    <li><a href="{{ route('user.index') }}">{!! trans('interface.users') !!}</a></li>
+                                    <li{!! preg_match("/org/",request()->path()) ? " class=\"active\"" : "" !!}><a href="{{ route('org.index') }}">{!! trans('interface.orgs') !!}</a></li>
+                                    <li{!! preg_match("/position/",request()->path()) ? " class=\"active\"" : "" !!}><a href="{{ route('position.index') }}">{!! trans('interface.positions') !!}</a></li>
+                                    <li{!! preg_match("/user/",request()->path()) ? " class=\"active\"" : "" !!}><a href="{{ route('user.index') }}">{!! trans('interface.users') !!}</a></li>
                                 </ul>
                             </li>
                         @endif
@@ -95,29 +95,45 @@
         </nav>
 
 
-        @if(session()->has('warning'))
-            <div class="alert alert-warning">
-                <h3>{{ session('warning') }}</h3>
-            </div>
-        @endif
+        <div class="container">
+            <div class="row">
+                <div class="col-md-offset-2 col-md-8">
 
-        @if(session()->has('message'))
-            <div class="alert alert-success">
-                <h3>{{ session('message') }}</h3>
-            </div>
-        @endif
-        @if (count($errors) > 0)
-            <div class="alert alert-danger">
-                <strong>Внимание!</strong> Обнаружены ошибки при заполнении полей.<br><br>
+                    @if(session()->has('warning'))
+                        <div class="alert alert-warning alert-dismissible fade in">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h3>{{ session('warning') }}</h3>
+                        </div>
+                    @endif
 
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-                <!--        -->
+                    @if(session()->has('message'))
+                        <div class="alert alert-success alert-dismissible fade in">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h3>{{ session('message') }}</h3>
+                        </div>
+                    @endif
+                    @if (count($errors) > 0)
+                        <div class="alert alert-danger alert-dismissible fade in">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <strong>Внимание!</strong> Обнаружены ошибки при заполнении полей.<br><br>
+
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                            <!--        -->
+                        </div>
+                    @endif
+                </div>
             </div>
-        @endif
+        </div>
 
         @yield('content')
     </div>

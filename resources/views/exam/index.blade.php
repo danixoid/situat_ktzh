@@ -72,7 +72,7 @@
                                         <td>{!! $exam->id !!}</td>
                                         <td>
                                             <a href="{!! route('exam.index',['position_id' => $exam->position_id]) !!}">
-                                                <span class="label label-info">{!! $exam->position->orgPath !!}/{!! $exam->position->name !!}</span>
+                                                <span class="text-info">{!! $exam->position->orgPath !!}/{!! $exam->position->name !!}</span>
 
                                             </a>
                                         </td>
@@ -248,19 +248,19 @@
         });
 
         function formatPosition (position) {
-            return "<div class='label label-info'>" + position.orgPath + "</div><div>" + position.name + "</div>";
+            return "<div class='text-info'>" + position.orgPath + "</div><div>" + position.name + "</div>";
         }
 
         function formatPositionSelection (position) {
-            return "<label class='label label-info'>" + position.orgPath + "/" + position.name + "</label>";
+            return "<label class='text-info'>" + position.orgPath + "/" + position.name + "</label>";
         }
 
         function formatUser (user) {
-            return "<div class='label label-info'>" + user.name + "</div>";
+            return "<div class='text-info'>" + user.name + "</div>";
         }
 
         function formatUserSelection (user) {
-            return "<div class='label label-info'>" + user.name + "</div>";
+            return "<div class='text-info'>" + user.name + "</div>";
         }
 
 

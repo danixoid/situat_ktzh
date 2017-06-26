@@ -45,7 +45,7 @@
                                     <tr>
                                         <td>{!! $position->id !!}</td>
                                         <td><a href="{!! route('position.index',['org_id' => $position->org_id]) !!}">
-                                                <span class="label label-info">{!! $position->orgPath !!}</span></a></td>
+                                                <span class="text-info">{!! $position->orgPath !!}</span></a></td>
                                         <td><a href="{!! route('position.show',['id' => $position->id]) !!}">{!! $position->name !!}</a></td>
 {{--                                        <td><a href="{!! route('position.edit',['id'=>$position->id]) !!}">{!! trans('interface.edit') !!}</a></td>--}}
                                     </tr>
@@ -132,11 +132,11 @@
 
 
         function formatPosition (org) {
-            return "<div class='label label-info'>" + org.orgPath + "</div>";
+            return "<div class='text-info'>" + org.orgPath + "</div>";
         }
 
         function formatPositionSelection (org) {
-            return "<label class='label label-info'>" + org.orgPath + "</label>";
+            return "<label class='text-info'>" + org.orgPath + "</label>";
         }
 
     </script>

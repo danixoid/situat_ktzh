@@ -12,7 +12,7 @@
                 echo '<li class="text-danger">' . $org->id . ' ' . $org->name  . ' : [' . $org->positions->count() . ']';
 
                 foreach ($org->positions as $position):
-                    echo ' <span title="' . $position->user->name . '" class="label label-success">' . $position->id . ' ' .
+                    echo ' <span title="' . $position->user->name . '" class="text-success">' . $position->id . ' ' .
                         $position->name  . '</span>';
                 endforeach;
 

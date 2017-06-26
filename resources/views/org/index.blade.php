@@ -28,7 +28,7 @@
                     --}}<br />
                     <?php foreach ($org->positions as $position):?>
                         <a href="{!! route('position.show',['id' => $position->id]) !!}">
-                            <span class="label label-success">{!! $position->id !!}
+                            <span class="text-success">{!! $position->id !!}
                            {!! $position->name !!}</span></a>
                     <?php endforeach;?>
                     {!! recursive($org->id) !!}

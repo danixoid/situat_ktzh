@@ -66,13 +66,13 @@
                                         <td>{!! $quest->id !!}</td>
                                         <td>
                                             <a href="{!! route('quest.index',['position_id' => $quest->position_id]) !!}">
-                                                <span class="label label-info">{!! $quest->position->orgPath !!}/{!! $quest->position->name !!}</span>
+                                                <span class="text-info">{!! $quest->position->orgPath !!}/{!! $quest->position->name !!}</span>
 
                                             </a>
                                         </td>
                                         <td>{{ $quest->shortSource }}...</td>
                                         <td>{{ $quest->shortTask }}...</td>
-                                        <td><span class="label label-warning">{{ $quest->timer }} {{ trans('interface.minutes') }}</span></td>
+                                        <td><span class="text-warning">{{ $quest->timer }} {{ trans('interface.minutes') }}</span></td>
                                         <td><a href="{!! route('quest.show',['id'=>$quest->id]) !!}">{!! trans('interface.show') !!}</a></td>
                                     </tr>
                                 @endforeach
@@ -166,11 +166,11 @@
         });
 
         function formatPosition (position) {
-            return "<div class='label label-info'>" + position.orgPath + "</div><div>" + position.name + "</div>";
+            return "<div class='text-info'>" + position.orgPath + "</div><div>" + position.name + "</div>";
         }
 
         function formatPositionSelection (position) {
-            return "<label class='label label-info'>" + position.orgPath + "/" + position.name + "</label>";
+            return "<label class='text-info'>" + position.orgPath + "/" + position.name + "</label>";
         }
 
 

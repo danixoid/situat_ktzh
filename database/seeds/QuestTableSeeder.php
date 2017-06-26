@@ -14,7 +14,7 @@ class QuestTableSeeder extends Seeder
         $user = \App\User::first();
 
         foreach(\App\Position::all() as $position) :
-            for($i = 0; $i < 5; $i++):
+            for($i = 0; $i < 10; $i++):
                 $quest = new \App\Quest();
                 $quest->position_id = $position->id;
                 $quest->author_id = $user->id;
