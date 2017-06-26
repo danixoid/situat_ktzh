@@ -57,7 +57,10 @@ return [
     'search' => 'Поиск...',
     'ticket_count' => 'Количество билетов',
     'quest_count' => 'Заданий',
+    'quest_number' => 'Задание № :num' ,
     'details' => 'Детали',
+    'type_text' => 'Начинайте вводить текст',
+    'remaining_time' => 'Осталось времени: :time',
 
     'quest' => 'Задание',
     'quests' => 'Задания',

@@ -145,8 +145,6 @@ class ExamController extends Controller
     {
         $data = $request->all();
 
-        dd($data);
-
         $exam = \App\Exam::updateOrCreate(['id' => $id], $data);
 
         if(!$exam) {

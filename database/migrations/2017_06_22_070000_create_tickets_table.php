@@ -18,6 +18,7 @@ class CreateTicketsTable extends Migration
             $table->unsignedInteger('quest_id');
             $table->unsignedInteger('exam_id');
             $table->text('answer')->nullable(); //решение задания
+            $table->timestamp('started_at')->nullable(); //время завершения
             $table->timestamp('finished_at')->nullable(); //время завершения
             $table->timestamps();
 

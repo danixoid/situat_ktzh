@@ -68,7 +68,7 @@
 
                             @if(\AUTH::user()->id == $exam->user->id)
                                 <div class="col-md-3">
-                                    <a href="{!! route('ticket.index') !!}" class="delete btn btn-block btn-warning">{!! trans('interface.start') !!}</a>
+                                    <a href="{!! route('ticket.index',['exam_id' => $exam->id]) !!}" class="delete btn btn-block btn-warning">{!! trans('interface.start') !!}</a>
                                 </div>
                             @endif
                         </div>

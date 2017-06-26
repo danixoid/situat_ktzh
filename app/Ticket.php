@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Ticket extends Model
 {
-    protected $fillable = ['quest_id','exam_id','answer','finished_at'];
+    protected $fillable = ['quest_id','exam_id','answer','started_at','finished_at'];
 
-    public function exams() {
-        return $this->hasMany(\App\Exam::class);
+    public function exam() {
+        return $this->belongsTo(\App\Exam::class);
     }
 
     public function quest() {
