@@ -20,7 +20,7 @@ class ExamTableSeeder extends Seeder
             $exam->position_id = \App\Position::inRandomOrder()->first()->id;
             $exam->user_id  = $user->id;
             $exam->chief_id = \App\User::first()->id;
-            $exam->count = rand(2,5);
+            $exam->count = 2;
             $exam->save();
         endforeach;
     }
