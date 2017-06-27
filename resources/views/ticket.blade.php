@@ -8,66 +8,62 @@
         <div class="col-xs-12">
             <ul class="nav nav-pills nav-justified thumbnail setup-panel">
                 <?php $step = 0 ?>
-                @foreach($tickets as $ticket)
-                    <?php $step++ ?>
-                    <li class="{!! $step == 1 ? "active" : "disabled" !!}"><a href="#step-{!! $ticket->id !!}">
-                        <h4 class="list-group-item-heading">{!! trans('interface.quest_number',['num' => $step]) !!}</h4>
+                @foreach($ticket->exam->tickets as $tick)
+                    <li class="{!! $ticket->id == $tick->id ? "active" : "disabled" !!}">
+                        <a href="#step-{!! $step !!}">
+                        <h4 class="list-group-item-heading">{!! trans('interface.quest_number',['num' => $step + 1]) !!}</h4>
                         <p class="list-group-item-text">{!! trans('interface.timer') !!}:
-                            {!! $ticket->quest->timer !!}
+                            {!! $tick->quest->timer !!}
                             {!! trans('interface.minutes') !!} </p>
-                        </a></li>
+                        </a>
+                    </li>
+                    <?php $step++ ?>
                 @endforeach
             </ul>
         </div>
     </div>
 
-    <?php $step = 0 ?>
-    @foreach($tickets as $ticket)
-    <?php $step++ ?>
     <div class="row">
         <div class="col-xs-12">
-            <div class="col-md-12 well setup-content " id="step-{!! $ticket->id !!}">
+            <div class="col-md-12 well setup-content " id="step-{!! $step !!}">
 
-                <form class="form-horizontal" action="{!! url('') !!}" method="POST">
+                <form id="form_update_ticket" class="form-horizontal" action="{!! route('ticket.update',['id' => $ticket->id]) !!}" method="POST">
                     {!! csrf_field() !!}
+                    {!! method_field('PUT') !!}
+
+                    <input type="hidden" name="finished_at" value="true" />
 
                     <div class="form-group">
                         <div class="col-md-offset-3 col-md-9">
-                            <h3>{!! trans('interface.remaining_time',['time' => date('i:s',$ticket->quest->timer*60)]) !!}</h3>
+                            <h3>{!! trans('interface.remaining_time',['time' => "<span id=\"timer\">" .
+                                date('i:s',$ticket->quest->timer*60) ."</span>"]) !!}</h3>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="col-md-3 control-label">{!! trans('interface.source') !!}</label>
-                        <div class="col-md-9">
-                            <pre>{!! $ticket->quest->source !!}</pre>
+                        <div class="col-md-9 form-control-static">
+                            {!! $tick->quest->source !!}
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="col-md-3 control-label">{!! trans('interface.task') !!}</label>
-                        <div class="col-md-9">
-                            <pre>{!! $ticket->quest->task !!}</pre>
+                        <div class="col-md-9 form-control-static">
+                            {!! $tick->quest->task !!}
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="col-md-3 control-label">{!! trans('interface.answer') !!}</label>
                         <div class="col-md-9">
-                            <textarea placeholder="{!! trans('interface.type_text') !!}" rows="6" class="form-control" name="answer">{!! $ticket->answer !!}</textarea>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="col-md-3 control-label"></label>
-                        <div class="col-md-3 form-control-static">
-
+                            <textarea id="answer" placeholder="{!! trans('interface.type_text') !!}" rows="6" class="form-control" name="answer">{!! $ticket->answer !!}</textarea>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <div class="col-md-offset-3 col-md-3 form-control-static">
-                            <button id="activate-step-2" class="btn btn-primary btn-lg">{!! trans('interface.next') !!} >></button>
+                            <button id="activate-next-step" class="btn btn-primary btn-lg">{!! trans('interface.next') !!}</button>
                         </div>
                     </div>
 
@@ -75,7 +71,7 @@
             </div>
         </div>
     </div>
-    @endforeach
+
 </div>
 @endsection
 
@@ -84,47 +80,37 @@
     <script>
         $(document).ready(function() {
 
-            var navListItems = $('ul.setup-panel li a'),
-                allWells = $('.setup-content');
-
-
-            allWells.hide();
-
-            navListItems.click(function(e)
-            {
-                e.preventDefault();
-                var $target = $($(this).attr('href')),
-                    $item = $(this).closest('li');
-
-                if (!$item.hasClass('disabled')) {
-                    navListItems.closest('li').removeClass('active');
-                    $item.addClass('active');
-                    allWells.hide();
-                    $target.show();
+            var times = {{strtotime($ticket->started_at) * 1000 }} +
+                    {{ $ticket->quest->timer * 60 * 1000  }};
+            var timerId = setInterval(function () {
+                if(times === 0) {
+                    clearInterval(timerId);
                 }
+                $curr_time = new Date(times - new Date());
+                $("#timer").text($curr_time.getMinutes() + ":" +
+                    ($curr_time.getSeconds() < 10 ? "0" : "") +
+                    $curr_time.getSeconds())
+            },100);
+
+            var timeOut = setTimeout(function() {
+                clearInterval(timerId);
+                clearTimeout(timeOut);
+                window.location.href = "{!! route('ticket.index',['exam_id' => $ticket->exam_id]) !!}";
+            },{{strtotime($ticket->started_at) + $ticket->quest->timer * 60 }} * 1000 - new Date().getTime());
+
+            $("#answer").on('keyup',function () {
+                $.ajax({
+                    type: "POST",
+                    url: "{!! route('ticket.update',$ticket->id) !!}",
+                    data: $("#form_update_ticket").serializeArray(),
+                    dataType: "json",
+                    success: function(msg){
+                        console.log(msg.message);
+                    }
+                });
             });
 
-            $('ul.setup-panel li.active a').trigger('click');
 
-            // DEMO ONLY //
-            <?php $step = 0 ?>
-            @foreach($tickets as $ticket)
-            @if($step < $ticket->exam->count)
-            $('#activate-step-{{ $step + 1 }}').on('click', function(e) {
-                $('ul.setup-panel li:eq({{ $step }})').removeClass('disabled');
-                $(this).remove();
-                $('ul.setup-panel li:eq({{ $step }})').addClass('active');
-                $('ul.setup-panel li:eq({{ $step }})').show();
-
-                $('ul.setup-panel li:eq({{ $step - 1 }})').removeClass('active');
-                $('ul.setup-panel li:eq({{ $step - 1 }})').addClass('disabled');
-                $('ul.setup-panel li:eq({{ $step - 1 }}) a').addClass('disabled');
-
-                $('ul.setup-panel li.active a').trigger('click');
-            });
-            <?php $step++ ?>
-            @endif
-            @endforeach
         });
 
 

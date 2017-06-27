@@ -24,7 +24,11 @@ class HomeController extends Controller
     public function index()
     {
 //        request()->user()->authorizeRoles(['employee']);
-        $exams = \App\Exam::where('user_id',Auth::user()->id)->paginate(10);
+        $exams = \App\Exam::where('user_id',Auth::user()->id)
+//            ->whereHas('tickets',function($q){
+//                return $q->whereNull('finished_at');
+//            })
+            ->paginate(10);
         return view('home',['exams' => $exams]);
     }
 

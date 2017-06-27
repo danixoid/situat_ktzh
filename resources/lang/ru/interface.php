@@ -61,6 +61,10 @@ return [
     'details' => 'Детали',
     'type_text' => 'Начинайте вводить текст',
     'remaining_time' => 'Осталось времени: :time',
+    'finishing' => 'Завершение',
+    'eds_signing' => 'Подписание ЭЦП',
+    'time_is_up' => 'Время вышло',
+    'exam_finished' => 'Экзамен завершен',
 
     'quest' => 'Задание',
     'quests' => 'Задания',

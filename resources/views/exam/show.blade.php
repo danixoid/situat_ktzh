@@ -67,15 +67,23 @@
                             @endif
 
                             @if(\AUTH::user()->id == $exam->user->id)
+                                @if(!$exam->finished)
                                 <div class="col-md-3">
                                     <a href="{!! route('ticket.index',['exam_id' => $exam->id]) !!}" class="delete btn btn-block btn-warning">{!! trans('interface.start') !!}</a>
                                 </div>
+                                @else
+                                <div class="col-md-3">
+                                    <button id="signing" class="btn btn-primary">{!! trans('interface.eds_signing') !!}</button>
+                                </div>
+                                @endif
                             @endif
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+
     </div>
 
     <form id="form_delete_exam" action="{!! route('exam.destroy',['id' => $exam->id]) !!}" method="POST">

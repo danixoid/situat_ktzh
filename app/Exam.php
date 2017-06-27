@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class Exam extends Model
 {
 
+    protected $fillable = ['position_id','user_id','chief_id','count','mark','note'];
+
+    protected $appends = ['finished'];
+
     protected static function boot()
     {
         parent::boot();
@@ -36,8 +40,6 @@ class Exam extends Model
         );
     }
 
-    protected $fillable = ['position_id','user_id','chief_id','count','mark','note'];
-
     public function user()
     {
         return $this->belongsTo(\App\User::class,"user_id");
@@ -63,6 +65,19 @@ class Exam extends Model
     public function tickets()
     {
         return $this->hasMany(\App\Ticket::class);
+    }
+
+    public function getFinishedAttribute()
+    {
+        $finish = true;
+        foreach ($this->tickets as $ticket)
+        {
+            if($ticket->finished_at == null) {
+                $finish = false;
+            }
+        }
+
+        return $finish;
     }
 
 }

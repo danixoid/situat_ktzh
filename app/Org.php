@@ -28,7 +28,7 @@ class Org extends Model
             return $this->recursiveOrg($this->org_id, $this->name);
         }
 
-        return trans('interface.root');
+        return $this->name;
     }
 
     public function getOrgParentAttribute()

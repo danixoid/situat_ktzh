@@ -9,6 +9,7 @@
 
                 <div class="panel-body">
 
+                    @if(count($exams) > 0)
                     <table class="table table-condensed">
                         <thead>
                             <tr>
@@ -26,7 +27,7 @@
                                     <td>{!! $exam->count !!}</td>
                                     <td>
                                         <a href="{!! route('exam.show',['id' => $exam->id]) !!}">
-                                            {!! trans('interface.start') !!}
+                                            {!! trans('interface.show') !!}
                                         </a>
                                     </td>
                                 @endforeach
@@ -34,6 +35,9 @@
                         </tbody>
                     </table>
                     {!! $exams->links() !!}
+                    @else
+                        <h3>{!! trans('interface.not_found') !!}</h3>
+                    @endif
                 </div>
             </div>
         </div>
