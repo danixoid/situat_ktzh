@@ -13,25 +13,28 @@
                     <table class="table table-condensed">
                         <thead>
                             <tr>
+                                <th>№</th>
                                 <th>{{ trans('interface.position') }}</th>
                                 <th>{{ trans('interface.user') }}</th>
-                                <th>{{ trans('interface.quests') }}</th>
-                                <th></th>
+{{--                                <th>{{ trans('interface.quests') }}</th>--}}
+                                <th>{{ trans('interface.exam_status') }}</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                @foreach($exams as $exam)
-                                    <td><span class="text-info">{!! $exam->position->orgPath !!}/{!! $exam->position->name !!}</span></td>
-                                    <td>{!! $exam->user->name !!}</td>
-                                    <td>{!! $exam->count !!}</td>
+                            <?php $num = 1; ?>
+                            @foreach($exams as $exam)
+                                <tr>
+                                    <td>{!! $num++ !!}</td>
                                     <td>
-                                        <a href="{!! route('exam.show',['id' => $exam->id]) !!}">
-                                            {!! trans('interface.show') !!}
-                                        </a>
+                                        <span class="text-info">{!! $exam->position->orgPath !!}/{!! $exam->position->name !!}</span>
                                     </td>
-                                @endforeach
-                            </tr>
+                                    <td>{!! $exam->user->name !!}</td>
+{{--                                    <td>{!! $exam->count !!}</td>--}}
+                                    <td><a href="{!! route('exam.show',['id' => $exam->id]) !!}">
+                                        <span class="text-{!! $exam->color !!}">
+                                        {!! trans('interface.'.$exam->status) !!}</span></a></td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                     {!! $exams->links() !!}

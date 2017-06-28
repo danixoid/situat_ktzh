@@ -24,13 +24,14 @@ class ExamEditRequest extends FormRequest
     public function rules()
     {
         return [
-
             'position_id' => 'int|min:1',
             'user_id' => 'int|min:1',
             'chief_id' => 'int|min:1',
             'count' => 'int|min:1',
             'mark' => 'int|min:0',
             'note' => 'string',
+            'user_sign' => 'string',
+            'chief_sign' => 'string',
         ];
     }
 }

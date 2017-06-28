@@ -24,8 +24,10 @@ Auth::routes();
 
 
 Route::get('/', 'HomeController@index')->name('index');
+Route::get('/signing/{id}', 'HomeController@signingData')->name('signing.data');
 
 Route::get('/home', 'HomeController@home')->name('home');
+Route::post('/java/eds/restapi', 'HomeController@postJavaEdsRestapi')->name('java.eds.restapi');
 
 Route::get('/ticket', 'HomeController@ticket')->name('ticket');
 
@@ -37,3 +39,4 @@ Route::resource('/exam',"ExamController");
 Route::resource('/position',"PositionController");
 Route::resource('/org',"OrgController");
 Route::resource('/user',"UserController");
+Route::resource('/sign',"SignController");

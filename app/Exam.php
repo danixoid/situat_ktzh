@@ -3,13 +3,17 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Exam extends Model
 {
 
-    protected $fillable = ['position_id','user_id','chief_id','count','mark','note'];
+    protected $fillable = ['position_id','user_id','chief_id',
+        'count','mark','note'];
 
-    protected $appends = ['finished'];
+    protected $hidden = ['signs'];
+
+    protected $appends = ['started','finished','color','amISigner'];
 
     protected static function boot()
     {
@@ -50,11 +54,9 @@ class Exam extends Model
         return $this->belongsTo(\App\User::class,"chief_id");
     }
 
-    public function quests()
+    public function signs()
     {
-        return $this->hasManyThrough(\App\Quest::class,
-            \App\Ticket::class,"exam_id",
-            "id","id");
+        return $this->hasMany(\App\Sign::class);
     }
 
     public function position()
@@ -67,17 +69,72 @@ class Exam extends Model
         return $this->hasMany(\App\Ticket::class);
     }
 
+    public function quests()
+    {
+        return $this->hasManyThrough(\App\Quest::class,
+            \App\Ticket::class,"exam_id",
+            "id","id");
+    }
+
+    public function getStartedAttribute()
+    {
+        $finish = false;
+        foreach ($this->tickets as $ticket)
+        {
+            if($ticket->started_at ) {
+                $finish = true;
+            }
+        }
+
+        return $finish;
+    }
+
     public function getFinishedAttribute()
     {
         $finish = true;
         foreach ($this->tickets as $ticket)
         {
-            if($ticket->finished_at == null) {
+            if(!$ticket->finished_at ) {
                 $finish = false;
             }
         }
 
         return $finish;
+    }
+
+    public function getStatusAttribute()
+    {
+        return $this->finished
+            ? "exam_finished"
+            : ( $this->started
+                ? "started"
+                : "exam_not_started");
+    }
+
+    public function getColorAttribute()
+    {
+        return $this->finished
+            ? "success"
+            : ( $this->started
+                ? "primary"
+                : "warning");
+    }
+
+    public function getAmISignerAttribute()
+    {
+        $iAmSigner = false;
+
+        if(Auth::check()) {
+            foreach ($this->signs as $sign) {
+                if($sign->signer_id == Auth::user()->id)
+                {
+                    $iAmSigner = true;
+                    break;
+                }
+            }
+        }
+
+        return $iAmSigner;
     }
 
 }

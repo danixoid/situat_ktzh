@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TicketController extends Controller
 {
@@ -75,6 +76,12 @@ class TicketController extends Controller
     {
         $ticket = \App\Ticket::find($id);
 
+        if($ticket->user_id != Auth::user()->id || $ticket->finished)
+        {
+            return view('ticket.show',['ticket' => $ticket]);
+//            abort(403);
+        }
+
         if(!$ticket->started_at) {
             $ticket->started_at = \Carbon\Carbon::now();
             $ticket->save();
@@ -94,9 +101,7 @@ class TicketController extends Controller
                 ->with('warning',trans('interface.time_is_up'));
         }
 
-        return view('ticket',[
-            'ticket' => $ticket
-        ]);
+        return view('ticket.index',['ticket' => $ticket]);
     }
 
     /**
