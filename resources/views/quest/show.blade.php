@@ -10,7 +10,7 @@
 @section('content')
     <div class="container">
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
+            <div class="col-md-10 col-md-offset-1">
                 <div class="panel panel-default">
                     <div class="panel-heading">{!! trans('interface.quest') !!}</div>
 
@@ -19,23 +19,21 @@
                         <div class="form-group">
                             <label class="control-label col-md-2">{!! trans('interface.position') !!}</label>
                             <div class="col-md-10 form-control-static">
-                                <a href="{!! route('quest.index',['position_id' => $quest->position_id]) !!}">
-                                    <span class="text-info">{!! $quest->position->orgPath !!}/{!! $quest->position->name !!}</span>
-                                </a>
-
+                                @foreach($quest->positions as $position)
+                                    <a href="{!! route('quest.index',['position_id' => $position->id]) !!}">
+                                        <span class="text-info" title="{!! $position->orgPath !!}">{!! $position->name !!}</span>,
+                                    </a>
+                            @endforeach
                             </div>
                         </div>
 
-{{--
-                        <div class="form-group">
-                            <label class="control-label col-md-2">{!! trans('interface.source') !!}</label>
-                            <div class="col-md-10 form-control-static">{!! $quest->source !!}</div>
-                        </div>
---}}
-
                         <div class="form-group">
                             <label class="control-label col-md-2">{!! trans('interface.task') !!}</label>
-                            <div class="col-md-10 form-control-static">{!! $quest->task !!}</div>
+                            <div class="col-md-10 form-control-static">
+                                <iframe id="iframe" src="{!! route('quest.show',
+                                    ['id'=>$quest->id,'type'=>'minimum']) !!}" onload="resizeIframe(this)"
+                                        style="width:100%; background: #FFFFFF;"></iframe>
+                            </div>
                         </div>
 
                         <div class="form-group">
@@ -69,3 +67,10 @@
     </div>
 @endsection
 
+@section('javascript')
+    <script>
+        function resizeIframe(obj) {
+            obj.style.height = (obj.contentWindow.document.body.scrollHeight + 20) + 'px';
+        }
+    </script>
+@endsection

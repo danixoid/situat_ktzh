@@ -16,7 +16,7 @@ class CreateQuestsTable extends Migration
         Schema::create('quests', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('author_id');
-            $table->unsignedInteger('position_id');
+//            $table->unsignedInteger('position_quest_id');
 //            $table->text("source"); //исходные данные
             $table->text("task"); //задание
             $table->unsignedInteger('timer')->default(20); //Обратный отсчет
@@ -24,8 +24,8 @@ class CreateQuestsTable extends Migration
 
             $table->foreign('author_id')
                 ->references('id')->on('users');
-            $table->foreign('position_id')
-                ->references('id')->on('positions');
+//            $table->foreign('position_id')
+//                ->references('id')->on('positions');
         });
     }
 

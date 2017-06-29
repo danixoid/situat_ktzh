@@ -24,9 +24,7 @@ class QuestCreateRequest extends FormRequest
     public function rules()
     {
         return [
-//            'source' => 'required|string',
             'task' => 'required|string',
-            'position_id' => 'required|int|min:1',
             'timer' => 'int',
         ];
     }

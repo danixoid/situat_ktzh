@@ -21,38 +21,32 @@
                             {!! method_field("PUT")  !!}
 
                             <div class="form-group">
-                                <label class="col-md-3 control-label">{!! trans('interface.position') !!}</label>
-                                <div class="col-md-9">
-                                    <select class="form-control select2-single" name="position_id" id="position">
+                                <label class="col-md-2 control-label">{!! trans('interface.position') !!}</label>
+                                <div class="col-md-10">
+                                    <select class="form-control select2-multiple" multiple name="positions[]" id="positions">
+                                        @foreach($quest->positions as $position)
+                                            <option value="{!! $position->id !!}" selected="selected"></option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
-{{--
 
                             <div class="form-group">
-                                <label class="col-md-3 control-label">{!! trans('interface.source') !!}</label>
-                                <div class="col-md-9">
-                                    <textarea id="source" rows="6" class="form-control" name="source">{!! $quest->source !!}</textarea>
-                                </div>
-                            </div>
---}}
-
-                            <div class="form-group">
-                                <label class="col-md-3 control-label">{!! trans('interface.task') !!}</label>
-                                <div class="col-md-9">
+                                <label class="col-md-2 control-label">{!! trans('interface.task') !!}</label>
+                                <div class="col-md-10">
                                     <textarea id="task" rows="6" class="form-control" name="task">{!! $quest->task !!}</textarea>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="col-md-3 control-label">{!! trans('interface.timer') !!}</label>
+                                <label class="col-md-2 control-label">{!! trans('interface.timer') !!}</label>
                                 <div class="col-md-3">
                                     <input type="number" class="form-control" name="timer" value="{!! $quest->timer !!}"/>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <div class="col-md-offset-3 col-md-3">
+                                <div class="col-md-offset-2 col-md-3">
                                     <button class="btn btn-block btn-danger" >{!! trans('interface.update') !!}</button>
                                 </div>
                             </div>
@@ -80,13 +74,15 @@
             /**
              *  SELECT2
              */
-            $("#position").select2({
+            $("#positions").select2({
                 data: [
+                    @foreach($quest->positions as $position)
                     {
-                        id: '{!! $quest->position->id !!}',
-                        name: '{!! $quest->position->name !!}',
-                        orgPath: '{!! $quest->position->orgPath !!}'
-                    }
+                        id: '{!! $position->id !!}',
+                        name: '{!! $position->name !!}',
+                        orgPath: '{!! $position->orgPath !!}'
+                    },
+                    @endforeach
                 ],
                 ajax: {
                     url: "{!! url('/position') !!}",
@@ -131,7 +127,7 @@
         }
 
         function formatPositionSelection (position) {
-            return "<label class='text-info'>" + position.orgPath + "</label> <span>" + position.name + "</span>";
+            return "<span class='text-info' title='" + position.orgPath + "'>" + position.name + "</span>";
         }
 
 
@@ -140,11 +136,13 @@
             language: '{!! config('app.locale') == "kz" ? "kk" : config('app.locale')!!}',
             menubar : false,
             plugins: [
-                "link image code fullscreen imageupload"
+                "link image code fullscreen imageupload table"
             ],
-            toolbar: "undo redo | bold italic | bullist numlist outdent indent | link image | imageupload | code | fullscreen",
+            toolbar: "undo redo | bold italic | bullist numlist outdent indent | link image " +
+                "| imageupload | code | fullscreen  | table",
             relative_urls: false,
-            image_list: "{!! route('images.list') !!}"
+            image_list: "{!! route('images.list') !!}",
+            table_advtab: true,
 
 
         });

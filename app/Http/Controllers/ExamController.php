@@ -114,7 +114,8 @@ class ExamController extends Controller
                 ->json(\App\Exam::with([
                     'user',
                     'chief',
-                    'position'
+                    'position',
+                    'tickets.quest'
                 ])->find($id));
         }
 

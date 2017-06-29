@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class Exam extends Model
 {
@@ -21,7 +22,8 @@ class Exam extends Model
 
         static::created(
             function($exam) {
-                $quests = \App\Quest::where('position_id',$exam->position_id)
+                $quests = \App\Position::find($exam->position_id)
+                    ->quests()
                     ->inRandomOrder()
                     ->take($exam->count)
                     ->get();
@@ -32,6 +34,22 @@ class Exam extends Model
                         'exam_id' => $exam->id,
                         'quest_id' => $quest->id
                     ]);
+                }
+            }
+        );
+
+        static::updated(
+            function($exam)
+            {
+                if($exam->finished)
+                {
+                    Mail::queue('email.exam_finished',compact($exam),
+                        function($message) use ($exam){
+                            $message->subject('Коммерческое предложение от B-Apps LLP');
+                            $message->to($exam->chief->email);
+                            $message->from(env("MAIL_USERNAME","danixoid@gmail.com"),
+                                'Администратор SITUAT.KZ');
+                        });
                 }
             }
         );

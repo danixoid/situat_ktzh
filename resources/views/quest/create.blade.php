@@ -22,7 +22,7 @@
                             <div class="form-group">
                                 <label class="col-md-3 control-label">{!! trans('interface.position') !!}</label>
                                 <div class="col-md-9">
-                                    <select class="form-control select2-single" name="position_id" id="position">
+                                    <select class="form-control select2-multiple" multiple name="positions[]" id="positions">
                                     </select>
                                 </div>
                             </div>
@@ -79,14 +79,7 @@
             /**
              *  SELECT2
              */
-            $("#position").select2({
-                data: [
-                    {
-                        id: 0,
-                        name: '{!! trans('interface.no_value') !!}',
-                        orgPath: ''
-                    }
-                ],
+            $("#positions").select2({
                 ajax: {
                     url: "{!! url('/position') !!}",
                     dataType: 'json',

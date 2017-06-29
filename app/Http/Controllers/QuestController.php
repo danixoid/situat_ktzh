@@ -28,20 +28,20 @@ class QuestController extends Controller
         $position_id = request('position_id');
         $text = request('text');
 
-        if($position_id &&  $position_id > 0) {
-
-            $query = \App\Quest::whereHas('position',function($q) use ($position_id) {
-                return $q->whereId($position_id);
-            });
-
-        } else {
+        if($position_id &&  $position_id > 0)
+        {
+            $query = \App\Position::whereId($position_id)->first()->quests();
+        }
+        else
+        {
             $query = \App\Quest::whereNotNull('id');
         }
 
         if($text) {
             $query = $query
                 ->where(function($q) {
-                    return $q->where('source', 'LIKE', '%' . \request('text') . '%')
+                    return $q
+//                        ->where('source', 'LIKE', '%' . \request('text') . '%')
                         ->orWhere('task', 'LIKE', '%' . \request('text') . '%');
                 });
         }
@@ -92,6 +92,15 @@ class QuestController extends Controller
             return redirect()->back()->with('warning',trans('interface.failure_create_quest'));
         }
 
+        if(isset($data['positions']) && is_array($data['positions'])) {
+
+            foreach ($data['positions'] as $position_id)
+                $quest
+                    ->positions()
+                    ->attach(\App\Position::find($position_id));
+
+        }
+
         if($request->ajax()) {
             return response()->json([
                 'success' => true,
@@ -116,14 +125,15 @@ class QuestController extends Controller
     {
         if(request()->ajax()) {
             return response()
-                ->json(\App\Quest::with([
-                    'author',
-                    'position',
-                    'position.org'
-                ])->find($id));
+                ->json(\App\Quest::find($id));
         }
 
         $quest = \App\Quest::find($id);
+
+        if(request()->has('type') && \request('type') == "minimum"){
+            return view('layouts.clear',['content' => $quest->task]);
+        }
+
         return view('quest.show',['quest' => $quest]);
     }
 
@@ -161,6 +171,18 @@ class QuestController extends Controller
             }
 
             return redirect()->back()->with('warning',trans('interface.failure_save_quest'));
+        }
+
+        if(isset($data['positions']) && is_array($data['positions'])) {
+            $quest
+                ->positions()
+                ->detach();
+
+            foreach ($data['positions'] as $position_id)
+                $quest
+                    ->positions()
+                    ->attach(\App\Position::find($position_id));
+
         }
 
         if($request->ajax()) {

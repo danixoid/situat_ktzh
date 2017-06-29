@@ -21,8 +21,11 @@ class Position extends Model
         return $this->org->orgPath;
     }
 
-    public function quests() {
-        return $this->hasMany(\App\Quest::class);
+    public function quests()
+    {
+        return $this
+            ->belongsToMany(\App\Quest::class,"position_quest")
+            ->withTimestamps();
     }
 
     public function exams() {

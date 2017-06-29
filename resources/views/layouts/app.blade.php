@@ -98,7 +98,7 @@
 
         <div class="container">
             <div class="row">
-                <div class="col-md-offset-2 col-md-8">
+                <div class="col-md-offset-1 col-md-10">
 
                     @if(session()->has('warning'))
                         <div class="alert alert-warning alert-dismissible fade in">

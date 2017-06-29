@@ -76,7 +76,16 @@ class TicketController extends Controller
     {
         $ticket = \App\Ticket::find($id);
 
-        if($ticket->user_id != Auth::user()->id || $ticket->finished)
+        if(\request()->has('type') && \request('type') == 'minimum')
+        {
+            return view('layouts.clear',['content' =>
+                $ticket->quest->task . "<hr />" .
+                    "<strong>" . trans("interface.answer") .
+                    ":</strong> " . ($ticket->answer ?: trans("interface.not_found"))
+            ]);
+        }
+
+        if($ticket->exam->user_id != Auth::user()->id || $ticket->finished)
         {
             return view('ticket.show',['ticket' => $ticket]);
 //            abort(403);

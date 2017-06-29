@@ -49,3 +49,6 @@ Route::get('/upload', function() {
 Route::post('/upload', 'HomeController@imageUpload')->name('upload.save.image');
 Route::get('/uploaded/{filename}', 'HomeController@getImage')->name('uploaded.image');
 Route::get('/uploadeds', 'HomeController@getImages')->name('images.list');
+
+
+Route::get('/signedxml/{id}', 'HomeController@signedXml')->name('signed.xml');

@@ -182,7 +182,7 @@
                     "Content-Type": "application/json",
                     "X-Requested-With": "XMLHttpRequest"
                 }
-            }).success(function (data) {
+            }).success(function (data,status) {
 //                delete data.signs;
                 $scope.data = json2xml(data,'root');
                 $scope.detail.step = 0;
@@ -207,6 +207,12 @@
                 }
             }).success(function (data) {
                 $scope.loadExam();
+//                $scope.data = json2xml(data.exam,'root');
+//                $scope.detail.step = 0;
+            }).error(function(data,status) {
+                if(status !== 200) {
+                    alert(data.note[0]);
+                }
             });
         };
 
@@ -233,39 +239,6 @@
             });
         };
 
-        /*$scope.sendToVerifyXML = function () {
-            $http({
-                url: '{!! route('java.eds.restapi') !!}',
-                method: 'POST',
-                data: $scope.certificate,
-                headers: {
-                    "Content-Type": "application/xml",
-                    "X-Requested-With": "XMLHttpRequest"
-                }
-
-            }).then(function(response) {
-                $scope.jsonResponse = response.data;
-                console.log(JSON.stringify($scope.jsonResponse));
-                if($scope.jsonResponse.SignatureValue) {
-                    $http({
-                        url: '{!! route('sign.store') !!}',
-                        method: 'POST',
-                        data: {
-                            "exam_id" : {!! $exam->id !!},
-                            "signer_id" : {!! \Auth::user()->id !!},
-                            "xml" : $scope.certificate
-                        },
-                        headers: {
-                            "Content-Type": "application/json",
-                            "X-Requested-With": "XMLHttpRequest"
-                        }
-                    }).success(function (data) {
-                        $scope.detail.step = 4;
-                    });
-                }
-            });
-        };*/
-
         NCALayer.postGetDate = function  (answer,dateName) {
             $scope.person[dateName] = answer.result.split(' ')[0];
             console.log($scope.person[dateName]);
@@ -289,7 +262,9 @@
                 $scope.$apply();
                 console.log(keyVal[0] +  ' = ' + $scope.person[keyVal[0]] + ", " + keyVal[1]);
             }
+
             if($scope.person['SERIALNUMBER'] !== "{!! \Auth::user()->iin !!}") {
+//                TODO uncomment
                 $scope.detail.step = 0;
                 NCALayer.showError({ 'errorCode' : 'ИИН не совпадают' });
             }
@@ -356,6 +331,11 @@
 
         NCALayer.noConnection = function() {
             alert('Ошибка подключения к прослойке');
+        };
+
+
+        NCALayer.wsError = function() {
+            alert('Включите NCALayer!');
         };
 
         NCALayer.bind($scope);

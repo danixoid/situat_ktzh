@@ -13,16 +13,26 @@ class QuestTableSeeder extends Seeder
     {
         $user = \App\User::first();
 
-        foreach(\App\Position::all() as $position) :
-            for($i = 0; $i < 10; $i++):
-                $quest = new \App\Quest();
-                $quest->position_id = $position->id;
-                $quest->author_id = $user->id;
+        for($i = 0; $i < 100; $i++):
+            $quest = new \App\Quest();
+//                $quest->position_id = $position->id;
+            $quest->author_id = $user->id;
 //                $quest->source = "Исходные денные №$i для $position->orgPath $position->name, составитель $user->name";
-                $quest->task = "Задание №$i для $position->orgPath $position->name, составитель $user->name";
-                $quest->timer = 15;
-                $quest->save();
-            endfor;
-        endforeach;
+            $quest->task = "Исходные денные №$i, составитель $user->name
+                    Задание №$i, составитель $user->name";
+            $quest->timer = 15;
+
+            $quest->save();
+
+            foreach(\App\Position::inRandomOrder()
+                        ->take(rand(1,5))
+                        ->get()
+                    as $position) :
+                $quest
+                    ->positions()
+                    ->attach($position);
+            endforeach;
+        endfor;
+
     }
 }

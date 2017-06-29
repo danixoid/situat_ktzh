@@ -53,9 +53,9 @@
                             <thead>
                                 <tr>
                                     <th>№</th>
-                                    <th>{!! trans('interface.position') !!}</th>
                                     {{--<th>{!! trans('interface.source') !!}</th>--}}
                                     <th>{!! trans('interface.task') !!}</th>
+                                    <th>{!! trans('interface.position') !!}</th>
                                     <th>{!! trans('interface.timer') !!}</th>
                                     <th></th>
                                 </tr>
@@ -64,14 +64,15 @@
                                 @foreach($quests as $quest)
                                     <tr>
                                         <td>{!! $quest->id !!}</td>
-                                        <td>
-                                            <a href="{!! route('quest.index',['position_id' => $quest->position_id]) !!}">
-                                                <span class="text-info">{!! $quest->position->orgPath !!}/{!! $quest->position->name !!}</span>
-
-                                            </a>
-                                        </td>
 {{--                                        <td>{{ $quest->shortSource }}...</td>--}}
                                         <td>{{ $quest->shortTask }}...</td>
+                                        <td>
+                                            @foreach($quest->positions as $position)
+                                                <a href="{!! route('quest.index',['position_id' => $position->id]) !!}">
+                                                    <span title="{!! $position->orgPath !!}" class="text-info">{!! $position->name !!}</span>
+                                                </a>,
+                                            @endforeach
+                                        </td>
                                         <td><span class="text-warning">{{ $quest->timer }} {{ trans('interface.minutes') }}</span></td>
                                         <td><a href="{!! route('quest.show',['id'=>$quest->id]) !!}">{!! trans('interface.show') !!}</a></td>
                                     </tr>

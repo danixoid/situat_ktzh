@@ -92,7 +92,12 @@ class HomeController extends Controller
             ->withHeaders(['Content-Type' => 'application/json']);
     }
 
-
+    public function signedXml($id)
+    {
+        return response(\App\Sign::find($id)->xml,200,[
+            'Content-Type' => 'application/xml'
+        ]);
+    }
 
 
     public function imageUpload(Request $request) {

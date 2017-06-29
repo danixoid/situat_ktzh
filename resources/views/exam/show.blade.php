@@ -23,32 +23,29 @@
                     <div class="panel-body form-horizontal">
 
                         <div class="form-group">
-                            <h3 class="col-md-offset-3 col-md-6 text-{!! $exam->color !!}">
+                            <h3 class="col-md-offset-2 col-md-10 text-{!! $exam->color !!}">
                                 {!! trans('interface.'.$exam->status) !!}</h3>
                         </div>
 
                         @if(\AUTH::user()->id != $exam->user->id || $exam->finished)
-                        <div class="form-group">
-                            <label class="control-label col-md-3">{!! trans('interface.quests') !!} ({!! $exam->count !!})</label>
-                            <div class="col-md-6 form-control-static">
 
-                                @foreach($exam->tickets as $ticket)
-                                    <div class="well">
-                                        <a href="#signing_modal" class="bmd-modalButton" data-toggle="modal"
-                                           data-bmdSrc="{!! route('ticket.show',$ticket->id) !!}"
-                                           data-bmdWidth="600" data-bmdHeight="550" data-target="#signing_modal">
-{{--                                            <span class="text-success">{!! $ticket->quest->shortSource !!}</span><br />--}}
-                                            <span class="text-default">{!! $ticket->quest->shortTask !!}</span>
-                                        </a>
+                            @foreach($exam->tickets as $ticket)
+                            <div class="form-group">
+                                <label class="control-label col-md-2">{!! trans('interface.quests') !!} №{!! $ticket->quest->id !!}</label>
+                                <div class="col-md-10 form-control-static">
+
+
+                                    <iframe id="iframe" src="{!! route('ticket.show', ['id'=>$ticket->id,'type'=>'minimum']) !!}"
+                                            onload="resizeIframe(this)" style="width:100%; background: #FFFFFF;"></iframe>
+
                                     </div>
-                                @endforeach
-                            </div>
-                        </div>
+                                </div>
+                            @endforeach
                         @endif
 
                         @if($exam->note)
                         <div class="form-group">
-                            <label class="control-label col-md-3">{!! trans('interface.note') !!} {!! $exam->chief->name !!}</label>
+                            <label class="control-label col-md-2">{!! trans('interface.note') !!} {!! $exam->chief->name !!}</label>
                             <div class="col-md-6 form-control-static">
                                 {!! $exam->note !!}
                             </div>
@@ -56,25 +53,26 @@
                         @endif
 
                         <div class="form-group">
-                            <div class="col-md-3">&nbsp;</div>
+                            <div class="col-md-2">&nbsp;</div>
                             @if(\AUTH::user()->hasAnyRole(['manager','admin']) && !$exam->started)
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <a href="{!! route('exam.edit',['id'=>$exam->id]) !!}" class="btn btn-block btn-info">{!! trans('interface.edit') !!}</a>
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <a href="#" id="deleteExam" class="delete btn btn-block btn-danger">{!! trans('interface.destroy') !!}</a>
                             </div>
                             @endif
 
                             @if(!$exam->finished && \AUTH::user()->id == $exam->user->id)
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <a href="{!! route('ticket.index',['exam_id' => $exam->id]) !!}" class="delete btn btn-block btn-warning">{!! trans('interface.start') !!}</a>
                             </div>
                             @elseif(($exam->finished && (\AUTH::user()->id == $exam->chief->id
                                 || \AUTH::user()->id == $exam->user->id) && !$exam->amISigner))
 
-                            <div class="col-md-3">
+                            <div class="col-md-2">
+
 
                                 <a href="#signing_modal" class="btn btn-info btn-lg bmd-modalButton" data-toggle="modal"
                                    data-bmdSrc="{!! route('signing.data',$exam->id) !!}"
@@ -85,10 +83,24 @@
 
                         </div>
 
+                        @if(count($exam->signs) > 0)
                         <div class="form-group">
-                            <label class="control-label col-md-3">{!! trans('interface.signers') !!}</label>
+                            <label class="control-label col-md-2">{!! trans('interface.signers') !!}</label>
                             @foreach($exam->signs as $sign)
-                                <div class="col-md-3 form-control-static">
+                                <?php
+                                $root = simplexml_load_string($sign->xml);
+                                $errors = libxml_get_errors();
+                                $root->registerXPathNamespace('ds', 'http://www.w3.org/2000/09/xmldsig#');
+/*
+                                $pkey_details = (openssl_pkey_get_public(
+                                    "-----BEGIN GOST PUBLIC KEY-----\n".
+                                    $root->xpath('//ds:Signature/ds:KeyInfo/ds:X509Data/ds:X509Certificate')[0]->__toString()
+                                    . "\n-----END GOST PUBLIC KEY-----"
+                                ));
+
+                                print_r($pkey_details);*/
+                                ?>
+                                <div class="col-md-4 form-control-static">
                                     <div class="well">
                                         <strong>
                                         @if($sign->signer_id == $exam->chief_id)
@@ -98,10 +110,26 @@
                                         @endif
                                         </strong>
                                         <p>{!! $sign->signer->name !!}</p>
+                                        <p>
+                                            <a download="signature.p7b" href=
+                                               "data:application/octet-stream;charset=utf-8;base64,{!!
+                                               $root->xpath('//ds:Signature/ds:SignatureValue')[0]
+                                               !!}">{!! trans('interface.sign') !!}</a>
+                                        </p>
+                                        <p>
+                                            <a download="public_key.cer" href=
+                                               "data:application/octet-stream;charset=utf-8;base64,{!!
+                                               $root->xpath('//ds:Signature/ds:KeyInfo/ds:X509Data/ds:X509Certificate')[0]
+                                               !!}">{!! trans('interface.public_key') !!}</a>
+                                        </p>
+                                        <p>
+                                            <a download="signature.xml" href="{!! route('signed.xml',$sign->id) !!}">{!! trans('interface.xml_file') !!}</a>
+                                        </p>
                                     </div>
                                 </div>
                             @endforeach
                         </div>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -191,6 +219,11 @@
 
 @section('javascript')
     <script>
+
+        function resizeIframe(obj) {
+            obj.style.height = (obj.contentWindow.document.body.scrollHeight + 20) + 'px';
+        }
+
         $(function(){
             $("#deleteExam").click(function() {
                 $('#form_delete_exam').submit();
