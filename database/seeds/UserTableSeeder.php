@@ -21,6 +21,7 @@ class UserTableSeeder extends Seeder
         $admin = new User();
         $admin->name = "Администратор Вася";
         $admin->email = "admin@example.com";
+        $admin->iin = "870307401142";
         $admin->password = bcrypt("12345");
         $admin->save();
         
@@ -29,6 +30,7 @@ class UserTableSeeder extends Seeder
         $manager = new User();
         $manager->name = "Марья Валильевна";
         $manager->email = "manager@example.com";
+        $manager->iin = "870307401140";
         $manager->password = bcrypt("12345");
         $manager->save();
 
@@ -39,6 +41,7 @@ class UserTableSeeder extends Seeder
             $employee = new User();
             $employee->name = "Иван" . $i . " Иванов" . $i;
             $employee->email = "employee" . $i . "@example.com";
+            $employee->iin = "8703074011" . ($i < 10 ? "0" : "") . $i;
             $employee->password = bcrypt("12345");
             $employee->save();
 

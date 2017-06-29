@@ -10,7 +10,7 @@
 @section('content')
     <div class="container">
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
+            <div class="col-md-10 col-md-offset-1">
                 <div class="panel panel-default">
                     <div class="panel-heading">{!! trans('interface.tickets') !!} | {!! trans('interface.edit') !!}</div>
 
@@ -27,6 +27,7 @@
                                     </select>
                                 </div>
                             </div>
+{{--
 
                             <div class="form-group">
                                 <label class="col-md-3 control-label">{!! trans('interface.source') !!}</label>
@@ -34,6 +35,7 @@
                                     <textarea id="source" rows="6" class="form-control" name="source">{!! $quest->source !!}</textarea>
                                 </div>
                             </div>
+--}}
 
                             <div class="form-group">
                                 <label class="col-md-3 control-label">{!! trans('interface.task') !!}</label>
@@ -70,6 +72,7 @@
 @section('javascript')
     <script src="{{ asset('js/select2.min.js') }}"></script>
     <script src="{{ asset('js/i18n/ru.js') }}"></script>
+    <script src="{{ asset('js/tinymce/tinymce.min.js') }}"></script>
     <script>
 
         $(function () {
@@ -131,6 +134,20 @@
             return "<label class='text-info'>" + position.orgPath + "</label> <span>" + position.name + "</span>";
         }
 
+
+        tinymce.init({
+            selector: 'textarea',  // change this value according to your HTML
+            language: '{!! config('app.locale') == "kz" ? "kk" : config('app.locale')!!}',
+            menubar : false,
+            plugins: [
+                "link image code fullscreen imageupload"
+            ],
+            toolbar: "undo redo | bold italic | bullist numlist outdent indent | link image | imageupload | code | fullscreen",
+            relative_urls: false,
+            image_list: "{!! route('images.list') !!}"
+
+
+        });
     </script>
 
 @endsection

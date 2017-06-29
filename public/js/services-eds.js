@@ -107,6 +107,16 @@ eds.service('NCALayer', [ function() {
         getEDSData();
     };
 
+    /** createCMSSignatureFromFile() - подписать файл
+     *====================================================================*/
+    var verifyXml = function (certificate) {
+
+        data.method = "verifyXml";
+        data.args = [certificate];
+        console.log("Проверка")
+        getEDSData();
+    };
+
 
     function init(request) {
         ws = new WebSocket("wss://127.0.0.1:13579/");
@@ -190,6 +200,9 @@ eds.service('NCALayer', [ function() {
                     case 'createCMSSignatureFromFile' :
                         NCALayer.postCreateCMSSignatureFromFile(answer);
                         NCALayer.showPerson(false);
+                        break;
+                    case 'verifyXml' :
+                        NCALayer.postVerifyXml(answer);
                         break;
                 }
             } else {
@@ -291,6 +304,7 @@ eds.service('NCALayer', [ function() {
         $theScope.selectSignType = selectSignType;
         $theScope.setNCAPassword = setNCAPassword;
         $theScope.signXml = signXml;
+        $theScope.verifyXml = verifyXml;
         $theScope.showFileChooser = showFileChooser;
         $theScope.createCMSSignatureFromFile = createCMSSignatureFromFile;
     };
@@ -313,11 +327,11 @@ var json2xml = (function () {
             if (obj.hasOwnProperty(i)) {
                 var value = obj[i],
                     type = typeof value;
-                if (value instanceof Array && type == 'object') {
+                if (value instanceof Array && type === 'object') {
                     for (var sub in value) {
                         xml += json2xml(value[sub]);
                     }
-                } else if (value instanceof Object && type == 'object') {
+                } else if (value instanceof Object && type === 'object') {
                     xml += tag(i) + json2xml(value) + tag(i, 1);
                 } else {
                     xml += tag(i) + value + tag(i, {

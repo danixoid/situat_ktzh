@@ -50,7 +50,14 @@
                                     <div class="form-group">
                                         <label class="col-md-3 control-label">{!! trans('interface.name') !!}</label>
                                         <div class="col-md-9">
-                                            <input type="text" class="form-control" name="name" value="{!! $user->name !!}" />
+                                            <input type="text" class="form-control" name="name" value="{!! $user->name !!}" required/>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">{!! trans('interface.iin') !!}</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control" name="iin" value="{!! $user->iin !!}" required/>
                                         </div>
                                     </div>
 
@@ -78,14 +85,14 @@
                                     <div class="form-group">
                                         <label class="col-md-3 control-label">{!! trans('interface.password') !!}</label>
                                         <div class="col-md-9">
-                                            <input type="password" class="form-control" name="password">
+                                            <input type="password" class="form-control" name="password" required>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
                                         <label class="col-md-3 control-label">{!! trans('interface.confirm_password') !!}</label>
                                         <div class="col-md-9">
-                                            <input type="password" class="form-control" name="password_confirmation">
+                                            <input type="password" class="form-control" name="password_confirmation" required>
                                         </div>
                                     </div>
 

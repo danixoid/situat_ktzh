@@ -40,3 +40,12 @@ Route::resource('/position',"PositionController");
 Route::resource('/org',"OrgController");
 Route::resource('/user',"UserController");
 Route::resource('/sign',"SignController");
+
+
+Route::get('/upload', function() {
+    return view('upload._image-dialog');
+})->name('upload.form.image');
+
+Route::post('/upload', 'HomeController@imageUpload')->name('upload.save.image');
+Route::get('/uploaded/{filename}', 'HomeController@getImage')->name('uploaded.image');
+Route::get('/uploadeds', 'HomeController@getImages')->name('images.list');

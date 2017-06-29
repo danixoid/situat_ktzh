@@ -76,7 +76,9 @@
 
         <div class="form-group" ng-if="detail.step==0 && detail.signed">
             <div class="col-md-9 col-md-offset-3">
-                <button class="btn btn-lg btn-success" ng-click="sendToVerifyXML();"
+                {{--<button class="btn btn-lg btn-success" ng-click="sendToVerifyXML();"--}}
+                        {{--type="button">{!! trans('interface.next') !!}</button>--}}
+                <button class="btn btn-lg btn-success" ng-click="verifyXml(certificate);"
                         type="button">{!! trans('interface.next') !!}</button>
             </div>
         </div>
@@ -231,7 +233,7 @@
             });
         };
 
-        $scope.sendToVerifyXML = function () {
+        /*$scope.sendToVerifyXML = function () {
             $http({
                 url: '{!! route('java.eds.restapi') !!}',
                 method: 'POST',
@@ -262,22 +264,7 @@
                     });
                 }
             });
-        };
-
-        $scope.sendToVerifyFile = function () {
-            $http({
-                url: './restapi',
-                method: 'POST',
-                data: JSON.stringify({ "url_file" : $scope.urlFile, "signed_file" : $scope.detail.signedFile  }),
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-Requested-With": "XMLHttpRequest"
-                }
-            }).then(function(response) {
-                $scope.jsonResponse = response.data;
-                alert(JSON.stringify($scope.jsonResponse));
-            });
-        };
+        };*/
 
         NCALayer.postGetDate = function  (answer,dateName) {
             $scope.person[dateName] = answer.result.split(' ')[0];
@@ -291,16 +278,20 @@
             for(var i = 0; i < arr.length; i++) {
                 var keyVal = arr[i].split('=');
 
-                if(keyVal[0] == 'SERIALNUMBER') {
+                if(keyVal[0] === 'SERIALNUMBER') {
                     $scope.person[keyVal[0]] = keyVal[1].replace(/^IIN/,'');
 
-                } else if(keyVal[0] == 'OU') {
+                } else if(keyVal[0] === 'OU') {
                     $scope.person[keyVal[0]] = keyVal[1].replace(/^BIN/,'');
                 } else {
                     $scope.person[keyVal[0]] = keyVal[1];
                 }
                 $scope.$apply();
                 console.log(keyVal[0] +  ' = ' + $scope.person[keyVal[0]] + ", " + keyVal[1]);
+            }
+            if($scope.person['SERIALNUMBER'] !== "{!! \Auth::user()->iin !!}") {
+                $scope.detail.step = 0;
+                NCALayer.showError({ 'errorCode' : 'ИИН не совпадают' });
             }
         };
 
@@ -311,7 +302,7 @@
             $scope.$apply();
         };
 
-        NCALayer.postCreateCMSSignatureFromFile= function (answer) {
+        NCALayer.postCreateCMSSignatureFromFile = function (answer) {
             $scope.detail.signedFile = answer.result;
 
             $scope.$apply();
@@ -320,6 +311,29 @@
         NCALayer.postShowFileChooser = function (answer) {
             $scope.fileToSign = answer.result;
             $scope.$apply();
+        };
+
+        NCALayer.postVerifyXml = function (answer) {
+            console.log(JSON.stringify(answer));
+
+            if(answer.result)
+            {
+                $http({
+                    url: '{!! route('sign.store') !!}',
+                    method: 'POST',
+                    data: {
+                        "exam_id" : {!! $exam->id !!},
+                        "signer_id" : {!! \Auth::user()->id !!},
+                        "xml" : $scope.certificate
+                    },
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-Requested-With": "XMLHttpRequest"
+                    }
+                }).success(function (data) {
+                    $scope.detail.step = 4;
+                });
+            }
         };
 
         NCALayer.showPassword = function (show) {

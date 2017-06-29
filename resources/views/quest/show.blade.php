@@ -26,10 +26,12 @@
                             </div>
                         </div>
 
+{{--
                         <div class="form-group">
                             <label class="control-label col-md-2">{!! trans('interface.source') !!}</label>
                             <div class="col-md-10 form-control-static">{!! $quest->source !!}</div>
                         </div>
+--}}
 
                         <div class="form-group">
                             <label class="control-label col-md-2">{!! trans('interface.task') !!}</label>

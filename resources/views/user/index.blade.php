@@ -43,6 +43,7 @@
                                 <th>№</th>
                                 <th>{!! trans('interface.name') !!}</th>
                                 <th>{!! trans('interface.email_address') !!}</th>
+                                <th>{!! trans('interface.iin') !!}</th>
                                 <th>{!! trans('interface.roles') !!}</th>
                             </tr>
                             </thead>
@@ -52,6 +53,7 @@
                                     <td>{!! $user->id !!}</td>
                                     <td><a href="{!! route('user.show',['id' => $user->id]) !!}">{!! $user->name !!}</a></td>
                                     <td><span class="text-info">{!! $user->email !!}</span></td>
+                                    <td><span class="text-warning">{!! $user->iin !!}</span></td>
                                     <td>
                                         @foreach($user->roles as $role)
                                             <span class="text-info">{!!

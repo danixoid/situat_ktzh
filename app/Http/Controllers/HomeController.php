@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class HomeController extends Controller
 {
@@ -90,4 +92,42 @@ class HomeController extends Controller
             ->withHeaders(['Content-Type' => 'application/json']);
     }
 
+
+
+
+    public function imageUpload(Request $request) {
+
+        $file = $request->file('imagefile');
+
+        $extension = $file->getClientOriginalExtension();
+        $preview = $file->getFilename();
+        $filename = $preview . '.' . $extension;
+        Storage::disk('local')->put($filename, File::get($file));
+
+        return view('upload._image-upload', compact('filename'));
+    }
+
+    public function getImage($filename) {
+        return file_get_contents(storage_path('app/' . $filename));
+    }
+
+
+    public function getImages() {
+        $files = File::allFiles(storage_path('app/'));
+
+        $arr = [];
+
+        foreach ($files as $file)
+        {
+            if(is_file($file))
+            {
+                array_push($arr, [
+                    'title' => 'Изображение ' . $file->getFilename(),
+                    'value' => route('uploaded.image',$file->getFilename())
+                ]);
+            }
+        }
+
+        return $arr;
+    }
 }

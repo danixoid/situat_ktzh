@@ -17,7 +17,7 @@ class CreateQuestsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('author_id');
             $table->unsignedInteger('position_id');
-            $table->text("source"); //исходные данные
+//            $table->text("source"); //исходные данные
             $table->text("task"); //задание
             $table->unsignedInteger('timer')->default(20); //Обратный отсчет
             $table->timestamps();

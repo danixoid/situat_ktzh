@@ -54,7 +54,7 @@
                                 <tr>
                                     <th>№</th>
                                     <th>{!! trans('interface.position') !!}</th>
-                                    <th>{!! trans('interface.source') !!}</th>
+                                    {{--<th>{!! trans('interface.source') !!}</th>--}}
                                     <th>{!! trans('interface.task') !!}</th>
                                     <th>{!! trans('interface.timer') !!}</th>
                                     <th></th>
@@ -70,7 +70,7 @@
 
                                             </a>
                                         </td>
-                                        <td>{{ $quest->shortSource }}...</td>
+{{--                                        <td>{{ $quest->shortSource }}...</td>--}}
                                         <td>{{ $quest->shortTask }}...</td>
                                         <td><span class="text-warning">{{ $quest->timer }} {{ trans('interface.minutes') }}</span></td>
                                         <td><a href="{!! route('quest.show',['id'=>$quest->id]) !!}">{!! trans('interface.show') !!}</a></td>

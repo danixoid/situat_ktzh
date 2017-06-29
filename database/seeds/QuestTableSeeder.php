@@ -18,7 +18,7 @@ class QuestTableSeeder extends Seeder
                 $quest = new \App\Quest();
                 $quest->position_id = $position->id;
                 $quest->author_id = $user->id;
-                $quest->source = "Исходные денные №$i для $position->orgPath $position->name, составитель $user->name";
+//                $quest->source = "Исходные денные №$i для $position->orgPath $position->name, составитель $user->name";
                 $quest->task = "Задание №$i для $position->orgPath $position->name, составитель $user->name";
                 $quest->timer = 15;
                 $quest->save();

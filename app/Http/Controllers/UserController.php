@@ -77,6 +77,10 @@ class UserController extends Controller
             return redirect()->back()->with('warning',trans('interface.failure_create_user'));
         }
 
+        $user
+            ->roles()
+            ->attach(\App\Role::where('name','employee')->first());
+
         if($request->ajax()) {
             return response()->json([
                 'success' => true,

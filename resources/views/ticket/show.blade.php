@@ -25,12 +25,14 @@
 
     <div class="form form-horizontal">
         <h3>{!! trans('interface.timer') !!} {!! $ticket->quest->timer !!} {!! trans('interface.minutes') !!}</h3>
+{{--
         <div class="form-group">
             <label class="col-md-2 control-label">{{ trans('interface.source') }}</label>
             <div class="col-md-10 form-control-static">
                 {!! $ticket->quest->source !!}
             </div>
         </div>
+--}}
         <div class="form-group">
             <label class="col-md-2 control-label">{{ trans('interface.task') }}</label>
             <div class="col-md-10 form-control-static">

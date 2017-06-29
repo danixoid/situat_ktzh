@@ -37,7 +37,7 @@
                                         <a href="#signing_modal" class="bmd-modalButton" data-toggle="modal"
                                            data-bmdSrc="{!! route('ticket.show',$ticket->id) !!}"
                                            data-bmdWidth="600" data-bmdHeight="550" data-target="#signing_modal">
-                                            <span class="text-success">{!! $ticket->quest->shortSource !!}</span><br />
+{{--                                            <span class="text-success">{!! $ticket->quest->shortSource !!}</span><br />--}}
                                             <span class="text-default">{!! $ticket->quest->shortTask !!}</span>
                                         </a>
                                     </div>
@@ -71,8 +71,8 @@
                             <div class="col-md-3">
                                 <a href="{!! route('ticket.index',['exam_id' => $exam->id]) !!}" class="delete btn btn-block btn-warning">{!! trans('interface.start') !!}</a>
                             </div>
-                            @elseif((\AUTH::user()->id == $exam->chief->id
-                                || \AUTH::user()->id == $exam->user->id) && !$exam->amISigner)
+                            @elseif(($exam->finished && (\AUTH::user()->id == $exam->chief->id
+                                || \AUTH::user()->id == $exam->user->id) && !$exam->amISigner))
 
                             <div class="col-md-3">
 

@@ -16,34 +16,45 @@
 
                     <div class="panel-body">
 
-                        <form id="form_create_user" class="form-horizontal" action="{!! route('user.store') !!}" method="POST">
+                        <form id="form_create_user" class="form-horizontal"
+                              action="{!! route('user.store') !!}" method="POST">
                             {!! csrf_field() !!}
 
                             <div class="form-group">
                                 <label class="col-md-3 control-label">{!! trans('interface.title') !!}</label>
                                 <div class="col-md-9">
-                                    <input type="text" class="form-control" name="name" value="{!! old('name') !!}">
+                                    <input type="text" class="form-control" name="name"
+                                           value="{!! old('name') !!}" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">{!! trans('interface.title') !!}</label>
+                                <div class="col-md-9">
+                                    <input type="number" minlength="12" maxlength="12" class="form-control"
+                                           name="iin" value="{!! old('name') !!}" required>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="col-md-3 control-label">{!! trans('interface.email_address') !!}</label>
                                 <div class="col-md-9">
-                                    <input type="email" class="form-control" name="email" value="{!! old('email') !!}">
+                                    <input type="email" class="form-control" name="email"
+                                           value="{!! old('email') !!}" required>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="col-md-3 control-label">{!! trans('interface.password') !!}</label>
                                 <div class="col-md-9">
-                                    <input type="password" class="form-control" name="password">
+                                    <input type="password" class="form-control" name="password" required>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="col-md-3 control-label">{!! trans('interface.confirm_password') !!}</label>
                                 <div class="col-md-9">
-                                    <input type="password" class="form-control" name="password_confirmation">
+                                    <input type="password" class="form-control" name="password_confirmation" required>
                                 </div>
                             </div>
 
