@@ -29,6 +29,7 @@ class UserController extends Controller
         if(request()->has('q')) {
             $users = \App\User::where('name','LIKE', '%' . request('q'). '%')
                 ->orWhere('email','LIKE', '%' . request('q'). '%')
+                ->orderBy('created_at','desc')
 //                ->take(request('page'))
                 ->paginate($count);
 

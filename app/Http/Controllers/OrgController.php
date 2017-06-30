@@ -31,14 +31,13 @@ class OrgController extends Controller
                 })
 //                ->take(request('page'))
                 ->with('parent')
+                ->orderBy('created_at','desc')
                 ->get();
 
             if(request()->ajax()) {
                 return $orgs->toJson();
             }
 
-        } else {
-//            $orgs = \App\Org::all();
         }
 
         return view('org.index'/*,['org' => $orgs]*/);

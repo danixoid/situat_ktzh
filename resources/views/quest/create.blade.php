@@ -8,6 +8,7 @@
 @extends('layouts.app')
 
 @section('content')
+
     <div class="container">
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
@@ -15,8 +16,8 @@
                     <div class="panel-heading">{!! trans('interface.tickets') !!} | {!! trans('interface.create') !!}</div>
 
                     <div class="panel-body">
-
-                        <form id="form_create_quest" class="form-horizontal" action="{!! route('quest.store') !!}" method="POST">
+                        <form id="form_create_quest" class="form-horizontal" enctype="multipart/form-data"
+                              action="{!! route('quest.store') !!}" method="POST">
                             {!! csrf_field() !!}
 
                             <div class="form-group">
@@ -26,15 +27,6 @@
                                     </select>
                                 </div>
                             </div>
-{{--
-
-                            <div class="form-group">
-                                <label class="col-md-3 control-label">{!! trans('interface.source') !!}</label>
-                                <div class="col-md-9">
-                                    <textarea id="source" rows="6" class="form-control" name="source">{!! old('source') !!}</textarea>
-                                </div>
-                            </div>
---}}
 
                             <div class="form-group">
                                 <label class="col-md-3 control-label">{!! trans('interface.task') !!}</label>
@@ -46,7 +38,16 @@
                             <div class="form-group">
                                 <label class="col-md-3 control-label">{!! trans('interface.timer') !!}</label>
                                 <div class="col-md-3">
-                                    <input type="number" class="form-control" name="timer" value="{!! old('timer') ?: "5" !!}"/>
+                                    <input type="number" class="form-control" name="timer" value="{!! old('timer') ?: "15" !!}"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group ">
+                                <div class="col-md-12 files color">
+                                    <label class="col-md-3 control-label">{!! trans('interface.import') !!}</label>
+                                    <div class="col-md-9">
+                                        <input type="file" name="word_file" class="form-control">
+                                    </div>
                                 </div>
                             </div>
 
@@ -138,6 +139,7 @@
             image_list: "{!! route('images.list') !!}"
 
         });
+
 
     </script>
 

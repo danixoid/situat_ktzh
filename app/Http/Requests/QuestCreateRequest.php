@@ -24,7 +24,9 @@ class QuestCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'task' => 'required|string',
+            'task' => 'required_if:word_file,',
+            'word_file' => 'required_if:task,|file',
+            'positions' => 'required|array',
             'timer' => 'int',
         ];
     }

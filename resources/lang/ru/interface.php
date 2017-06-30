@@ -78,6 +78,11 @@ return [
     'sign' => 'Подпись',
     'public_key' => 'Публичный ключ',
     'xml_file' => 'Файл XML с подписью',
+    'select_position' => 'Выберите должность',
+    'import' => 'Импорт с MS Word',
+    'import_word' => 'Перетяните файл сюда или нажмите',
+    'imported_file' => 'Импортировано :count заданий',
+    'started_date' => 'Период проведения',
 
     'quest' => 'Задание',
     'quests' => 'Задания',

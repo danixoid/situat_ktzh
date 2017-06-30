@@ -31,7 +31,7 @@
 
                             @foreach($exam->tickets as $ticket)
                             <div class="form-group">
-                                <label class="control-label col-md-2">{!! trans('interface.quests') !!} №{!! $ticket->quest->id !!}</label>
+                                <label class="control-label col-md-2">{!! trans('interface.quest') !!} №{!! $ticket->quest->id !!}</label>
                                 <div class="col-md-10 form-control-static">
 
 

@@ -31,6 +31,11 @@
                         </div>
 
                         <div class="form-group">
+                            <label class="control-label col-md-2">{!! trans('interface.iin') !!}</label>
+                            <div class="col-md-10 form-control-static">{!! $user->iin !!}</div>
+                        </div>
+
+                        <div class="form-group">
                             <label class="control-label col-md-2">{!! trans('interface.email_address') !!}</label>
                             <div class="col-md-10 form-control-static">{!! $user->email !!}</div>
                         </div>

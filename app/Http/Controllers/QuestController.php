@@ -14,7 +14,7 @@ class QuestController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('role:admin,manager');
+        $this->middleware('role:admin,manager',['except' => ['show']]);
     }
 
     /**
@@ -24,7 +24,7 @@ class QuestController extends Controller
      */
     public function index()
     {
-        $count = request('page') ?: 10;
+        $count = request('count') ?: 10;
         $position_id = request('position_id');
         $text = request('text');
 
@@ -75,8 +75,51 @@ class QuestController extends Controller
     public function store(QuestCreateRequest $request)
     {
         $data = $request->all();
-
         $data['author_id'] = auth()->user()->id;
+
+
+        if(request()->hasFile('word_file')) {
+            $file = request()->file('word_file');
+
+            shell_exec('libreoffice --headless  -convert-to html ' . $file->path()
+                . " -outdir " . sys_get_temp_dir());
+
+            $content = file_get_contents(sys_get_temp_dir() . "/" . pathinfo(
+                    $file->getClientOriginalName(), PATHINFO_FILENAME).".html");
+
+//            $content = mb_ereg_replace("\n","", $content);
+            $content = mb_ereg_replace("<!DOCTYPE.+<body[^>]+>","", $content);
+            $content = mb_ereg_replace("<\/body>.+$","", $content);
+            $content = mb_ereg_replace("<p((?!</p>).)+Решение\.?((?!<p).)+</p>","",$content);
+//            $content = mb_ereg_replace("<p((?!</p>).)+[^а-яА-Я]+((?!<p).)+</p>","",$content);
+
+            $arr = mb_split("<p((?!</p>).)+Ситуация((?!<p).)+</p>",$content);
+
+            unset($arr[0]);
+
+            $int = 1;
+            foreach ($arr as $str) {
+                $content .= $str;
+                $data['task'] = $str;
+                $quest = \App\Quest::create($data);
+
+                if(isset($data['positions']) && is_array($data['positions'])) {
+
+                    foreach ($data['positions'] as $position_id)
+                        $quest
+                            ->positions()
+                            ->attach(\App\Position::find($position_id));
+
+                }
+
+                $int++;
+            }
+
+            return redirect()
+                ->route('quest.index')
+                ->with('message',trans('interface.imported_file',['count' => $int]));
+        }
+
 
         $quest = \App\Quest::create($data);
 
@@ -204,6 +247,24 @@ class QuestController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $quest = \App\Quest::find($id);
+
+        if(!$quest) {
+
+            if(request()->ajax()) {
+                return response()->json(['success' => false, 'message' => trans('interface.failure_deleted_quest')]);
+            }
+
+            return redirect()->back()->with('warning',trans('interface.failure_deleted_quest'));
+        }
+
+        if(count($quest->tickets) == 0) {
+            $quest->delete();
+        }
+
+        return redirect()
+            ->route('quest.index')
+            ->with('message',trans('interface.success_deleted_quest'));
+
     }
 }

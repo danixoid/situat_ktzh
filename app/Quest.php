@@ -15,6 +15,11 @@ class Quest extends Model
         return $this->belongsTo("App\User");
     }
 
+    public function tickets()
+    {
+        return $this->hasMany(\App\Ticket::class);
+    }
+
 
     public function positions()
     {

@@ -34,37 +34,31 @@
                     <input type="hidden" name="finished_at" value="true" />
 
                     <div class="form-group">
-                        <div class="col-md-offset-3 col-md-9">
+                        <div class="col-md-offset-2 col-md-9">
                             <h3>{!! trans('interface.remaining_time',['time' => "<span id=\"timer\">" .
                                 date('i:s',$ticket->quest->timer*60) ."</span>"]) !!}</h3>
                         </div>
                     </div>
 
-{{--
                     <div class="form-group">
-                        <label class="col-md-3 control-label">{!! trans('interface.source') !!}</label>
+                        <label class="control-label col-md-2">{!! trans('interface.task') !!}</label>
                         <div class="col-md-9 form-control-static">
-                            {!! $tick->quest->source !!}
-                        </div>
-                    </div>
---}}
-
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">{!! trans('interface.task') !!}</label>
-                        <div class="col-md-9 form-control-static">
-                            {!! $tick->quest->task !!}
+                            <iframe id="iframe" src="{!! route('quest.show',
+                                    ['id'=>$ticket->quest->id,'type'=>'minimum']) !!}" onload="resizeIframe(this)"
+                                    style="width:100%; background: #FFFFFF;"></iframe>
                         </div>
                     </div>
 
+
                     <div class="form-group">
-                        <label class="col-md-3 control-label">{!! trans('interface.answer') !!}</label>
+                        <label class="col-md-2 control-label">{!! trans('interface.answer') !!}</label>
                         <div class="col-md-9">
                             <textarea id="answer" placeholder="{!! trans('interface.type_text') !!}" rows="6" class="form-control" name="answer">{!! $ticket->answer !!}</textarea>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <div class="col-md-offset-3 col-md-3 form-control-static">
+                        <div class="col-md-offset-2 col-md-3 form-control-static">
                             <button id="activate-next-step" class="btn btn-primary btn-lg">{!! trans('interface.next') !!}</button>
                         </div>
                     </div>
@@ -80,6 +74,9 @@
 
 @section('javascript')
     <script>
+        function resizeIframe(obj) {
+            obj.style.height = (obj.contentWindow.document.body.scrollHeight + 20) + 'px';
+        }
         $(document).ready(function() {
 
             var times = {{strtotime($ticket->started_at) * 1000 }} +

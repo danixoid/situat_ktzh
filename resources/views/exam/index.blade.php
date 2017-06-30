@@ -53,6 +53,21 @@
                                 </div>
                             </div>
 
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">{!! trans('interface.started_date') !!}</label>
+                                <div class="col-md-3">
+                                    <input type="date" class="form-control" value="{!! request('date_started') !!}"
+                                           name="date_started" id="date_started" />
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="date" class="form-control" value="{!! request('date_finished') !!}"
+                                           name="date_finished" id="date_finished" />
+                                </div>
+                                <div class="col-md-3">
+                                    <button type="submit" class="btn btn-info btn-block">{!! trans("interface.search") !!}</button>
+                                </div>
+                            </div>
+
                         </form>
 
                         <table class="table table-condensed">
@@ -62,8 +77,8 @@
                                     <th>{!! trans('interface.position') !!}</th>
                                     <th>{!! trans('interface.user') !!}</th>
                                     <th>{!! trans('interface.chief') !!}</th>
-                                    <th>{!! trans('interface.quest_count') !!}</th>
-                                    <th></th>
+{{--                                    <th>{!! trans('interface.quest_count') !!}</th>--}}
+                                    <th>{!! trans('interface.started_date') !!}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -72,14 +87,22 @@
                                         <td>{!! $exam->id !!}</td>
                                         <td>
                                             <a href="{!! route('exam.index',['position_id' => $exam->position_id]) !!}">
-                                                <span class="text-info">{!! $exam->position->orgPath !!}/{!! $exam->position->name !!}</span>
+                                                <span class="text-info" title="{!! $exam->position->orgPath !!}">{!! $exam->position->name !!}</span>
 
                                             </a>
                                         </td>
                                         <td>{{ $exam->user->name }}</td>
                                         <td>{{ $exam->chief->name }}</td>
-                                        <td>{{ $exam->count }}</td>
-                                        <td><a href="{!! route('exam.show',['id'=>$exam->id]) !!}">{!! trans('interface.show') !!}</a></td>
+{{--                                        <td>{{ $exam->count }}</td>--}}
+                                        <td>
+                                            <a href="{!! route('exam.show',['id'=>$exam->id]) !!}">
+                                                <span class="text-{!! $exam->color !!}">
+                                                    @if($exam->started){{ date(' d M, Y H:i',strtotime($exam->startedDate)) }}<br />@endif
+                                                    @if($exam->finished){{ date(' d M, Y H:i',strtotime($exam->finishedDate)) }}<br />@endif
+                                                    {!! trans('interface.' . $exam->status) !!}
+                                                </span>
+                                            </a>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>

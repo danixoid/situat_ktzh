@@ -26,26 +26,42 @@ class ExamController extends Controller
     public function index()
     {
 
-        $count = request('page') ?: 10;
+        $count = request('count') ?: 10;
         $position_id = request('position_id');
         $user_id = request('user_id');
         $chief_id = request('chief_id');
+        $startedDate = request('date_started');
+        $finishedDate = request('date_finished');
 
         $query = \App\Exam::whereNotNull('id');
 
         if($position_id &&  $position_id > 0) {
-            $query = $query->where('position_id',request('position_id'));
+            $query = $query->where('position_id',$position_id);
         }
 
         if($user_id && $user_id > 0) {
-            $query = $query->where('user_id',request('user_id'));
+            $query = $query->where('user_id',$user_id);
         }
 
         if($chief_id && $chief_id > 0) {
-            $query = $query->where('chief_id',request('chief_id'));
+            $query = $query->where('chief_id',$chief_id);
         }
 
-        $exams = $query->paginate($count);
+        if($startedDate) {
+            $query = $query->whereHas('tickets',function($q) use ($startedDate)
+            {
+                return $q->where('started_at','>',$startedDate);
+            });
+        }
+
+        if($finishedDate) {
+            $query = $query->whereHas('tickets',function($q) use ($finishedDate)
+            {
+                return $q->where('finished_at','<',$finishedDate);
+            });
+        }
+
+        $exams = $query->orderBy('created_at','desc')->paginate($count);
 
         if(request()->ajax()) {
             return $exams->toJson();

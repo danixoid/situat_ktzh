@@ -4,7 +4,6 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
 
 class Exam extends Model
 {
@@ -14,7 +13,7 @@ class Exam extends Model
 
     protected $hidden = ['signs'];
 
-    protected $appends = ['started','finished','color','amISigner'];
+    protected $appends = ['started','finished','color','amISigner','startedDate','finishedDate'];
 
     protected static function boot()
     {
@@ -34,22 +33,6 @@ class Exam extends Model
                         'exam_id' => $exam->id,
                         'quest_id' => $quest->id
                     ]);
-                }
-            }
-        );
-
-        static::updated(
-            function($exam)
-            {
-                if($exam->finished)
-                {
-                    Mail::queue('email.exam_finished',compact($exam),
-                        function($message) use ($exam){
-                            $message->subject('Коммерческое предложение от B-Apps LLP');
-                            $message->to($exam->chief->email);
-                            $message->from(env("MAIL_USERNAME","danixoid@gmail.com"),
-                                'Администратор SITUAT.KZ');
-                        });
                 }
             }
         );
@@ -118,6 +101,32 @@ class Exam extends Model
         }
 
         return $finish;
+    }
+
+    public function getStartedDateAttribute()
+    {
+        $date = \Carbon\Carbon::now();
+        foreach ($this->tickets as $ticket)
+        {
+            if(strtotime($ticket->started_at) < strtotime($date) ) {
+                $date = $ticket->started_at;
+            }
+        }
+
+        return $date;
+    }
+
+    public function getFinishedDateAttribute()
+    {
+        $date = \Carbon\Carbon::create(2000);
+        foreach ($this->tickets as $ticket)
+        {
+            if(strtotime($ticket->finished_at) > strtotime($date) ) {
+                $date = $ticket->finished_at;
+            }
+        }
+
+        return $date;
     }
 
     public function getStatusAttribute()

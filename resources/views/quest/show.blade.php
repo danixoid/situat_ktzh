@@ -45,6 +45,12 @@
                             <div class="col-md-offset-2 col-md-3">
                                 <a href="{!! route('quest.edit',['id'=>$quest->id]) !!}" class="btn btn-block btn-info">{!! trans('interface.edit') !!}</a>
                             </div>
+
+                            @if(count($quest->tickets) == 0)
+                            <div class="col-md-2">
+                                <a href="#" id="deleteQuest" class="btn btn-block btn-danger">{!! trans('interface.destroy') !!}</a>
+                            </div>
+                            @endif
                         </div>
                         <div class="form-group">
                             <div class="col-md-offset-2 col-md-9">
@@ -65,6 +71,11 @@
             </div>
         </div>
     </div>
+
+    <form id="form_delete_quest" action="{!! route('quest.destroy',['id' => $quest->id]) !!}" method="POST">
+        {!! csrf_field() !!}
+        {!! method_field("DELETE") !!}
+    </form>
 @endsection
 
 @section('javascript')
@@ -72,5 +83,12 @@
         function resizeIframe(obj) {
             obj.style.height = (obj.contentWindow.document.body.scrollHeight + 20) + 'px';
         }
+
+        $(function(){
+            $("#deleteQuest").click(function() {
+                $('#form_delete_quest').submit();
+            });
+
+        });
     </script>
 @endsection

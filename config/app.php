@@ -179,6 +179,8 @@ return [
         App\Providers\RouteServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
 
+        browner12\helpers\HelperServiceProvider::class,
+
     ],
 
     /*

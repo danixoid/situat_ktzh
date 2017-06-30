@@ -24,6 +24,9 @@
                             <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">
                                     {!! trans('interface.change_password') !!}
                                 </a></li>
+                            <li role="presentation"><a href="#iin" aria-controls="iin" role="tab" data-toggle="tab">
+                                    {!! trans('interface.iin') !!}
+                                </a></li>
                         </ul>
 
                         <!-- Tab panes -->
@@ -51,13 +54,6 @@
                                         <label class="col-md-3 control-label">{!! trans('interface.name') !!}</label>
                                         <div class="col-md-9">
                                             <input type="text" class="form-control" name="name" value="{!! $user->name !!}" required/>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="col-md-3 control-label">{!! trans('interface.iin') !!}</label>
-                                        <div class="col-md-9">
-                                            <input type="text" class="form-control" name="iin" value="{!! $user->iin !!}" required/>
                                         </div>
                                     </div>
 
@@ -93,6 +89,27 @@
                                         <label class="col-md-3 control-label">{!! trans('interface.confirm_password') !!}</label>
                                         <div class="col-md-9">
                                             <input type="password" class="form-control" name="password_confirmation" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-md-offset-3 col-md-3">
+                                            <button class="btn btn-block btn-danger" >{!! trans('interface.update') !!}</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="iin">
+                                <br />
+                                <form id="form_create_user" class="form-horizontal" action="{!!
+                                        route('user.update',['id' => $user->id]) !!}" method="POST">
+                                    {!! csrf_field() !!}
+                                    {!! method_field("PUT")  !!}
+
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">{!! trans('interface.iin') !!}</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control" name="iin" value="{!! $user->iin !!}" required/>
                                         </div>
                                     </div>
 
