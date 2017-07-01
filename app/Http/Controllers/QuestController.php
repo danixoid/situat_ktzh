@@ -111,7 +111,7 @@ class QuestController extends Controller
                 $content
             );
 
-            return $content;
+//            return $content;
 //            $content = mb_ereg_replace("\n","", $content);
             $content = mberegi_replace("<!DOCTYPE.+<body[^>]+>","", $content);
             $content = mberegi_replace("<\/body>.+$","", $content);
