@@ -84,7 +84,7 @@ class QuestController extends Controller
             $output = exec('libreoffice --headless  -convert-to html ' . $file->path()
                 . " -outdir " . sys_get_temp_dir());
 
-            dd($output);
+//            dd($output);
 
             $content = file_get_contents(sys_get_temp_dir() . "/" . pathinfo(
                     $file->getClientOriginalName(), PATHINFO_FILENAME).".html");
