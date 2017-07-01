@@ -79,15 +79,22 @@ class QuestController extends Controller
 
 
         if(request()->hasFile('word_file')) {
-            $file = request()->file('word_file');
+//
+//            $path = storage_path(request()
+//                ->file('word_file')
+//                ->store('word_files'));
 
-            $output = exec('libreoffice --headless  -convert-to html ' . $file->path()
+            $file = request()->file('word_file');
+            $file = $file->move(sys_get_temp_dir(),"word."
+                . $file->getClientOriginalExtension());
+            $path = $file->getRealPath();
+
+            $output = mberegi_replace("docx?$","html",$path);
+
+            shell_exec('libreoffice --headless  -convert-to html:HTML ' . $path
                 . " -outdir " . sys_get_temp_dir());
 
-//            dd($output);
-
-            $content = file_get_contents(sys_get_temp_dir() . "/" . pathinfo(
-                    $file->getClientOriginalName(), PATHINFO_FILENAME).".html");
+            $content = file_get_contents($output);
 
 //            $content = mb_ereg_replace("\n","", $content);
             $content = mb_ereg_replace("<!DOCTYPE.+<body[^>]+>","", $content);
@@ -97,9 +104,11 @@ class QuestController extends Controller
 
             $arr = mb_split("<p((?!</p>).)+Ситуация((?!<p).)+</p>",$content);
 
+            return $content;
+
             unset($arr[0]);
 
-            $int = 1;
+            $int = 0;
             foreach ($arr as $str) {
                 $content .= $str;
                 $data['task'] = $str;
