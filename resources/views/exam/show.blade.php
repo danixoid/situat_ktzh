@@ -13,10 +13,19 @@
             <div class="col-md-10 col-md-offset-1">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <strong>{!! $exam->user->name !!}</strong>,
-                        <a href="{!! route('exam.index',['position_id' => $exam->position_id]) !!}">
-                            <span class="text-primary">{!! $exam->position->orgPath !!}/{!! $exam->position->name !!}</span>
-                        </a>
+                        <div class="row">
+                            <label class="col-md-10">
+                                <strong>{!! $exam->user->name !!}</strong>,
+                                <a href="{!! route('exam.index',['position_id' => $exam->position_id]) !!}">
+                                    <span class="text-primary">{!! $exam->position->orgPath !!}/{!! $exam->position->name !!}</span>
+                                </a>
+                            </label>
+                            <div class="col-md-2 text-right">
+                                <a href="{!! route('exam.show',['id'=>$exam->id,'type' => "pdf"]) !!}">
+                                    {{ trans('interface.print_to_pdf') }}
+                                </a>
+                            </div>
+                        </div>
 
                     </div>
 

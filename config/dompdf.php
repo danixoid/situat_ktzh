@@ -38,7 +38,7 @@ return array(
          * Times-Roman, Times-Bold, Times-BoldItalic, Times-Italic,
          * Symbol, ZapfDingbats.
          */
-        "DOMPDF_FONT_DIR" => storage_path('fonts/'), // advised by dompdf (https://github.com/dompdf/dompdf/pull/782)
+        "DOMPDF_FONT_DIR" => storage_path('app/public'), // advised by dompdf (https://github.com/dompdf/dompdf/pull/782)
 
         /**
          * The location of the DOMPDF font cache directory
@@ -48,13 +48,13 @@ return array(
          *
          * Note: This directory must exist and be writable by the webserver process.
          */
-        "DOMPDF_FONT_CACHE" => storage_path('fonts/'),
+        "DOMPDF_FONT_CACHE" => storage_path('app/public'),
 
         /**
          * The location of a temporary directory.
          *
          * The directory specified must be writeable by the webserver process.
-         * The temporary directory is required to download remote images and when
+         * The temporary directory is required to download remote images and whenfonts
          * using the PFDLib back end.
          */
         "DOMPDF_TEMP_DIR" => sys_get_temp_dir(),
@@ -160,7 +160,7 @@ return array(
          * Used if no suitable fonts can be found. This must exist in the font folder.
          * @var string
          */
-        "DOMPDF_DEFAULT_FONT" => "serif",
+        "DOMPDF_DEFAULT_FONT" => "dejavu sans, dejavu sans condensed, dejavu sans mono, dejavu serif, dejavu serif condensed",
 
         /**
          * Image DPI setting
@@ -243,7 +243,7 @@ return array(
         /**
          * A ratio applied to the fonts height to be more like browsers' line height
          */
-        "DOMPDF_FONT_HEIGHT_RATIO" => 1.1,
+        "DOMPDF_FONT_HEIGHT_RATIO" => 0.9,
 
         /**
          * Enable CSS float

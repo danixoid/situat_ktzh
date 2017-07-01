@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ExamCreateRequest;
 use App\Http\Requests\ExamEditRequest;
+use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Request;
 
 class ExamController extends Controller
@@ -125,6 +126,7 @@ class ExamController extends Controller
      */
     public function show($id)
     {
+
         if(request()->ajax()) {
             return response()
                 ->json(\App\Exam::with([
@@ -136,7 +138,14 @@ class ExamController extends Controller
         }
 
         $exam = \App\Exam::find($id);
-        return view('exam.show',['exam' => $exam]);
+
+        if(\request()->has('type') && \request('type') == 'pdf')
+        {
+            $pdf = \PDF::loadView('pdf.exam', ['exam' => $exam]);
+            return $pdf->stream('exam'. $exam->id . 'pdf');
+        }
+
+        return view('exam.show',[ 'exam' => $exam ]);
     }
 
     /**

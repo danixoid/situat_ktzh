@@ -56,8 +56,8 @@ return [
     'by_text' => 'Поиск по тексту',
     'search' => 'Поиск...',
     'ticket_count' => 'Количество билетов',
-    'quest_count' => 'Заданий',
-    'quest_number' => 'Задание № :num' ,
+    'quest_count' => 'Ситуаций',
+    'quest_number' => 'Ситуация № :num' ,
     'details' => 'Детали',
     'type_text' => 'Начинайте вводить текст',
     'remaining_time' => 'Осталось времени: :time',
@@ -84,9 +84,10 @@ return [
     'imported_file' => 'Импортировано :count заданий',
     'started_date' => 'Период проведения',
     'signer' => 'Подписант',
+    'print_to_pdf' => 'Печать в PDF',
 
-    'quest' => 'Задание',
-    'quests' => 'Задания',
+    'quest' => 'Ситуация',
+    'quests' => 'Ситуации',
     'position' => 'Должность',
     'positions' => 'Должности',
     'org' => 'Подразделение',
@@ -105,12 +106,12 @@ return [
     'admin' => 'Администратор',
 
     // QUEST
-    'success_create_quest' => 'Успешно создано новое задание',
-    'failure_create_quest' => 'Не удалось создать задание',
-    'success_save_quest' => 'Успешно сохранено задание',
-    'failure_save_quest' => 'Не удалось сохранить задание',
-    'success_deleted_quest' => 'Задание удалено',
-    'failure_deleted_quest' => 'Не удалось удалить задание',
+    'success_create_quest' => 'Успешно создано новая ситуация',
+    'failure_create_quest' => 'Не удалось создать ситуацию',
+    'success_save_quest' => 'Успешно сохранена ситуация',
+    'failure_save_quest' => 'Не удалось сохранить ситуацию',
+    'success_deleted_quest' => 'Ситуация удалено',
+    'failure_deleted_quest' => 'Не удалось удалить ситуацию',
 
     // ORG
     'success_create_org' => 'Успешно создано новое подразделение',
