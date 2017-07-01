@@ -91,24 +91,26 @@ class QuestController extends Controller
 
             $output = mberegi_replace("docx?$","html",$path);
 
-            $shell = shell_exec("sudo libreoffice --headless --convert-to  html " . $path);
+            $shell = shell_exec("sudo libreoffice --headless --convert-to  html "
+                . $path . " --outdir " . storage_path('app/word_files'));
 //            $shell = shell_exec("sudo /usr/bin/unoconv -f  html " . $path);
 
 //            dd($shell);
 
             $content = file_get_contents($output);
 
-            dd($content);
+//            dd($content);
 //            $content = mb_ereg_replace("\n","", $content);
-            $content = mb_ereg_replace("<!DOCTYPE.+<body[^>]+>","", $content);
-            $content = mb_ereg_replace("<\/body>.+$","", $content);
-            $content = mb_ereg_replace("<p((?!</p>).)+Решение\.?((?!<p).)+</p>","",$content);
+            $content = mberegi_replace("<!DOCTYPE.+<body[^>]+>","", $content);
+            $content = mberegi_replace("<\/body>.+$","", $content);
+            $content = mberegi_replace("<p((?!</p>).)+Решение\.?((?!<p).)+</p>","",$content);
 //            $content = mb_ereg_replace("<p((?!</p>).)+[^а-яА-Я]+((?!<p).)+</p>","",$content);
 
             $arr = mb_split("<p((?!</p>).)+Ситуация((?!<p).)+</p>",$content);
 
             unset($arr[0]);
 
+//            dd($arr);
             $int = 0;
             foreach ($arr as $str) {
                 $content .= $str;
