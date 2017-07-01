@@ -91,14 +91,10 @@
                                 $root = simplexml_load_string($sign->xml);
                                 $errors = libxml_get_errors();
                                 $root->registerXPathNamespace('ds', 'http://www.w3.org/2000/09/xmldsig#');
-/*
-                                $pkey_details = (openssl_pkey_get_public(
-                                    "-----BEGIN GOST PUBLIC KEY-----\n".
+                                $pub = ("-----BEGIN CERTIFICATE-----".
                                     $root->xpath('//ds:Signature/ds:KeyInfo/ds:X509Data/ds:X509Certificate')[0]->__toString()
-                                    . "\n-----END GOST PUBLIC KEY-----"
-                                ));
-
-                                print_r($pkey_details);*/
+                                    ."-----END CERTIFICATE-----");
+                                $pub_key = openssl_x509_parse(openssl_x509_read($pub));
                                 ?>
                                 <div class="col-md-4 form-control-static">
                                     <div class="well">
@@ -110,6 +106,8 @@
                                         @endif
                                         </strong>
                                         <p>{!! $sign->signer->name !!}</p>
+                                        <p>{!! trans('interface.signer') !!}: {!! $pub_key['subject']['CN'] !!}</p>
+                                        <p>{!! trans('interface.iin') !!}: {!! mb_ereg_replace("^(I|B)IN","",$pub_key['subject']['serialNumber']) !!}</p>
                                         <p>
                                             <a download="signature.p7b" href=
                                                "data:application/octet-stream;charset=utf-8;base64,{!!
