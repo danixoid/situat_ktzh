@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\QuestCreateRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class QuestController extends Controller
 {
@@ -84,6 +85,8 @@ class QuestController extends Controller
 //                ->file('word_file')
 //                ->store('word_files'));
 
+            Storage::disk('word')->delete('word.html');
+
             $file = request()->file('word_file');
             $file = $file->move(storage_path('app/word_files'),"word."
                 . $file->getClientOriginalExtension());
@@ -91,7 +94,10 @@ class QuestController extends Controller
 
             $output = mberegi_replace("docx?$","html",$path);
 
-            $shell = shell_exec("sudo libreoffice --headless --convert-to  html "
+            putenv('PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:'
+                . '/bin:/usr/games:/usr/local/games:/opt/node/bin');
+            putenv('HOME=' . sys_get_temp_dir());
+            $shell = shell_exec("libreoffice --headless --convert-to  html "
                 . $path . " --outdir " . storage_path('app/word_files'));
 //            $shell = shell_exec("sudo /usr/bin/unoconv -f  html " . $path);
 
@@ -99,7 +105,13 @@ class QuestController extends Controller
 
             $content = file_get_contents($output);
 
-//            dd($content);
+            $content = preg_replace_callback("/(&#[0-9]+;)/", function($m) {
+                return mb_convert_encoding($m[1], "UTF-8", "HTML-ENTITIES");
+                },
+                $content
+            );
+
+            return $content;
 //            $content = mb_ereg_replace("\n","", $content);
             $content = mberegi_replace("<!DOCTYPE.+<body[^>]+>","", $content);
             $content = mberegi_replace("<\/body>.+$","", $content);
