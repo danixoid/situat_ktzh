@@ -81,7 +81,7 @@ class QuestController extends Controller
         if(request()->hasFile('word_file')) {
             $file = request()->file('word_file');
 
-            $output = shell_exec('libreoffice --headless  -convert-to html ' . $file->path()
+            $output = exec('libreoffice --headless  -convert-to html ' . $file->path()
                 . " -outdir " . sys_get_temp_dir());
 
             dd($output);
