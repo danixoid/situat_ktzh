@@ -102,7 +102,7 @@ class QuestController extends Controller
 
             $content = file_get_contents($output);
 
-//            dd($content);
+            dd($content);
 //            $content = mb_ereg_replace("\n","", $content);
             $content = mberegi_replace("<!DOCTYPE.+<body[^>]+>","", $content);
             $content = mberegi_replace("<\/body>.+$","", $content);
