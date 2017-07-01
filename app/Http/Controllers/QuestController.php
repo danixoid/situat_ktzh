@@ -91,10 +91,7 @@ class QuestController extends Controller
 
             $output = mberegi_replace("docx?$","html",$path);
 
-//            $shell = shell_exec("sudo libreoffice --headless --convert-to  html "
-//                . $path . " --outdir " . storage_path('app/word_files'));
-
-            $shell = shell_exec("export HOME=/tmp && libreoffice --headless --convert-to  html "
+            $shell = shell_exec("sudo libreoffice --headless --convert-to  html "
                 . $path . " --outdir " . storage_path('app/word_files'));
 //            $shell = shell_exec("sudo /usr/bin/unoconv -f  html " . $path);
 
@@ -102,7 +99,7 @@ class QuestController extends Controller
 
             $content = file_get_contents($output);
 
-            dd($content);
+//            dd($content);
 //            $content = mb_ereg_replace("\n","", $content);
             $content = mberegi_replace("<!DOCTYPE.+<body[^>]+>","", $content);
             $content = mberegi_replace("<\/body>.+$","", $content);
