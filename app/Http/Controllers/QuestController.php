@@ -85,17 +85,20 @@ class QuestController extends Controller
 //                ->store('word_files'));
 
             $file = request()->file('word_file');
-            $file = $file->move(sys_get_temp_dir(),"word."
+            $file = $file->move(storage_path('app/word_files'),"word."
                 . $file->getClientOriginalExtension());
             $path = $file->getRealPath();
 
             $output = mberegi_replace("docx?$","html",$path);
 
-            shell_exec('libreoffice --headless  -convert-to html:HTML ' . $path
-                . " -outdir " . sys_get_temp_dir());
+            $shell = shell_exec("sudo libreoffice --headless --convert-to  html " . $path);
+//            $shell = shell_exec("sudo /usr/bin/unoconv -f  html " . $path);
+
+//            dd($shell);
 
             $content = file_get_contents($output);
 
+            dd($content);
 //            $content = mb_ereg_replace("\n","", $content);
             $content = mb_ereg_replace("<!DOCTYPE.+<body[^>]+>","", $content);
             $content = mb_ereg_replace("<\/body>.+$","", $content);
@@ -103,8 +106,6 @@ class QuestController extends Controller
 //            $content = mb_ereg_replace("<p((?!</p>).)+[^а-яА-Я]+((?!<p).)+</p>","",$content);
 
             $arr = mb_split("<p((?!</p>).)+Ситуация((?!<p).)+</p>",$content);
-
-            return $content;
 
             unset($arr[0]);
 
