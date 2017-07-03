@@ -12,7 +12,7 @@ class Ticket extends Model
     protected static function boot()
     {
         parent::boot();
-
+/*
         static::updated(
             function ($ticket) {
                 if (!$ticket->exam->note && $ticket->exam->finished) {
@@ -25,7 +25,7 @@ class Ticket extends Model
                         });
                 }
             }
-        );
+        );*/
     }
 
     public function exam() {
