@@ -79,7 +79,7 @@ return [
 
     'locale' => 'ru',
 
-    'locales' => ['ru'=>'Русский',/* 'en'=>'English',*/ 'kz' => 'Qazaq'],
+    'locales' => ['ru'=>'русский',/* 'en'=>'English',*/ 'kz' => 'қазақ'],
     /*
     |--------------------------------------------------------------------------
     | Application Fallback Locale
