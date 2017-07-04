@@ -52,7 +52,7 @@
                                 @endforeach
                             </tbody>
                         </table>
-
+                        {!! $positions->links() !!}
                     </div>
                 </div>
             </div>

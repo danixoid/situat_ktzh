@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TicketUpdateRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -79,6 +80,7 @@ class TicketController extends Controller
         if(\request()->has('type') && \request('type') == 'minimum')
         {
             return view('layouts.clear',['content' =>
+                "<h4>" . trans('interface.quest') . ":</h4> " .
                 $ticket->quest->task . "<hr />" .
                     "<strong>" . trans("interface.answer") .
                     ":</strong> " . ($ticket->answer ?: trans("interface.not_found"))
@@ -127,35 +129,38 @@ class TicketController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param TicketUpdateRequest|Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(TicketUpdateRequest $request, $id)
     {
         $data = $request->all();
 
 //        dd($data);
         $ticket = \App\Ticket::find($id);
 
+        if(Auth::user()->id == $ticket->exam->user_id) {
 
-        if($ticket->started_at && $ticket->quest->timer * 60 <
-                (\Carbon\Carbon::now()->toTimeString() - strtotime($ticket->started_at))) {
+            if ($ticket->started_at && $ticket->quest->timer * 60 <
+                (\Carbon\Carbon::now()->toTimeString() - strtotime($ticket->started_at))
+            ) {
 
-            $ticket->finished_at = $ticket->updated_at;
-            $ticket->save();
+                $ticket->finished_at = $ticket->updated_at;
+                $ticket->save();
 
-            return redirect()
-                ->to('/')
-                ->with('warning',trans('interface.time_is_up'));
-        }
+                return redirect()
+                    ->to('/')
+                    ->with('warning', trans('interface.time_is_up'));
+            }
 
-        if(isset($data['finished_at'])) {
-            $data['finished_at'] = \Carbon\Carbon::now();
-        }
+            if (isset($data['finished_at'])) {
+                $data['finished_at'] = \Carbon\Carbon::now();
+            }
 
-        if(isset($data['started_at'])) {
-            $data['finished_at'] = \Carbon\Carbon::now();
+            if (isset($data['started_at'])) {
+                $data['finished_at'] = \Carbon\Carbon::now();
+            }
         }
 
         $ticket = \App\Ticket::updateOrCreate(['id' => $id], $data);
@@ -166,6 +171,12 @@ class TicketController extends Controller
                 'message' => trans('interface.success_save_ticket'),
                 'ticket' => $ticket,
             ]);
+        }
+
+        if(Auth::user()->id != $ticket->exam->user_id) {
+            return redirect()
+                ->route('exam.show',$ticket->exam_id)
+                ->with('message',trans('interface.success_save_ticket'));
         }
 
         return redirect()

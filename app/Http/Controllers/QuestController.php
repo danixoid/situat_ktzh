@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\QuestCreateRequest;
+use App\Http\Requests\QuestUpdateRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Storage;
 
 class QuestController extends Controller
@@ -54,7 +57,7 @@ class QuestController extends Controller
         }
 
 
-        return view('quest.index',['quests' => $quests]);
+        return view('quest.index',['quests' => $quests->appends(Input::except('page'))]);
     }
 
     /**
@@ -97,7 +100,7 @@ class QuestController extends Controller
             putenv('PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:'
                 . '/bin:/usr/games:/usr/local/games:/opt/node/bin');
             putenv('HOME=' . sys_get_temp_dir());
-            $shell = shell_exec("libreoffice --headless --convert-to  html "
+            $shell = shell_exec("libreoffice --headless --convert-to  html:\"HTML (StarWriter)\" "
                 . $path . " --outdir " . storage_path('app/word_files'));
 //            $shell = shell_exec("sudo /usr/bin/unoconv -f  html " . $path);
 
@@ -111,12 +114,29 @@ class QuestController extends Controller
                 $content
             );
 
-//            return $content;
+            $files = File::allFiles(storage_path('app/word_files/'));
+
+            foreach ($files as $file)
+            {
+                if(is_file($file))
+                {
+                    if(mb_ereg_match("^word_html_",$file->getFilename())) {
+                        File::move($file->getRealPath(),storage_path('app/'.$file->getFilename()) );
+
+                        $content = mb_ereg_replace($file->getFilename(),
+                            route('uploaded.image',$file->getFilename()), $content);
+                    }
+                }
+            }
+
 //            $content = mb_ereg_replace("\n","", $content);
             $content = mberegi_replace("<!DOCTYPE.+<body[^>]+>","", $content);
             $content = mberegi_replace("<\/body>.+$","", $content);
             $content = mberegi_replace("<p((?!</p>).)+Решение\.?((?!<p).)+</p>","",$content);
 //            $content = mb_ereg_replace("<p((?!</p>).)+[^а-яА-Я]+((?!<p).)+</p>","",$content);
+
+
+//            return $content;
 
             $arr = mb_split("<p((?!</p>).)+Ситуация((?!<p).)+</p>",$content);
 
@@ -125,10 +145,9 @@ class QuestController extends Controller
 //            dd($arr);
             $int = 0;
             foreach ($arr as $str) {
-                $content .= $str;
+                $str = mberegi_replace("<p((?!</p>).)+Решение\.?.+$","",$str);
                 $data['task'] = $str;
                 $quest = \App\Quest::create($data);
-
                 if(isset($data['positions']) && is_array($data['positions'])) {
 
                     foreach ($data['positions'] as $position_id)
@@ -221,13 +240,23 @@ class QuestController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param QuestCreateRequest|Request $request
+     * @param QuestUpdateRequest|Request $request
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(QuestCreateRequest $request, $id)
+    public function update(QuestUpdateRequest $request, $id)
     {
         $data = $request->all();
+
+        if($id == 0 && isset($data['timer'])) {
+            \App\Quest::whereNotNull('created_at')->update(['timer'=>$data['timer']]);
+            return redirect()
+                ->back()
+//                ->with('message',trans('interface.success_save_quest'))
+            ;
+        }
+
+
 
         $data['author_id'] = auth()->user()->id;
 

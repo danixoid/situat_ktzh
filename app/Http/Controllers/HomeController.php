@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Storage;
 
 class HomeController extends Controller
@@ -35,7 +36,7 @@ class HomeController extends Controller
                 ->orWhere('chief_id', Auth::user()->id);
             })
             ->paginate(10);
-        return view('home',['exams' => $exams]);
+        return view('home',['exams' => $exams->appends(Input::except('page'))]);
     }
 
     /**
@@ -59,37 +60,6 @@ class HomeController extends Controller
         }
 
         abort(403);
-    }
-
-
-    /**
-     * @param Request $request
-     * @return mixed
-     */
-    function postJavaEdsRestapi(Request $request) {
-
-
-//        $crm_action = "http://localhost:8080/eds/restapi";
-        $crm_action = "http://bi-beton.kz:8080/eds/restapi";
-
-        $data = $request->getContent();
-
-        $context = stream_context_create(
-            array(
-                'http' => array(
-                    'header' => "Content-type: application/xml\r\n",
-                    'method' => 'POST',
-                    'content' => $data,
-                ),
-            )
-        );
-
-        $result = file_get_contents($crm_action, false, $context);
-
-//        dd($result);
-
-        return response($result)
-            ->withHeaders(['Content-Type' => 'application/json']);
     }
 
     public function signedXml($id)
@@ -134,5 +104,10 @@ class HomeController extends Controller
         }
 
         return $arr;
+    }
+
+    public function __test() {
+        $exam = \App\Exam::find(1);
+        return view('pdf.exam',['exam' => $exam]);
     }
 }

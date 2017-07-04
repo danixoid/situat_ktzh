@@ -7,6 +7,10 @@
  */?>
 @extends('layouts.pdf')
 
+@section('meta')
+    <link rel="stylesheet" href="{!! asset('css/rating.css') !!}" type="text/css" media="screen" title="Rating CSS">
+@endsection
+
 @section('content')
     <style>
         body {
@@ -36,10 +40,14 @@
             <p>{!! $ticket->quest->task !!}</p>
             <p><strong>{{ trans('interface.answer') }}</strong></p>
             <p>{{ $ticket->answer }}</p>
+            <p><strong>{{ trans('interface.mark') }}</strong>:
+                @for($i = 0; $i < 3; $i++)
+                <img src="@if($ticket->mark > $i){!! asset('images/star.png') !!}@else{!! asset('images/star-empty.png') !!}@endif"></a>
+                @endfor
+            </p>
+            <p><strong>{{ trans('interface.note') }}</strong>: {{ $ticket->note }}</p>
             </fieldset>
         @endforeach
-        <br />
-        <div><strong>{{ trans('interface.note') }}</strong>: {{ $exam->note }}</div>
         <br />
         @if(count($exam->signs) > 0)
             <div><strong>{!! trans('interface.signers') !!}</strong>:</div>

@@ -8,12 +8,17 @@ use Illuminate\Support\Facades\Auth;
 class Exam extends Model
 {
 
-    protected $fillable = ['position_id','user_id','chief_id',
-        'count','mark','note'];
+    protected $fillable = ['position_id','user_id','chief_id','count'];
 
-    protected $hidden = ['signs'];
+    protected $hidden = [
+        'signs', 'started','finished','color','amISigner',
+        'startedDate','finishedDate','chiefHasNoteMark'
+    ];
 
-    protected $appends = ['started','finished','color','amISigner','startedDate','finishedDate'];
+    protected $appends = [
+        'isUser','isChief','started','finished','color','amISigner',
+        'startedDate','finishedDate','chiefHasNoteMark'
+    ];
 
     protected static function boot()
     {
@@ -77,6 +82,16 @@ class Exam extends Model
             "id","id");
     }
 
+    public function getIsUserAttribute()
+    {
+        return Auth::check() && Auth::user()->id == $this->user_id;
+    }
+
+    public function getIsChiefAttribute()
+    {
+        return Auth::check() && Auth::user()->id == $this->chief_id;
+    }
+
     public function getStartedAttribute()
     {
         $finish = false;
@@ -134,7 +149,7 @@ class Exam extends Model
         return $this->finished
             ? "exam_finished"
             : ( $this->started
-                ? "started"
+                ? "exam_started"
                 : "exam_not_started");
     }
 
@@ -149,19 +164,19 @@ class Exam extends Model
 
     public function getAmISignerAttribute()
     {
-        $iAmSigner = false;
-
-        if(Auth::check()) {
-            foreach ($this->signs as $sign) {
-                if($sign->signer_id == Auth::user()->id)
-                {
-                    $iAmSigner = true;
-                    break;
-                }
-            }
-        }
-
-        return $iAmSigner;
+        return Auth::check() &&
+            $this
+                ->signs()
+                ->where('signer_id',Auth::user()->id)
+                ->count() > 0;
     }
 
+    public function getChiefHasNoteMarkAttribute()
+    {
+        return $this->isChief &&
+            $this->tickets()
+                    ->whereNull('note')
+                    ->orWhereNull('mark')
+                    ->count() > 0;
+    }
 }

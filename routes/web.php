@@ -24,6 +24,7 @@ Auth::routes();
 
 
 Route::get('/', 'HomeController@index')->name('index');
+Route::get('/_test', 'HomeController@__test')->name('_test');
 Route::get('/signing/{id}', 'HomeController@signingData')->name('signing.data');
 
 Route::get('/home', 'HomeController@home')->name('home');

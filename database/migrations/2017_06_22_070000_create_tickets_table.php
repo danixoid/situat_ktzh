@@ -20,6 +20,8 @@ class CreateTicketsTable extends Migration
             $table->text('answer')->nullable(); //решение задания
             $table->timestamp('started_at')->nullable(); //время завершения
             $table->timestamp('finished_at')->nullable(); //время завершения
+            $table->unsignedTinyInteger('mark')->default(0); //оценка за задание
+            $table->text('note')->nullable(); //комментарий руководителя
             $table->timestamps();
 
             $table->foreign('quest_id')

@@ -19,8 +19,6 @@ class CreateExamsTable extends Migration
             $table->unsignedInteger('position_id');
             $table->unsignedInteger('chief_id');
             $table->unsignedTinyInteger('count'); //количество заданий
-            $table->unsignedTinyInteger('mark')->nullable(); //оценка за все задания
-            $table->text('note')->nullable(); //комментарий руководителя
             $table->timestamps();
 
             $table->foreign('position_id')

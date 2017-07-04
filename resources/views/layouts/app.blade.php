@@ -9,7 +9,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ trans('interface.quests_task') }}</title>
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -32,7 +32,7 @@
 
                     <!-- Branding Image -->
                     <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'Laravel') }}
+                        {{ trans('interface.home') }}
                     </a>
                 </div>
 
@@ -40,15 +40,15 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
                         @if(Auth::check() && Auth::user()->hasAnyRole(['admin','manager']))
-                            <li{!! preg_match("/quest/",request()->path()) ? " class=\"active\"" : "" !!}><a href="{{ route('quest.index') }}">{!! trans('interface.quests') !!}</a></li>
                             <li{!! preg_match("/exam/",request()->path()) ? " class=\"active\"" : "" !!}><a href="{{ route('exam.index') }}">{!! trans('interface.exams') !!}</a></li>
 {{--                            <li><a href="{{ route('ticket.index') }}">{!! trans('interface.tickets') !!}</a></li>--}}
                             <li{!! preg_match("/(org)|(position)|(user)/",request()->url()) ? " class=\"active\"" : " class=\"dropdown\"" !!}>
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                    {{ trans('interface.organization_structure') }} <span class="caret"></span>
+                                    {{ trans('interface.references') }} <span class="caret"></span>
                                 </a>
 
                                 <ul class="dropdown-menu" role="menu">
+                                    <li{!! preg_match("/quest/",request()->path()) ? " class=\"active\"" : "" !!}><a href="{{ route('quest.index') }}">{!! trans('interface.quests_task') !!}</a></li>
                                     <li{!! preg_match("/org/",request()->path()) ? " class=\"active\"" : "" !!}><a href="{{ route('org.index') }}">{!! trans('interface.orgs') !!}</a></li>
                                     <li{!! preg_match("/position/",request()->path()) ? " class=\"active\"" : "" !!}><a href="{{ route('position.index') }}">{!! trans('interface.positions') !!}</a></li>
                                     <li{!! preg_match("/user/",request()->path()) ? " class=\"active\"" : "" !!}><a href="{{ route('user.index') }}">{!! trans('interface.users') !!}</a></li>

@@ -21,7 +21,7 @@
                             {!! csrf_field() !!}
 
                             <div class="form-group">
-                                <label class="col-md-3 control-label">{!! trans('interface.title') !!}</label>
+                                <label class="col-md-3 control-label">{!! trans('interface.name') !!}</label>
                                 <div class="col-md-9">
                                     <input type="text" class="form-control" name="name"
                                            value="{!! old('name') !!}" required>
@@ -29,7 +29,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="col-md-3 control-label">{!! trans('interface.title') !!}</label>
+                                <label class="col-md-3 control-label">{!! trans('interface.iin') !!}</label>
                                 <div class="col-md-9">
                                     <input type="number" minlength="12" maxlength="12" class="form-control"
                                            name="iin" value="{!! old('name') !!}" required>

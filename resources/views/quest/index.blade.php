@@ -17,10 +17,41 @@
                             <label class="col-md-10">{!! trans('interface.quests') !!}</label>
                             <div class="col-md-2 text-right">
                                 <a href="{!! route('quest.create') !!}" >{!! trans('interface.create') !!}</a>
+                                |
+                                <a href="#modal_timer" data-toggle="modal" data-target="#modal_timer">{!! trans('interface.edit') !!}</a>
                             </div>
                         </div>
                     </div>
 
+                    <div class="modal fade" id="modal_timer">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+
+                                <div class="modal-body">
+                                    <div class="close-button">
+                                        <button type="button" class="close" data-dismiss="modal"
+                                                aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    </div>
+                                    <div class="embed-responsive embed-responsive-16by9">
+                                        <h2 class="form-signin-heading">{!! trans('interface.timer') !!} | {!! trans('interface.edit') !!}</h2>
+
+                                        <form class="form"  action="{!! route('quest.update',0) !!}" method="POST">
+                                        {!! csrf_field() !!}
+                                        {!! method_field('PUT') !!}
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <input type="number" class="form-control" name="timer" value="15">
+                                                    <span class="input-group-btn">
+                                                        <button type="submit" class="btn btn-primary">{{ trans('interface.save') }}</button>
+                                                    </span>
+                                                </div><!-- /input-group -->
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->
                     <div class="panel-body">
                         <form class="form-horizontal" id="form_quest_search" action="{!! route("quest.index") !!}">
 

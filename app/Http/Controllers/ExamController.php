@@ -6,6 +6,7 @@ use App\Http\Requests\ExamCreateRequest;
 use App\Http\Requests\ExamEditRequest;
 use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 
 class ExamController extends Controller
 {
@@ -68,7 +69,7 @@ class ExamController extends Controller
             return $exams->toJson();
         }
 
-        return view('exam.index',['exams' => $exams]);
+        return view('exam.index',['exams' => $exams->appends(Input::except('page'))]);
     }
 
     /**

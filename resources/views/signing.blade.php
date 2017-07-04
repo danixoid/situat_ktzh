@@ -30,29 +30,11 @@
 
         <h2 class="form-signin-heading">{!! trans('interface.xml_signing') !!}</h2>
 
-        <div class="form-group" ng-if="detail.step==3">
-            <label class="control-label col-md-3">{!! trans('interface.note') !!} {!! $exam->chief->name !!}</label>
-            <div class="col-md-6 form-control-static">
-                <textarea rows="5" class="form-control" ng-model="detail.note"
-                          placeholder="{{ trans('interface.type_text') }}"></textarea>
-            </div>
-        </div>
-
         <div class="form-group" ng-if="detail.step==3 && !detail.signed">
             <div class="col-md-9 col-md-offset-3">
                 <button type="submit" ng-click="putExam()" class="btn btn-success btn-lg">{{ trans('interface.next') }}</button>
             </div>
         </div>
-
-        <!-- SIGNING -->
-        @if(\AUTH::user()->id == $exam->chief->id)
-        <div class="form-group" ng-if="detail.step==0 && !detail.signed">
-            <label class="control-label col-md-3">{{ trans('interface.note') }}</label>
-            <div class="col-md-9 form-control-static">
-                @{{ detail.note }}
-            </div>
-        </div>
-        @endif
 
         <div class="form-group" ng-if="detail.step==0 && !detail.signed">
             <label class="control-label col-md-3">{{ trans('interface.xml_data') }}</label>
@@ -169,9 +151,10 @@
 
         $scope.detail = {
             signed : false,
-            @if($exam->chief_id == \Auth::user()->id)note : "{!! $exam->note !!}",@endif
+{{--            @if($exam->chief_id == \Auth::user()->id)note : "{!! $exam->note !!}",@endif--}}
             ncaPassword : "",
-            step : @if($exam->chief_id == \Auth::user()->id) 3 @else 0 @endif
+            step : 0,
+            {{--step : @if($exam->chief_id == \Auth::user()->id) 3 @else 0 @endif--}}
         };
 
         $scope.loadExam = function() {

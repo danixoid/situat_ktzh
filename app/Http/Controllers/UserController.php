@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserCreateRequest;
 use App\Http\Requests\UserEditRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 
 class UserController extends Controller
 {
@@ -29,6 +30,7 @@ class UserController extends Controller
         if(request()->has('q')) {
             $users = \App\User::where('name','LIKE', '%' . request('q'). '%')
                 ->orWhere('email','LIKE', '%' . request('q'). '%')
+                ->orWhere('iin','LIKE', '%' . request('q'). '%')
                 ->orderBy('created_at','desc')
 //                ->take(request('page'))
                 ->paginate($count);
@@ -41,7 +43,7 @@ class UserController extends Controller
             $users = \App\User::paginate($count);
         }
 
-        return view('user.index',['users' => $users]);
+        return view('user.index',['users' => $users->appends(Input::except('page'))]);
     }
 
     /**

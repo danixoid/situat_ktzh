@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PositionCreateRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 
 class PositionController extends Controller
 {
@@ -39,10 +40,10 @@ class PositionController extends Controller
         } else if(request()->has('org_id')) {
             $positions = \App\Org::find(request('org_id'))->positions;
         } else {
-            $positions = \App\Position::orderBy('org_id')->get();
+            $positions = \App\Position::orderBy('org_id')->paginate(15);
         }
 
-        return view('position.index',['positions' => $positions]);
+        return view('position.index',['positions' => $positions->appends(Input::except('page'))]);
     }
 
     /**

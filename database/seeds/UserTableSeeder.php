@@ -13,18 +13,14 @@ class UserTableSeeder extends Seeder
      */
     public function run()
     {
-        $role_employee = Role::where("name", "employee")->first();
-        $role_manager  = Role::where("name", "manager")->first();
-        $role_admin  = Role::where("name", "admin")->first();
-
-
         $admin = new User();
-        $admin->name = "Администратор Вася";
-        $admin->email = "admin@example.com";
+        $admin->name = "Администратор";
+        $admin->email = "danixoid@gmail.com";
         $admin->iin = "870307401142";
         $admin->password = bcrypt("12345");
         $admin->save();
-        
+
+        $role_admin  = Role::where("name", "admin")->first();
         $admin->roles()->attach($role_admin);
 
         $manager = new User();
@@ -34,9 +30,11 @@ class UserTableSeeder extends Seeder
         $manager->password = bcrypt("12345");
         $manager->save();
 
+        $role_manager  = Role::where("name", "manager")->first();
         $manager->roles()->attach($role_manager);
 
-
+/*
+        $role_employee = Role::where("name", "employee")->first();
         for($i = 0; $i < 20; $i++) :
             $employee = new User();
             $employee->name = "Иван" . $i . " Иванов" . $i;
@@ -46,6 +44,6 @@ class UserTableSeeder extends Seeder
             $employee->save();
 
             $employee->roles()->attach($role_employee);
-        endfor;
+        endfor;*/
     }
 }

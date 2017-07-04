@@ -17,5 +17,10 @@
 
 </head>
 <body>
+<style>
+    img {
+        width: 100%;
+    }
+</style>
 {!! $content !!}
 </body>
