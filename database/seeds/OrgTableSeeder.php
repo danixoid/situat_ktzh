@@ -85,7 +85,7 @@ class OrgTableSeeder extends Seeder
         {
             $org = new \App\Org();
             $org->name = $dep;
-            $org->org_id = $root->id;
+            $org->org_id = $depart->id;
             $org->save();
 
             foreach ($functs as $funct)
