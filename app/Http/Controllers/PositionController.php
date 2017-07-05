@@ -38,7 +38,7 @@ class PositionController extends Controller
             }
 
         } else if(request()->has('org_id')) {
-            $positions = \App\Org::find(request('org_id'))->positions;
+            $positions = \App\Org::find(request('org_id'))->positions()->paginate(15);
         } else {
             $positions = \App\Position::orderBy('org_id')->paginate(15);
         }
