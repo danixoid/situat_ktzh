@@ -12,11 +12,11 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
-                    <div class="panel-heading">{!! trans('interface.positions') !!} | {!! trans('interface.create') !!}</div>
+                    <div class="panel-heading">{!! trans('interface.funcs') !!} | {!! trans('interface.create') !!}</div>
 
                     <div class="panel-body">
 
-                        <form id="form_create_position" class="form-horizontal" action="{!! route('position.store') !!}" method="POST">
+                        <form id="form_create_func" class="form-horizontal" action="{!! route('func.store') !!}" method="POST">
                             {!! csrf_field() !!}
 
 

@@ -8,6 +8,11 @@
 @extends('layouts.app')
 
 @section('content')
+
+    <?php $org_id = request('org_id') ?: '0'; ?>
+    <?php $func_id = request('func_id') ?: '0'; ?>
+    <?php $position_id = request('position_id') ?: '0'; ?>
+
     <div class="container">
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
@@ -55,13 +60,29 @@
                     <div class="panel-body">
                         <form class="form-horizontal" id="form_quest_search" action="{!! route("quest.index") !!}">
 
+
                             <div class="form-group">
                                 <label class="col-md-3 control-label">{!! trans('interface.org') !!}</label>
+                                <div class="col-md-9">
+                                    <select class="form-control select2-single" name="org_id" id="org">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">{!! trans('interface.func') !!}</label>
+                                <div class="col-md-9">
+                                    <select class="form-control select2-single" name="func_id" id="func">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">{!! trans('interface.position') !!}</label>
                                 <div class="col-md-9">
                                     <select class="form-control select2-single" name="position_id" id="position">
                                     </select>
                                 </div>
                             </div>
+
 
 
                             <div class="form-group">
@@ -86,7 +107,7 @@
                                     <th>№</th>
                                     {{--<th>{!! trans('interface.source') !!}</th>--}}
                                     <th>{!! trans('interface.task') !!}</th>
-                                    <th>{!! trans('interface.position') !!}</th>
+{{--                                    <th>{!! trans('interface.position') !!}</th>--}}
                                     <th>{!! trans('interface.timer') !!}</th>
                                     <th></th>
                                 </tr>
@@ -97,12 +118,12 @@
                                         <td>{!! $quest->id !!}</td>
 {{--                                        <td>{{ $quest->shortSource }}...</td>--}}
                                         <td>{{ $quest->shortTask }}...</td>
-                                        <td>
+                                        {{--<td>
                                             @foreach($quest->positions as $position)
                                                 <a href="{!! route('quest.index',['position_id' => $position->id]) !!}">
                                                     <span title="{!! $position->orgPath !!}" class="text-info">{!! $position->name !!}</span>
                                                 </a>,
-                                            @endforeach
+                                            @endforeach--}}
                                         </td>
                                         <td><span class="text-warning">{{ $quest->timer }} {{ trans('interface.minutes') }}</span></td>
                                         <td><a href="{!! route('quest.show',['id'=>$quest->id]) !!}">{!! trans('interface.show') !!}</a></td>
@@ -130,81 +151,107 @@
     <script src="{{ asset('js/i18n/ru.js') }}"></script>
     <script>
 
+
         $(function () {
 
-            <?php $position_id = request('position_id') ?: '0'; ?>
             /**
              *  SELECT2
              */
-            $("#position").select2({
-                data: [
-                    {
-                        id: '{!! $position_id !!}',
-                        name: '{!! ($position_id > 0)
-                            ? \App\Position::find($position_id)->name
-                            : trans('interface.no_value') !!}',
-                        orgPath: '{!! $position_id > 0
-                            ? \App\Position::find($position_id)->orgPath
-                            : trans('interface.no_value') !!}'
-                    }
-                ],
-                ajax: {
-                    url: "{!! url('/position?version='.date('YmdHis')) !!}",
-                    dataType: 'json',
-                    delay: 250,
-                    data: function (params) {
-                        return {
-                            q: params.term, // search term
-                            page: params.page
-                        };
-                    },
-                    processResults: function (data, params) {
-                        // parse the results into the format expected by Select2
-                        // since we are using custom formatting functions we do not need to
-                        // alter the remote JSON data, except to indicate that infinite
-                        // scrolling can be used
-                        params.page = params.page || 1;
 
-                        return {
-                            results: data,
-                            pagination: {
-                                more: (params.page * 30) < data.length
-                            }
-                        };
-                    },
-                    cache: true
+            var data = {
+
+                org : {
+                    id: '{!! $org_id !!}',
+                    name: '{!! ($org_id > 0)
+                                ? \App\Org::find($org_id)->name
+                                : trans('interface.no_value') !!}',
                 },
-                theme: "bootstrap",
-                placeholder: '{!! trans('interface.select_position') !!}',
-                allowClear: true,
-                language: '{!! config()->get('app.locale') !!}',
-                escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
-                minimumInputLength: 2,
-                templateResult: formatPosition, // omitted for brevity, see the source of this page
-                templateSelection: formatPositionSelection // omitted for brevity, see the source of this page
+                func : {
+                    id: '{!! $func_id !!}',
+                    name: '{!! ($func_id > 0)
+                                ? \App\Func::find($func_id)->name
+                                : trans('interface.no_value') !!}',
+                },
+                position : {
+                    id: '{!! $position_id !!}',
+                    name: '{!! ($position_id > 0)
+                                ? \App\Position::find($position_id)->name
+                                : trans('interface.no_value') !!}',
+                }
+            };
+
+
+
+            $("#org,#func,#position").each(function(){
+                var id = $(this).attr('id');
+
+                $(this).select2({
+                    data: [
+                        data[id]
+                    ],
+                    ajax: {
+                        url: "{!! url('/" + id + "') !!}",
+                        dataType: 'json',
+                        delay: 250,
+                        data: function (params) {
+                            return {
+                                q: params.term, // search term
+                                count: params.page
+                            };
+                        },
+                        processResults: function (data, params) {
+                            // parse the results into the format expected by Select2
+                            // since we are using custom formatting functions we do not need to
+                            // alter the remote JSON data, except to indicate that infinite
+                            // scrolling can be used
+                            params.page = params.page || 1;
+
+                            return {
+                                results: data.data,
+                                pagination: {
+                                    more: (params.page * 30) < data.length
+                                }
+                            };
+                        },
+                        cache: true
+                    },
+                    theme: "bootstrap",
+                    placeholder: '{!! trans('interface.select_position') !!}',
+                    allowClear: true,
+                    language: '{!! config()->get('app.locale') !!}',
+                    escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
+                    minimumInputLength: 2,
+                    templateResult: formatDetail, // omitted for brevity, see the source of this page
+                    templateSelection: formatDetailSelection // omitted for brevity, see the source of this page
+                });
             });
 
-            $('#position').on("select2:select", function(e) {
-                $("#form_quest_search").submit();
-//                window.location.href = '?position_id=' + e.target.value;
+            $("#org,#func,#position").each(function() {
+                $(this).on("select2:select", function(e) {
+                    $("#form_quest_search").submit();
+                });
+
+                $(this).on("select2:unselect", function(e) {
+                    $(this).val("0");
+                    $("#form_quest_search").submit();
+                });
             });
 
-            $('#position').on("select2:unselect", function(e) {
 
-                $("#form_quest_search").find("#position").val("0");
-                $("#form_quest_search").submit();
-{{--                window.location.href = '{!! route('quest.index') !!}';--}}
-            });
         });
 
-        function formatPosition (position) {
-            return "<div class='text-info'>" + position.orgPath + "</div><div>" + position.name + "</div>";
+
+        function formatDetail (detail) {
+            return "<span class='text-warning'>" + detail.name + "</span>";
         }
 
-        function formatPositionSelection (position) {
-            return "<label class='text-info'>" + position.orgPath + "/" + position.name + "</label>";
+        function formatDetailSelection (detail) {
+            if(detail.id === '0') {
+                return "<span class='text-primary'>" + detail.name + "</span>";
+            } else {
+                return "<span class='label label-info'>" + detail.name + "</span>";
+            }
         }
-
 
     </script>
 

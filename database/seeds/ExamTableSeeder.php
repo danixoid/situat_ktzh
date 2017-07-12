@@ -17,6 +17,8 @@ class ExamTableSeeder extends Seeder
 
         foreach ($users as $user) :
             $exam = new \App\Exam();
+            $exam->org_id = \App\Org::inRandomOrder()->first()->id;
+            $exam->func_id = \App\Func::inRandomOrder()->first()->id;
             $exam->position_id = \App\Position::inRandomOrder()->first()->id;
             $exam->user_id  = $user->id;
             $exam->chief_id = \App\User::first()->id;

@@ -24,6 +24,8 @@ class ExamEditRequest extends FormRequest
     public function rules()
     {
         return [
+            'org_id' => 'int|min:1',
+            'func_id' => 'int|min:1',
             'position_id' => 'int|min:1',
             'user_id' => 'int|min:1',
             'chief_id' => 'int|min:1',

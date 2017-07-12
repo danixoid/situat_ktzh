@@ -24,24 +24,6 @@ class Exam extends Model
     {
         parent::boot();
 
-        static::created(
-            function($exam) {
-                $quests = \App\Position::find($exam->position_id)
-                    ->quests()
-                    ->inRandomOrder()
-                    ->take($exam->count)
-                    ->get();
-
-                foreach($quests as $quest)
-                {
-                    \App\Ticket::create([
-                        'exam_id' => $exam->id,
-                        'quest_id' => $quest->id
-                    ]);
-                }
-            }
-        );
-
         static::deleting(
             function($exam)
             {
@@ -63,6 +45,16 @@ class Exam extends Model
     public function signs()
     {
         return $this->hasMany(\App\Sign::class);
+    }
+
+    public function org()
+    {
+        return $this->belongsTo(\App\Org::class);
+    }
+
+    public function func()
+    {
+        return $this->belongsTo(\App\Func::class);
     }
 
     public function position()

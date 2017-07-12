@@ -15,7 +15,6 @@ class OrgTableSeeder extends Seeder
     public function run()
     {
         $this->setRealOrgs(0,0);
-//        $this->setOrgs(0,0);
     }
 
     private function setRealOrgs($org_id,$iter){
@@ -41,6 +40,13 @@ class OrgTableSeeder extends Seeder
             'Служба канцелярии, секретариата и протокола',
             'Программа по модернизации и трансформации бизнесса группы Компании АО "НК"ҚТЖ"',
         ];
+
+        foreach ($deps as $dep)
+        {
+            $org = new \App\Org();
+            $org->name = $dep;
+            $org->save();
+        }
         
         $fils = [
             'Филиала АО «НК «ҚТЖ» - «Главный вычислительный центр»',
@@ -56,84 +62,11 @@ class OrgTableSeeder extends Seeder
             'Филиал АО «НК «ҚТЖ» - «Многофункциональный центр обслуживания»',
         ];
 
-        $functs = [
-            'ГРУППА ПО УПРАВЛЕНИЮ ЭКОНОМИЧЕСКОЙ И ФИНАНСОВОЙ ПОЛИТИКОЙ',
-            'ГРУППА ПО ПЛАНИРОВАНИЮ КОНСОЛИДАЦИИ, АВТОМАТИЗАЦИИ И МОНИТОРИНГУ ПЛАНА РАЗВИТИЯ',
-            'ГРУППА ПО ПЛАНИРОВАНИЮ КОНСОЛИДАЦИИ, АВТОМАТИЗАЦИИ И МОНИТОРИНГУ ПЛАНА РАЗВИТИЯ',
-            'ГРУППА ПО УПРАВЛЕНИЮ ЭКОНОМИЧЕСКОЙ И ФИНАНСОВОЙ ПОЛИТИКОЙ ДОЧЕРНИХ ОРГАНИЗАЦИЙ',
-        ];
-
-
-        /**
-         *  ROOT AO NK KTZH
-         */
-        $root = new \App\Org();
-        $root->name = 'АО «НК «КТЖ»';
-        $root->save();
-
-        $depart = new \App\Org();
-        $depart->name = 'Департаменты';
-        $depart->org_id = $root->id;
-        $depart->save();
-
-        $filial = new \App\Org();
-        $filial->name = 'Филиалы';
-        $filial->org_id = $root->id;
-        $filial->save();
-
-        foreach ($deps as $dep)
-        {
-            $org = new \App\Org();
-            $org->name = $dep;
-            $org->org_id = $depart->id;
-            $org->save();
-
-            foreach ($functs as $funct)
-            {
-                $org1 = new \App\Org();
-                $org1->name = $funct;
-                $org1->org_id = $org->id;
-                $org1->save();
-            }
-
-        }
-
         foreach ($fils as $fil)
         {
             $org = new \App\Org();
             $org->name = $fil;
-            $org->org_id = $filial->id;
             $org->save();
-
-            foreach ($functs as $funct)
-            {
-                $org1 = new \App\Org();
-                $org1->name = $funct;
-                $org1->org_id = $org->id;
-                $org1->save();
-            }
-
         }
-
-
     }
-//
-//    private function setOrgs($org_id,$iter){
-//
-//        for($i = 0; $i < 2; $i++) :
-//            $org = new \App\Org();
-//            $org->name = 'Структура ' . $org_id;
-//
-//            if($org_id > 0) :
-//                $org->org_id = $org_id;
-//            endif;
-//            $org->save();
-//
-//            if($iter < 3) {
-//                $next = $iter + 1;
-//                $this->setOrgs($org->id,$next);
-//            }
-//
-//        endfor;
-//    }
 }

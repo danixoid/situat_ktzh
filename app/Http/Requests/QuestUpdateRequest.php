@@ -25,7 +25,6 @@ class QuestUpdateRequest extends FormRequest
     {
         return [
             'task' => 'string',
-            'positions' => 'array',
             'timer' => 'int',
         ];
     }

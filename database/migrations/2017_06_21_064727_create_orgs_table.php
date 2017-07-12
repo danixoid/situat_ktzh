@@ -15,15 +15,9 @@ class CreateOrgsTable extends Migration
     {
         Schema::create('orgs', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('org_id')->nullable();
             $table->string('name');
             $table->timestamps();
 
-        });
-
-        Schema::table('orgs',function (Blueprint $table) {
-            $table->foreign('org_id')
-                ->references('id')->on('orgs');
         });
     }
 

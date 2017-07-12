@@ -26,7 +26,6 @@ class QuestCreateRequest extends FormRequest
         return [
             'task' => 'required_if:word_file,',
             'word_file' => 'required_if:task,|file',
-            'positions' => 'required|array',
             'timer' => 'int',
         ];
     }

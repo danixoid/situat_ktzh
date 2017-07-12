@@ -8,19 +8,6 @@ class Position extends Model
 {
     protected $fillable = ['org_id','name'];
 
-    protected $appends = ['orgPath'];
-
-
-    public function org()
-    {
-        return $this->belongsTo(\App\Org::class);
-    }
-
-    public function getOrgPathAttribute()
-    {
-        return $this->org->orgPath;
-    }
-
     public function quests()
     {
         return $this

@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\OrgCreateRequest;
+use App\Http\Requests\FuncCreateRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 
-class OrgController extends Controller
+class FuncController extends Controller
 {
     /**
      *  constructor.
@@ -25,20 +25,20 @@ class OrgController extends Controller
      */
     public function index()
     {
-        $orgs = \App\Org::paginate(15);
+        $funcs = \App\Func::paginate(15);
 
         if(request()->has('q')) {
-            $orgs = \App\Org::where('name','LIKE', '%' . request('q'). '%')
+            $funcs = \App\Func::where('name','LIKE', '%' . request('q'). '%')
                 ->orderBy('created_at','desc')
                 ->paginate(15);
 
             if(request()->ajax()) {
-                return $orgs->toJson();
+                return $funcs->toJson();
             }
 
         }
 
-        return view('org.index',['orgs' => $orgs->appends(Input::except('page'))]);
+        return view('func.index',['funcs' => $funcs->appends(Input::except('page'))]);
     }
 
     /**
@@ -48,45 +48,45 @@ class OrgController extends Controller
      */
     public function create()
     {
-        return view('org.create');
+        return view('func.create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param \App\Http\Controllers\Request|OrgCreateRequest|Request $request
+     * @param \App\Http\Controllers\Request|FuncCreateRequest|Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(OrgCreateRequest $request)
+    public function store(FuncCreateRequest $request)
     {
 
         $data = $request->all();
 
-        $org = \App\Org::create($data);
+        $func = \App\Func::create($data);
 
-        if(!$org) {
+        if(!$func) {
 
             if($request->ajax()) {
                 return response()->json([
                     'success' => false,
-                    'message' => trans('interface.failure_create_org')
+                    'message' => trans('interface.failure_create_func')
                 ]);
             }
 
-            return redirect()->back()->with('warning',trans('interface.failure_create_org'));
+            return redirect()->back()->with('warning',trans('interface.failure_create_func'));
         }
 
         if($request->ajax()) {
             return response()->json([
                 'success' => true,
-                'message' => trans('interface.success_create_org'),
-                'org' => $org,
+                'message' => trans('interface.success_create_func'),
+                'func' => $func,
             ]);
         }
 
         return redirect()
-            ->route('org.show',$org->id)
-            ->with('message',trans('interface.success_create_org'));
+            ->route('func.show',$func->id)
+            ->with('message',trans('interface.success_create_func'));
 
     }
 
@@ -100,12 +100,12 @@ class OrgController extends Controller
     {
         if(request()->ajax()) {
             return response()
-                ->json(\App\Org::with('parent','children')
+                ->json(\App\Func::with('parent','children')
                     ->find($id));
         }
 
-        $org = \App\Org::find($id);
-        return view('org.index',['org' => $org]);
+        $func = \App\Func::find($id);
+        return view('func.index',['func' => $func]);
     }
 
     /**
@@ -116,43 +116,43 @@ class OrgController extends Controller
      */
     public function edit($id)
     {
-        $org = \App\Org::find($id);
+        $func = \App\Func::find($id);
 
-        return view('org.edit',['org' => $org]);
+        return view('func.edit',['func' => $func]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param \App\Http\Controllers\Request|OrgCreateRequest|Request $request
+     * @param \App\Http\Controllers\Request|FuncCreateRequest|Request $request
      * @param  int $id
      * @return \Illuminate\Http\Response
      * @internal param Request $request
      */
-    public function update(OrgCreateRequest $request, $id)
+    public function update(FuncCreateRequest $request, $id)
     {
         $data = $request->all();
 
-        $org = \App\Org::updateOrCreate(['id' => $id], $data);
+        $func = \App\Func::updateOrCreate(['id' => $id], $data);
 
-        if(!$org) {
+        if(!$func) {
 
             if($request->ajax()) {
-                return response()->json(['success' => false, 'message' => trans('interface.failure_save_org')]);
+                return response()->json(['success' => false, 'message' => trans('interface.failure_save_func')]);
             }
 
-            return redirect()->back()->with('warning',trans('interface.failure_save_org'));
+            return redirect()->back()->with('warning',trans('interface.failure_save_func'));
         }
 
         if($request->ajax()) {
             return response()->json([
                 'success' => true,
-                'message' => trans('interface.success_save_org'),
-                'org' => $org,
+                'message' => trans('interface.success_save_func'),
+                'func' => $func,
             ]);
         }
 
-        return redirect()->route('org.index')->with('message',trans('interface.success_save_org'));
+        return redirect()->route('func.index')->with('message',trans('interface.success_save_func'));
     }
 
     /**
@@ -163,23 +163,23 @@ class OrgController extends Controller
      */
     public function destroy($id)
     {
-        $org = \App\Org::find($id);
+        $func = \App\Func::find($id);
 
-        if(!$org || count($org->children) > 0) {
+        if(!$func || count($func->children) > 0) {
 
             if(request()->ajax()) {
-                return response()->json(['success' => false, 'message' => trans('interface.failure_deleted_org')]);
+                return response()->json(['success' => false, 'message' => trans('interface.failure_deleted_func')]);
             }
 
-            return redirect()->back()->with('warning',trans('interface.failure_deleted_org'));
+            return redirect()->back()->with('warning',trans('interface.failure_deleted_func'));
         }
 
-        foreach($org->positions as $position): $position->delete(); endforeach;
+        foreach($func->positions as $position): $position->delete(); endforeach;
 
-        $org->delete();
+        $func->delete();
 
         return redirect()
-            ->route('org.index')
-            ->with('message',trans('interface.success_deleted_org'));
+            ->route('func.index')
+            ->with('message',trans('interface.success_deleted_func'));
     }
 }

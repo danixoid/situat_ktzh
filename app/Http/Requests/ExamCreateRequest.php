@@ -24,6 +24,8 @@ class ExamCreateRequest extends FormRequest
     public function rules()
     {
         return [
+            'org_id' => 'required|int|min:1',
+            'func_id' => 'required|int|min:1',
             'position_id' => 'required|int|min:1',
             'user_id' => 'required|int|min:1',
             'chief_id' => 'required|int|min:1',

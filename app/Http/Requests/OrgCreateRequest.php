@@ -24,7 +24,6 @@ class OrgCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'org_id' => 'required|int',
             'name' => 'required|string',
         ];
     }

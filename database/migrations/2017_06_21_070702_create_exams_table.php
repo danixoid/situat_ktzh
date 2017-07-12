@@ -15,12 +15,18 @@ class CreateExamsTable extends Migration
     {
         Schema::create('exams', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('user_id');
+            $table->unsignedInteger('org_id');
+            $table->unsignedInteger('func_id');
             $table->unsignedInteger('position_id');
+            $table->unsignedInteger('user_id');
             $table->unsignedInteger('chief_id');
             $table->unsignedTinyInteger('count'); //количество заданий
             $table->timestamps();
 
+            $table->foreign('org_id')
+                ->references('id')->on('orgs');
+            $table->foreign('func_id')
+                ->references('id')->on('funcs');
             $table->foreign('position_id')
                 ->references('id')->on('positions');
             $table->foreign('user_id')

@@ -12,24 +12,24 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
-                    <div class="panel-heading">{!! trans('interface.positions') !!} | {!! trans('interface.create') !!}</div>
+                    <div class="panel-heading">{!! trans('interface.funcs') !!} | {!! trans('interface.edit') !!}</div>
 
                     <div class="panel-body">
 
-                        <form id="form_create_position" class="form-horizontal" action="{!! route('position.store') !!}" method="POST">
+                        <form id="form_create_func" class="form-horizontal" action="{!! route('func.update',['id' => $func->id]) !!}" method="POST">
                             {!! csrf_field() !!}
-
+                            {!! method_field("PUT")  !!}
 
                             <div class="form-group">
                                 <label class="col-md-3 control-label">{!! trans('interface.title') !!}</label>
                                 <div class="col-md-9">
-                                    <input type="text" class="form-control" name="name" value="{!! old('name') !!}">
+                                    <input class="form-control" name="name" value="{!! $func->name !!}" />
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <div class="col-md-offset-3 col-md-3">
-                                    <button class="btn btn-block btn-danger" >{!! trans('interface.create') !!}</button>
+                                    <button class="btn btn-block btn-danger" >{!! trans('interface.update') !!}</button>
                                 </div>
                             </div>
                         </form>

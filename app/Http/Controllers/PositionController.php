@@ -24,23 +24,18 @@ class PositionController extends Controller
      */
     public function index()
     {
+        $count = request('count') ?: 10;
+        $positions = \App\Position::paginate($count);
+
         if(request()->has('q')) {
-            $positions = \App\Position::where('name','LIKE', request('q'). '%')
-                ->orWhereHas('org', function($query) {
-                    return $query->where('name','LIKE', request('q'). '%');
-                })
-                ->orderBy('org_id')
-                ->take(request('page'))
-                ->get();
+            $positions = \App\Position::where('name','LIKE', '%' . request('q'). '%')
+                ->orderBy('created_at','desc')
+                ->paginate(15);
 
             if(request()->ajax()) {
                 return $positions->toJson();
             }
 
-        } else if(request()->has('org_id')) {
-            $positions = \App\Org::find(request('org_id'))->positions()->paginate(15);
-        } else {
-            $positions = \App\Position::orderBy('org_id')->paginate(15);
         }
 
         return view('position.index',['positions' => $positions->appends(Input::except('page'))]);
@@ -59,11 +54,12 @@ class PositionController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param PositionCreateRequest|Request $request
+     * @param \App\Http\Controllers\Request|PositionCreateRequest|Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(PositionCreateRequest $request)
     {
+
         $data = $request->all();
 
         $position = \App\Position::create($data);
@@ -104,12 +100,12 @@ class PositionController extends Controller
     {
         if(request()->ajax()) {
             return response()
-                ->json(\App\Position::with('org')
+                ->json(\App\Position::with('parent','children')
                     ->find($id));
         }
 
         $position = \App\Position::find($id);
-        return view('position.show',['position' => $position]);
+        return view('position.index',['position' => $position]);
     }
 
     /**
@@ -128,9 +124,10 @@ class PositionController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param PositionCreateRequest|Request $request
+     * @param \App\Http\Controllers\Request|PositionCreateRequest|Request $request
      * @param  int $id
      * @return \Illuminate\Http\Response
+     * @internal param Request $request
      */
     public function update(PositionCreateRequest $request, $id)
     {
@@ -155,7 +152,7 @@ class PositionController extends Controller
             ]);
         }
 
-        return redirect()->route('position.show',$id)->with('message',trans('interface.success_save_position'));
+        return redirect()->route('position.index')->with('message',trans('interface.success_save_position'));
     }
 
     /**
@@ -166,6 +163,23 @@ class PositionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $position = \App\Position::find($id);
+
+        if(!$position || count($position->children) > 0) {
+
+            if(request()->ajax()) {
+                return response()->json(['success' => false, 'message' => trans('interface.failure_deleted_position')]);
+            }
+
+            return redirect()->back()->with('warning',trans('interface.failure_deleted_position'));
+        }
+
+        foreach($position->positions as $position): $position->delete(); endforeach;
+
+        $position->delete();
+
+        return redirect()
+            ->route('position.index')
+            ->with('message',trans('interface.success_deleted_position'));
     }
 }

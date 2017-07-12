@@ -38,6 +38,7 @@ Route::resource('/quest',"QuestController");
 Route::resource('/ticket',"TicketController");
 Route::resource('/exam',"ExamController");
 Route::resource('/position',"PositionController");
+Route::resource('/func',"FuncController");
 Route::resource('/org',"OrgController");
 Route::resource('/user',"UserController");
 Route::resource('/sign',"SignController");

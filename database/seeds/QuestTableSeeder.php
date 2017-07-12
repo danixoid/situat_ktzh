@@ -28,9 +28,13 @@ class QuestTableSeeder extends Seeder
                         ->take(rand(1,5))
                         ->get()
                     as $position) :
+
+                $org = \App\Org::inRandomOrder()->first();
+                $func = \App\Func::inRandomOrder()->first();
+
                 $quest
                     ->positions()
-                    ->attach($position);
+                    ->attach($position,["org_id" => $org->id, "func_id" => $func->id ]);
             endforeach;
         endfor;
 

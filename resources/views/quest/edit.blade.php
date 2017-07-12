@@ -20,16 +20,34 @@
                             {!! csrf_field() !!}
                             {!! method_field("PUT")  !!}
 
+
                             <div class="form-group">
-                                <label class="col-md-2 control-label">{!! trans('interface.position') !!}</label>
-                                <div class="col-md-10">
-                                    <select class="form-control select2-multiple" multiple name="positions[]" id="positions">
-                                        @foreach($quest->positions as $position)
-                                            <option value="{!! $position->id !!}" selected="selected"></option>
-                                        @endforeach
+                                <label class="col-md-3 control-label">{!! trans('interface.org') !!}</label>
+                                <div class="col-md-9">
+                                    <select class="form-control select2-single" id="org">
                                     </select>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">{!! trans('interface.func') !!}</label>
+                                <div class="col-md-9">
+                                    <select class="form-control select2-single" id="func">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">{!! trans('interface.position') !!}</label>
+                                <div class="col-md-9">
+                                    <select class="form-control select2-single" id="position">
+                                    </select>
+                                </div>
+                            </div>
+
+                            @for($i=0;$i<10;$i++)
+                                <input type="hidden" name="struct[{{ $i }}][position]" value="{{ $i }}">
+                                <input type="hidden" name="struct[{{ $i }}][org]" value="{{ $i }}">
+                                <input type="hidden" name="struct[{{ $i }}][func]" value="{{ $i }}">
+                            @endfor
 
                             <div class="form-group">
                                 <label class="col-md-2 control-label">{!! trans('interface.task') !!}</label>
@@ -74,60 +92,86 @@
             /**
              *  SELECT2
              */
-            $("#positions").select2({
-                data: [
-                    @foreach($quest->positions as $position)
-                    {
-                        id: '{!! $position->id !!}',
-                        name: '{!! $position->name !!}',
-                        orgPath: '{!! $position->orgPath !!}'
-                    },
-                    @endforeach
-                ],
-                ajax: {
-                    url: "{!! url('/position') !!}",
-                    dataType: 'json',
-                    delay: 250,
-                    data: function (params) {
-                        return {
-                            q: params.term, // search term
-                            page: params.page
-                        };
-                    },
-                    processResults: function (data, params) {
-                        // parse the results into the format expected by Select2
-                        // since we are using custom formatting functions we do not need to
-                        // alter the remote JSON data, except to indicate that infinite
-                        // scrolling can be used
-                        params.page = params.page || 1;
 
-                        return {
-                            results: data,
-                            pagination: {
-                                more: (params.page * 30) < data.length
-                            }
-                        };
-                    },
-                    cache: true
+            var data = {
+
+                org : {
+                    id: '{!! old('org_id') ?: 0 !!}',
+                    name: '{!! (old('org_id'))
+                                ? \App\Org::find(old('org_id'))->name
+                                : trans('interface.no_value') !!}',
                 },
-                theme: "bootstrap",
-                placeholder: '{!! trans('interface.select_position') !!}',
-                allowClear: true,
-                language: '{!! config()->get('app.locale') !!}',
-                escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
-                minimumInputLength: 2,
-                templateResult: formatPosition, // omitted for brevity, see the source of this page
-                templateSelection: formatPositionSelection // omitted for brevity, see the source of this page
+                func : {
+                    id: '{!! old('func_id') ?: 0 !!}',
+                    name: '{!! (old('func_id'))
+                                ? \App\Func::find(old('func_id'))->name
+                                : trans('interface.no_value') !!}',
+                },
+                position : {
+                    id: '{!! old('position_id') ?: 0 !!}',
+                    name: '{!! (old('position_id') > 0)
+                                ? \App\Position::find(old('position_id'))->name
+                                : trans('interface.no_value') !!}',
+                }
+            };
+
+            $("#org,#func,#position").each(function(){
+                var id = $(this).attr('id');
+
+                $(this).select2({
+                    data: [
+                        data[id]
+                    ],
+                    ajax: {
+                        url: "{!! url('/" + id + "') !!}",
+                        dataType: 'json',
+                        delay: 250,
+                        data: function (params) {
+                            return {
+                                q: params.term, // search term
+                                count: params.page
+                            };
+                        },
+                        processResults: function (data, params) {
+                            // parse the results into the format expected by Select2
+                            // since we are using custom formatting functions we do not need to
+                            // alter the remote JSON data, except to indicate that infinite
+                            // scrolling can be used
+                            params.page = params.page || 1;
+
+                            return {
+                                results: data.data,
+                                pagination: {
+                                    more: (params.page * 30) < data.length
+                                }
+                            };
+                        },
+                        cache: true
+                    },
+                    theme: "bootstrap",
+                    placeholder: '{!! trans('interface.select_position') !!}',
+                    allowClear: false,
+                    language: '{!! config()->get('app.locale') !!}',
+                    escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
+                    minimumInputLength: 2,
+                    templateResult: formatDetail, // omitted for brevity, see the source of this page
+                    templateSelection: formatDetailSelection // omitted for brevity, see the source of this page
+                });
             });
+
         });
 
 
-        function formatPosition (position) {
-            return "<div class='text-info'>" + position.orgPath + "</div><div>" + position.name + "</div>";
+        function formatDetail (detail) {
+            return "<span class='text-warning'>" + detail.name + "</span>";
         }
 
-        function formatPositionSelection (position) {
-            return "<span class='text-info' title='" + position.orgPath + "'>" + position.name + "</span>";
+        function formatDetailSelection (detail) {
+            if(detail.id === '0') {
+                return "<span class='text-primary'>" + detail.name + "</span>";
+            } else {
+                return "<span class='label label-info'>" + detail.name + "</span>";
+            }
         }
 
 

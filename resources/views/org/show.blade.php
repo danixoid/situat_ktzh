@@ -18,36 +18,11 @@
                     <div class="panel-body form-horizontal">
 
                         <div class="form-group">
-                            <label class="control-label col-md-2">{!! trans('interface.org') !!}</label>
-                            <div class="col-md-10 form-control-static">
-                                <span class="text-info">{!! $org->orgParent !!}</span>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
                             <label class="control-label col-md-2">{!! trans('interface.title') !!}</label>
                             <div class="col-md-10 form-control-static">{!! $org->name !!}</div>
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-md-2">{!! trans('interface.positions') !!}</label>
-                            <div class="col-md-10 form-control-static">
-                                @if(count($org->positions) > 0)
-                                    @foreach ($org->positions as $position)
-                                        <a href="{!! route('position.show',['id' => $position->id]) !!}">
-                                            <span class="text-success">{!! $position->name !!}</span></a>
-                                    @endforeach
-                                @else
-                                    {!! trans('interface.not_found') !!}
-                                @endif
-                                <a href="{!! route('position.create') !!}">[{!! trans('interface.add') !!}]</a>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-offset-2 col-md-3">
-                                <a href="{!! route('org.create',['org_id'=>$org->id]) !!}" class="btn btn-block btn-primary">{!! trans('interface.create') !!}</a>
-                            </div>
                             <div class="col-md-3">
                                 <a href="{!! route('org.edit',['id'=>$org->id]) !!}" class="btn btn-block btn-info">{!! trans('interface.edit') !!}</a>
                             </div>

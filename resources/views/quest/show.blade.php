@@ -17,22 +17,22 @@
                     <div class="panel-body form-horizontal">
 
                         <div class="form-group">
+                            <label class="control-label col-md-2">{!! trans('interface.task') !!}</label>
+                            <div class="col-md-10 form-control-static">
+                                <iframe id="iframe" src="{!! route('quest.show',
+                                    ['id'=>$quest->id,'type'=>'minimum']) !!}" onload="resizeIframe(this)"
+                                        style="width:100%; background: #FFFFFF;"></iframe>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
                             <label class="control-label col-md-2">{!! trans('interface.position') !!}</label>
                             <div class="col-md-10 form-control-static">
                                 @foreach($quest->positions as $position)
                                     <a href="{!! route('quest.index',['position_id' => $position->id]) !!}">
                                         <span class="text-info" title="{!! $position->orgPath !!}">{!! $position->name !!}</span>,
                                     </a>
-                            @endforeach
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="control-label col-md-2">{!! trans('interface.task') !!}</label>
-                            <div class="col-md-10 form-control-static">
-                                <iframe id="iframe" src="{!! route('quest.show',
-                                    ['id'=>$quest->id,'type'=>'minimum']) !!}" onload="resizeIframe(this)"
-                                        style="width:100%; background: #FFFFFF;"></iframe>
+                                @endforeach
                             </div>
                         </div>
 

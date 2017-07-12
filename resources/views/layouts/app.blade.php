@@ -51,6 +51,7 @@
                                     <li{!! preg_match("/quest/",request()->path()) ? " class=\"active\"" : "" !!}><a href="{{ route('quest.index') }}">{!! trans('interface.quests_task') !!}</a></li>
                                     <li{!! preg_match("/org/",request()->path()) ? " class=\"active\"" : "" !!}><a href="{{ route('org.index') }}">{!! trans('interface.orgs') !!}</a></li>
                                     <li{!! preg_match("/position/",request()->path()) ? " class=\"active\"" : "" !!}><a href="{{ route('position.index') }}">{!! trans('interface.positions') !!}</a></li>
+                                    <li{!! preg_match("/func/",request()->path()) ? " class=\"active\"" : "" !!}><a href="{{ route('func.index') }}">{!! trans('interface.funcs') !!}</a></li>
                                     <li{!! preg_match("/user/",request()->path()) ? " class=\"active\"" : "" !!}><a href="{{ route('user.index') }}">{!! trans('interface.users') !!}</a></li>
                                 </ul>
                             </li>

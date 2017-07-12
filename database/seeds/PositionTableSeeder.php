@@ -34,39 +34,16 @@ class PositionTableSeeder extends Seeder
             ],
         ];
 
-//        var_dump($poses);
-        
-        $roots = \App\Org::whereNull('org_id')->first()->children;
-
-        foreach ($roots as $root) {
-            foreach ($root->children as $sub) {
-//                echo $sub->name;
-                foreach ($poses['deps'] as $pos) {
-                    $position = new \App\Position();
-                    $position->name = $pos;
-                    $position->org_id = $sub->id;
-                    $position->save();
-                }
-
-                foreach ($sub->children as $child) {
-                    foreach ($poses['funct'] as $post) {
-                        $position = new \App\Position();
-                        $position->name = $post;
-                        $position->org_id = $child->id;
-                        $position->save();
-                    }
-                }
-            }
+        foreach ($poses['deps'] as $pos) {
+            $position = new \App\Position();
+            $position->name = $pos;
+            $position->save();
         }
 
-//        foreach(\App\User::all() as $user) :
-//
-//            $org = \App\Org::inRandomOrder()->first();
-//            $position = new \App\Position();
-//            $position->name = 'Должность ' . $user->id;
-//            $position->org_id = $org->id;
-//            $position->save();
-//        endforeach;
+        foreach ($poses['funct'] as $post) {
+            $position = new \App\Position();
+            $position->name = $post;
+            $position->save();
+        }
     }
-
 }

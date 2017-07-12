@@ -29,16 +29,33 @@ class QuestController extends Controller
     public function index()
     {
         $count = request('count') ?: 10;
+        $org_id = request('org_id');
+        $func_id = request('func_id');
         $position_id = request('position_id');
         $text = request('text');
 
+
+        $query = \App\Quest::whereNotNull('created_at');
+
+        if($org_id &&  $org_id > 0)
+        {
+            $query = $query->whereHas('orgs',function($q) use ($org_id) {
+                return $q->whereOrgId($org_id);
+            });
+        }
+
+        if($func_id &&  $func_id > 0)
+        {
+            $query = $query->whereHas('funcs',function($q) use ($func_id) {
+                return $q->whereFuncId($func_id);
+            });
+        }
+
         if($position_id &&  $position_id > 0)
         {
-            $query = \App\Position::whereId($position_id)->first()->quests();
-        }
-        else
-        {
-            $query = \App\Quest::whereNotNull('id');
+            $query = $query->whereHas('positions',function($q) use ($position_id) {
+                return $q->wherePositionId($position_id);
+            });
         }
 
         if($text) {
@@ -53,7 +70,7 @@ class QuestController extends Controller
         $quests = $query->paginate($count);
 
         if(request()->ajax()) {
-            return $quests->toJson();
+            return response()->json(["quests" => $quests]);
         }
 
 
@@ -81,6 +98,7 @@ class QuestController extends Controller
         $data = $request->all();
         $data['author_id'] = auth()->user()->id;
 
+        dd($data);
 
         if(request()->hasFile('word_file')) {
 //
@@ -148,6 +166,16 @@ class QuestController extends Controller
                 $str = mberegi_replace("<p((?!</p>).)+Решение\.?.+$","",$str);
                 $data['task'] = $str;
                 $quest = \App\Quest::create($data);
+
+
+                if(isset($data['struct']) && is_array($data['struct'])) {
+                    $struct = array_unique($data['struct']);
+
+                    foreach ($struct as $items) {
+                        $quest->self()->attach($quest,$items);
+                    }
+                }
+
                 if(isset($data['positions']) && is_array($data['positions'])) {
 
                     foreach ($data['positions'] as $position_id)
@@ -161,7 +189,7 @@ class QuestController extends Controller
             }
 
             return redirect()
-                ->route('quest.index')
+                ->route('quest.edit')
                 ->with('message',trans('interface.imported_file',['count' => $int]));
         }
 

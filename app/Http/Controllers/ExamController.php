@@ -29,6 +29,8 @@ class ExamController extends Controller
     {
 
         $count = request('count') ?: 10;
+        $org_id = request('org_id');
+        $func_id = request('func_id');
         $position_id = request('position_id');
         $user_id = request('user_id');
         $chief_id = request('chief_id');
@@ -36,6 +38,14 @@ class ExamController extends Controller
         $finishedDate = request('date_finished');
 
         $query = \App\Exam::whereNotNull('id');
+
+        if($org_id &&  $org_id > 0) {
+            $query = $query->where('org_id',$org_id);
+        }
+
+        if($func_id &&  $func_id > 0) {
+            $query = $query->where('func_id',$func_id);
+        }
 
         if($position_id &&  $position_id > 0) {
             $query = $query->where('position_id',$position_id);
@@ -92,6 +102,31 @@ class ExamController extends Controller
     {
         $data = $request->all();
 
+        $quests = \App\Quest::whereHas('orgs',function($q) use ($data) {
+            return $q->whereOrgId($data['org_id']);
+            })
+            ->whereHas('funcs',function($q) use ($data) {
+                return $q->whereFuncId($data['func_id']);
+            })
+            ->whereHas('positions',function($q) use ($data) {
+                return $q->wherePositionId($data['position_id']);
+            })
+            ->inRandomOrder()
+            ->take($data['count'])
+            ->get();
+
+        if(count($quests) < $data['count'])
+        {
+            if($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => trans('interface.failure_create_exam')
+                ]);
+            }
+
+            return redirect()->back()->with('warning',trans('interface.failure_create_exam'));
+        }
+
         $exam = \App\Exam::create($data);
 
         if(!$exam) {
@@ -106,7 +141,17 @@ class ExamController extends Controller
             return redirect()->back()->with('warning',trans('interface.failure_create_exam'));
         }
 
-        if($request->ajax()) {
+        // ЗАПИСЬ ЗАДАНИЙ ДЛЯ ЭКЗАМЕНА
+        foreach($quests as $quest)
+        {
+            \App\Ticket::create([
+                'exam_id' => $exam->id,
+                'quest_id' => $quest->id
+            ]);
+        }
+
+        if($request->ajax())
+        {
             return response()->json([
                 'success' => true,
                 'message' => trans('interface.success_create_exam'),

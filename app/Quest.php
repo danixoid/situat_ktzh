@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Quest extends Model
 {
-    protected $fillable = ['author_id'/*,'position_id','source'*/,'task','timer'];
+    protected $fillable = ['author_id','task','timer'];
 
     protected $appends = ['shortTask'];
 
@@ -21,10 +21,35 @@ class Quest extends Model
     }
 
 
+    public function self()
+    {
+        return $this
+            ->belongsToMany(\App\Quest::class,"position_quest")
+            ->withPivot("func_id", "position_id", "org_id")
+            ->withTimestamps();
+    }
+
+    public function orgs()
+    {
+        return $this
+            ->belongsToMany(\App\Org::class,"position_quest")
+            ->withPivot("func_id", "position_id")
+            ->withTimestamps();
+    }
+
+    public function funcs()
+    {
+        return $this
+            ->belongsToMany(\App\Func::class,"position_quest")
+            ->withPivot("org_id", "position_id")
+            ->withTimestamps();
+    }
+
     public function positions()
     {
         return $this
             ->belongsToMany(\App\Position::class,"position_quest")
+            ->withPivot("org_id", "func_id")
             ->withTimestamps();
     }
 
