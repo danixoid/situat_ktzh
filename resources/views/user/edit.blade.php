@@ -51,16 +51,16 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="col-md-3 control-label">{!! trans('interface.name') !!}</label>
+                                        <label class="col-md-3 control-label">{!! trans('interface.email_address') !!}</label>
                                         <div class="col-md-9">
-                                            <input type="text" class="form-control" name="name" value="{!! $user->name !!}" required/>
+                                            <input type="email" class="form-control" name="email" value="{!! $user->email !!}" />
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="col-md-3 control-label">{!! trans('interface.email_address') !!}</label>
+                                        <label class="col-md-3 control-label">{!! trans('interface.name') !!}</label>
                                         <div class="col-md-9">
-                                            <pre>{!! $user->email !!}</pre>
+                                            <input type="text" class="form-control" name="name" value="{!! $user->name !!}" required/>
                                         </div>
                                     </div>
 
@@ -89,6 +89,17 @@
                                         <label class="col-md-3 control-label">{!! trans('interface.confirm_password') !!}</label>
                                         <div class="col-md-9">
                                             <input type="password" class="form-control" name="password_confirmation" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-md-6 col-md-offset-3">
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" id="gen_pswd" > {!! trans('interface.generate_password') !!}
+                                                </label>
+                                                <span class="text-primary" id="pswd"></span>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -148,7 +159,33 @@
                 placeholder: '{!! trans('interface.select_role') !!}',
                 language: '{!! config()->get('app.locale') !!}',
             });
+
+            $('#gen_pswd').change(function (ev) {
+                if(this.checked) {
+                    var pswd = generatePassword();
+                    $("#pswd").text('[' + pswd + ']');
+                    $("input[type='password']").val('[' + pswd + ']');
+                } else {
+                    $("#pswd").text('');
+                    $("input[type='password']").val('');
+                }
+            });
+
+            $("input[type='password']").on('keyup',function(ev) {
+                $("#pswd").text('');
+            });
         });
+
+        function generatePassword() {
+            var length = 8,
+                charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+                retVal = "";
+            for (var i = 0, n = charset.length; i < length; ++i) {
+                retVal += charset.charAt(Math.floor(Math.random() * n));
+            }
+            return retVal;
+        }
+
 
     </script>
 
