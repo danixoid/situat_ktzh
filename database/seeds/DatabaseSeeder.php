@@ -22,8 +22,8 @@ class DatabaseSeeder extends Seeder
         // Positions seeder will created.
         $this->call(PositionTableSeeder::class);
         // Quests seeder will created.
-        $this->call(QuestTableSeeder::class);
+//        $this->call(QuestTableSeeder::class);
         // Exam seeder will created.
-        $this->call(ExamTableSeeder::class);
+//        $this->call(ExamTableSeeder::class);
     }
 }
