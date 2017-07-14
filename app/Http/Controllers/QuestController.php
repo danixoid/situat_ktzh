@@ -98,7 +98,7 @@ class QuestController extends Controller
         $data = $request->all();
         $data['author_id'] = auth()->user()->id;
 
-        dd($data);
+//        dd($data);
 
         if(request()->hasFile('word_file')) {
 //
@@ -154,10 +154,11 @@ class QuestController extends Controller
 //            $content = mb_ereg_replace("<p((?!</p>).)+[^а-яА-Я]+((?!<p).)+</p>","",$content);
 
 
-//            return $content;
+//            return $content;//тест
 
             $arr = mb_split("<p((?!</p>).)+Ситуация((?!<p).)+</p>",$content);
 
+            //первый элемент без данных, удалить
             unset($arr[0]);
 
 //            dd($arr);
@@ -208,13 +209,12 @@ class QuestController extends Controller
             return redirect()->back()->with('warning',trans('interface.failure_create_quest'));
         }
 
-        if(isset($data['positions']) && is_array($data['positions'])) {
+        if(isset($data['struct']) && is_array($data['struct'])) {
+            $struct = array_unique($data['struct'],SORT_REGULAR);
 
-            foreach ($data['positions'] as $position_id)
-                $quest
-                    ->positions()
-                    ->attach(\App\Position::find($position_id));
-
+            foreach ($struct as $items) {
+                $quest->self()->attach($quest,$items);
+            }
         }
 
         if($request->ajax()) {
@@ -299,17 +299,19 @@ class QuestController extends Controller
             return redirect()->back()->with('warning',trans('interface.failure_save_quest'));
         }
 
-        if(isset($data['positions']) && is_array($data['positions'])) {
+
+        if(isset($data['struct']) && is_array($data['struct'])) {
             $quest
                 ->positions()
                 ->detach();
 
-            foreach ($data['positions'] as $position_id)
-                $quest
-                    ->positions()
-                    ->attach(\App\Position::find($position_id));
+            $struct = array_unique($data['struct'],SORT_REGULAR);
 
+            foreach ($struct as $items) {
+                $quest->self()->attach($quest,$items);
+            }
         }
+
 
         if($request->ajax()) {
             return response()->json([

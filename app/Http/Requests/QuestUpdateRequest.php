@@ -24,6 +24,7 @@ class QuestUpdateRequest extends FormRequest
     public function rules()
     {
         return [
+            'struct' => 'array',
             'task' => 'string',
             'timer' => 'int',
         ];

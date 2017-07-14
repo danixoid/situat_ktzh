@@ -16,6 +16,7 @@
 
                     <div class="panel-body form-horizontal">
 
+
                         <div class="form-group">
                             <label class="control-label col-md-2">{!! trans('interface.task') !!}</label>
                             <div class="col-md-10 form-control-static">
@@ -25,21 +26,40 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label class="control-label col-md-2">{!! trans('interface.position') !!}</label>
-                            <div class="col-md-10 form-control-static">
-                                @foreach($quest->positions as $position)
-                                    <a href="{!! route('quest.index',['position_id' => $position->id]) !!}">
-                                        <span class="text-info" title="{!! $position->orgPath !!}">{!! $position->name !!}</span>,
-                                    </a>
-                                @endforeach
-                            </div>
-                        </div>
 
                         <div class="form-group">
                             <label class="control-label col-md-2">{!! trans('interface.timer') !!}</label>
                             <div class="col-md-10 form-control-static">{!! $quest->timer !!} {!! trans('interface.minutes') !!}</div>
                         </div>
+
+
+                        @if($quest->self()->count() > 0)
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10 table-responsive">
+                                <table id="struct_table" class="table table-condensed">
+                                    <thead>
+                                    <tr>
+                                        <th>{{ trans('interface.org') }}</th>
+                                        <th>{{ trans('interface.func') }}</th>
+                                        <th>{{ trans('interface.position') }}</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php $i = 0?>
+                                        @foreach($quest->self as $struct)
+
+                                            <tr>
+                                                <td>{{ \App\Org::find($struct->pivot->org_id)->name }}</td>
+                                                <td>{{ \App\Func::find($struct->pivot->func_id)->name }}</td>
+                                                <td>{{ \App\Position::find($struct->pivot->position_id)->name  }}</td>
+                                            </tr>
+                                            <?php $i++ ?>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        @endif
 
                         <div class="form-group">
                             <div class="col-md-offset-2 col-md-3">

@@ -87,6 +87,7 @@ return [
     'print_to_pdf' => 'Печать в PDF',
     'home' => 'Главная',
     'references' => 'Справочники',
+    'list' => 'Список',
 
     'quest' => 'Ситуация',
     'quests' => 'Ситуации',
