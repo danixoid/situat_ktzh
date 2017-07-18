@@ -190,7 +190,7 @@ class QuestController extends Controller
             }
 
             return redirect()
-                ->route('quest.edit')
+                ->route('quest.index')
                 ->with('message',trans('interface.imported_file',['count' => $int]));
         }
 
