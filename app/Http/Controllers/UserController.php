@@ -66,7 +66,9 @@ class UserController extends Controller
     {
         $data = $request->all();
 
-        $data['password'] = bcrypt($data['password']);
+        if(isset($data['password'])) {
+            $data['password'] = bcrypt($data['password']);
+        }
         $user = \App\User::create($data);
 
         if(!$user) {
@@ -139,8 +141,10 @@ class UserController extends Controller
     public function update(UserEditRequest $request, $id)
     {
         $data = $request->all();
-        $data['password'] = bcrypt($data['password']);
 
+        if(isset($data['password'])) {
+            $data['password'] = bcrypt($data['password']);
+        }
 //        dd($data);
 
         $user = \App\User::updateOrCreate(['id' => $id], $data);
