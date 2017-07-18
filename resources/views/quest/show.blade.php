@@ -50,7 +50,9 @@
 
                                             <tr>
                                                 <td>{{ \App\Org::find($struct->pivot->org_id)->name }}</td>
-                                                <td>{{ \App\Func::find($struct->pivot->func_id)->name }}</td>
+                                                <td>{{ \App\Func::find($struct->pivot->func_id)
+                                                ? \App\Func::find($struct->pivot->func_id)->name
+                                                : "" }}</td>
                                                 <td>{{ \App\Position::find($struct->pivot->position_id)->name  }}</td>
                                             </tr>
                                             <?php $i++ ?>
