@@ -96,7 +96,7 @@
 
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary bmd-modalButton" data-toggle="modal"
-                                data-target="#chief_form{{ $ticket->id }}">{{ trans('interface.note') }}</button>
+                                data-target="#chief_form{{ $ticket->id }}">{{ trans('interface.mark') }}</button>
                     </div>
                     <div class="modal fade" id="chief_form{{ $ticket->id }}">
                         <div class="modal-dialog">
