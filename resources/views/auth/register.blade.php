@@ -42,7 +42,7 @@
                             <label for="email" class="col-md-4 control-label">{!! trans('interface.iin') !!}</label>
 
                             <div class="col-md-6">
-                                <input id="iin" maxlength="12" type="number" class="form-control" name="iin" value="{{ old('iin') }}" required>
+                                <input id="iin" type="text" pattern="\d{12}"  class="form-control" name="iin" value="{{ old('iin') }}" required>
 
                                 @if ($errors->has('iin'))
                                     <span class="help-block">

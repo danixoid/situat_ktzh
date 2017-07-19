@@ -31,7 +31,7 @@
                             <div class="form-group">
                                 <label class="col-md-3 control-label">{!! trans('interface.iin') !!}</label>
                                 <div class="col-md-9">
-                                    <input type="number" minlength="12" maxlength="12" class="form-control"
+                                    <input type="text" pattern="\d{12}"  class="form-control"
                                            name="iin" value="{!! old('name') !!}" required>
                                 </div>
                             </div>
