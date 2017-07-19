@@ -222,9 +222,6 @@
                     allowClear: false,
                     language: '{!! config()->get('app.locale') !!}',
                     escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
-                    minimumInputLength: 2,
-                    templateResult: formatDetail, // omitted for brevity, see the source of this page
-                    templateSelection: formatDetailSelection // omitted for brevity, see the source of this page
                 });
             });
 
@@ -264,19 +261,6 @@
             });
 
         });
-
-
-        function formatDetail (detail) {
-            return "<span class='text-warning'>" + detail.name + "</span>";
-        }
-
-        function formatDetailSelection (detail) {
-            if(detail.id === '0') {
-                return "<span class='text-primary'>" + detail.name + "</span>";
-            } else {
-                return "<span class='label label-info'>" + detail.name + "</span>";
-            }
-        }
 
     </script>
 

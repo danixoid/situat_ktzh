@@ -140,20 +140,9 @@
                 placeholder: '{!! trans('interface.select_user') !!}',
                 language: '{!! config()->get('app.locale') !!}',
                 escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
-                minimumInputLength: 2,
-                templateResult: formatUser, // omitted for brevity, see the source of this page
-                templateSelection: formatUserSelection, // omitted for brevity, see the source of this page
             });
 
         });
-
-        function formatUser (user) {
-            return "<div class='text-info'>" + user.name + "</div>";
-        }
-
-        function formatUserSelection (user) {
-            return "<div class='text-info'>" + user.name + "</div>";
-        }
 
     </script>
 
