@@ -29,7 +29,7 @@
                 <p><strong>{{ trans('interface.org') }}</strong>: {{ $exam->org->name }}</p>
                 <p><strong>{{ trans('interface.func') }}</strong>: {{ $exam->func ? $exam->func->name : "-"}}</p>
                 <p><strong>{{ trans('interface.position') }}</strong>: {{ $exam->position->name }}</p>
-                <p><strong>{{ trans('interface.employee') }}</strong>: {{ $exam->user->name }}</p>
+                <p><strong>{{ trans('interface.user') }}</strong>: {{ $exam->user->name }}</p>
                 <p><strong>{{ trans('interface.chief') }}</strong>: {{ $exam->chief->name }}</p>
             </div>
 
