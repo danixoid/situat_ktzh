@@ -17,7 +17,7 @@ return [
     'remember_me' => 'Запомнить меня',
     'forgot_password' => 'Забыли пароль?',
     'confirm_password' => 'Подтвердите пароль',
-    'name' => 'Имя',
+    'name' => 'ФИО',
     'reset_password' => 'Сброс пароля',
     'send_passwrd_reset_link' => 'Отправить ссылку для сброса пароля',
     'situation' => 'Ситуация',
