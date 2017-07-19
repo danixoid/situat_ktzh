@@ -167,14 +167,16 @@
 
                 <div class="form-group">
                     <div class="row">
-                        @if(\AUTH::user()->hasAnyRole(['manager','admin']) && !$exam->started)
+                        @if(\AUTH::user()->hasAnyRole(['manager','admin']))
                         <div class="col-md-2">
                             <a href="{!! route('exam.edit',['id'=>$exam->id]) !!}" class="btn btn-block btn-info">{!! trans('interface.edit') !!}</a>
                         </div>
 
-                        <div class="col-md-2">
-                            <a href="#" id="deleteExam" class="delete btn btn-block btn-danger">{!! trans('interface.destroy') !!}</a>
-                        </div>
+                            @if(!$exam->started)
+                            <div class="col-md-2">
+                                <a href="#" id="deleteExam" class="delete btn btn-block btn-danger">{!! trans('interface.destroy') !!}</a>
+                            </div>
+                            @endif
                         @endif
 
                         @if(!$exam->finished && $exam->isUser)
