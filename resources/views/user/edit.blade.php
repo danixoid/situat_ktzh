@@ -164,7 +164,7 @@
                 if(this.checked) {
                     var pswd = generatePassword();
                     $("#pswd").text('[' + pswd + ']');
-                    $("input[type='password']").val('[' + pswd + ']');
+                    $("input[type='password']").val(pswd);
                 } else {
                     $("#pswd").text('');
                     $("input[type='password']").val('');
