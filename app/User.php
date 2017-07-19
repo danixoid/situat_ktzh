@@ -19,6 +19,11 @@ class User extends Authenticatable
     ];
 
     /**
+     * @var array
+     */
+    protected $appends = ['text'];
+
+    /**
      *
      */
     protected static function boot()
@@ -87,5 +92,10 @@ class User extends Authenticatable
             return true;
         }
         return false;
+    }
+
+    public function getTextAttribute()
+    {
+        return $this->name;
     }
 }

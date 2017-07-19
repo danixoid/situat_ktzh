@@ -171,7 +171,7 @@
                     placeholder: '{!! trans('interface.select_position') !!}',
                     allowClear: false,
                     language: '{!! config()->get('app.locale') !!}',
-                    minimumInputLength: 2,
+//                    minimumInputLength: 2,
                 });
             });
 

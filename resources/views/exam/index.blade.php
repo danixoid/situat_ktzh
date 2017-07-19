@@ -34,25 +34,45 @@
                             <div class="form-group">
                                 <label class="col-md-3 control-label">{!! trans('interface.org') !!}</label>
                                 <div class="col-md-9">
-                                    <select class="form-control select2-single" name="org_id" id="org">
+                                    <select class="form-control select2-single" id="org" name="org_id">
+                                        <option value="{!! old('org_id') ?: 0 !!}">{!! (old('org_id'))
+                                            ? \App\Org::find(old('org_id'))->name
+                                            : trans('interface.no_value') !!}</option>
+                                        @foreach(\App\Org::all() as $org)
+                                            <option value="{{ $org->id }}"
+                                            @if(request('org_id')) selected @endif>{{ $org->name }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-md-3 control-label">{!! trans('interface.func') !!}</label>
                                 <div class="col-md-9">
-                                    <select class="form-control select2-single" name="func_id" id="func">
+                                    <select class="form-control select2-single" id="func" name="func_id">
+                                        <option value="{!! old('func_id') ?: 0 !!}">{!! (old('func_id'))
+                                            ? \App\Func::find(old('func_id'))->name
+                                            : trans('interface.no_value') !!}</option>
+                                        @foreach(\App\Func::all() as $func)
+                                            <option value="{{ $func->id }}"
+                                            @if(request('func_id')) selected @endif>{{ $func->name }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-md-3 control-label">{!! trans('interface.position') !!}</label>
                                 <div class="col-md-9">
-                                    <select class="form-control select2-single" name="position_id" id="position">
+                                    <select class="form-control select2-single" id="position" name="position_id">
+                                        <option value="{!! old('position_id') ?: 0 !!}">{!! (old('position_id'))
+                                            ? \App\Position::find(old('position_id'))->name
+                                            : trans('interface.no_value') !!}</option>
+                                        @foreach(\App\Position::all() as $position)
+                                            <option value="{{ $position->id }}"
+                                            @if(request('func_id')) selected @endif>{{ $position->name }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
-
                             <div class="form-group">
                                 <label class="col-md-3 control-label">{!! trans('interface.user') !!}</label>
                                 <div class="col-md-9">
@@ -153,41 +173,36 @@
 
             var data = {
 
-                org : {
-                    id: '{!! $org_id !!}',
-                    name: '{!! ($org_id > 0)
-                                ? \App\Org::find($org_id)->name
-                                : trans('interface.no_value') !!}',
-                },
-                func : {
-                    id: '{!! $func_id !!}',
-                    name: '{!! ($func_id > 0)
-                                ? \App\Func::find($func_id)->name
-                                : trans('interface.no_value') !!}',
-                },
-                position : {
-                    id: '{!! $position_id !!}',
-                    name: '{!! ($position_id > 0)
-                                ? \App\Position::find($position_id)->name
-                                : trans('interface.no_value') !!}',
-                },
+
                 user : {
                     id: '{!! $user_id !!}',
-                    name: '{!! ($user_id > 0)
+                    text: '{!! ($user_id > 0)
                                 ? \App\User::find($user_id)->name
                                 : trans('interface.no_value') !!}',
                 },
                 chief : {
                     id: '{!! $chief_id !!}',
-                    name: '{!! ($chief_id > 0)
+                    text: '{!! ($chief_id > 0)
                                 ? \App\User::find($chief_id)->name
                                 : trans('interface.no_value') !!}',
                 }
             };
 
+            $("#org,#func,#position").each(function(){
+                var id = $(this).attr('id');
+
+                $(this).select2({
+                    theme: "bootstrap",
+                    placeholder: '{!! trans('interface.select_position') !!}',
+                    allowClear: true,
+                    language: '{!! config()->get('app.locale') !!}',
+//                    minimumInputLength: 2,
+                });
+            });
 
 
-            $("#org,#func,#position,#user,#chief").each(function(){
+
+            $("#user,#chief").each(function(){
                 var id = $(this).attr('id');
 
                 $(this).select2({
@@ -225,9 +240,6 @@
                     allowClear: true,
                     language: '{!! config()->get('app.locale') !!}',
                     escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
-                    minimumInputLength: 2,
-                    templateResult: formatDetail, // omitted for brevity, see the source of this page
-                    templateSelection: formatDetailSelection // omitted for brevity, see the source of this page
                 });
             });
 
@@ -245,18 +257,6 @@
 
         });
 
-
-        function formatDetail (detail) {
-            return "<span class='text-warning'>" + detail.name + "</span>";
-        }
-
-        function formatDetailSelection (detail) {
-            if(detail.id === '0') {
-                return "<span class='text-primary'>" + detail.name + "</span>";
-            } else {
-                return "<span class='label label-info'>" + detail.name + "</span>";
-            }
-        }
 
 
 

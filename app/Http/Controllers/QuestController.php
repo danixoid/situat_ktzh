@@ -156,13 +156,16 @@ class QuestController extends Controller
 //            $content = mb_ereg_replace("\n","", $content);
             $content = mberegi_replace("<!DOCTYPE.+<body[^>]+>","", $content);
             $content = mberegi_replace("<\/body>.+$","", $content);
+//            $content = mberegi_replace("\s?style=\"font-family:\s+[\w\,\'\s]+;\"","", $content);
+            $content = mberegi_replace("\s?face=\"[\w\,\'\s]+\""," face=\"TImes New Roman\"", $content);
+//            return $content;
 //            $content = mberegi_replace("<p((?!</p>).)+Решение\.?((?!<p).)+</p>","",$content);
 //            $content = mb_ereg_replace("<p((?!</p>).)+[^а-яА-Я]+((?!<p).)+</p>","",$content);
 
 
 //            return $content;//тест
 
-            $arr = mb_split("<p((?!</p>).)+Ситуация((?!<p).)+</p>",$content);
+            $arr = mb_split("<p((?!(</p>|[а-яА-Я]+)).)+Ситуация((?!<p).)+</p>",$content);
 
             //первый элемент без данных, удалить
             unset($arr[0]);
@@ -170,7 +173,7 @@ class QuestController extends Controller
 //            dd($arr);
             $int = 0;
             foreach ($arr as $str) {
-                $str = mberegi_replace("<p((?!</p>).)+Решение\.?.+$","",$str);
+                $str = mberegi_replace("<p((?!(</p>|[а-яА-Я]+)).)+Решение\.?.+$","",$str);
                 $data['task'] = $str;
                 $quest = \App\Quest::create($data);
 

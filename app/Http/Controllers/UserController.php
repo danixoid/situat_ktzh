@@ -27,7 +27,7 @@ class UserController extends Controller
     {
         $count = request('count') ?: 10;
 
-        if(request()->has('q')) {
+        if(request('q')) {
             $users = \App\User::where('name','LIKE', '%' . request('q'). '%')
                 ->orWhere('email','LIKE', '%' . request('q'). '%')
                 ->orWhere('iin','LIKE', '%' . request('q'). '%')

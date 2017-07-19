@@ -69,7 +69,9 @@ class Quest extends Model
     }
 
     public function getShortTaskAttribute() {
-        return mb_substr(mb_ereg_replace("<[^>]+>","",$this->task),0,50);
+        $str = mb_ereg_replace("&\w+\;","",$this->task);
+        $str = mb_substr(mb_ereg_replace("<[^>]+>","",$str),0,50);
+        return $str;
     }
 
     public function hasPosition($id)

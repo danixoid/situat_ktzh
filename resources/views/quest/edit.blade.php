@@ -167,9 +167,9 @@
                 $(this).select2({
                     theme: "bootstrap",
                     placeholder: '{!! trans('interface.select_position') !!}',
-                    allowClear: false,
+//                    allowClear: false,
                     language: '{!! config()->get('app.locale') !!}',
-                    minimumInputLength: 2,
+//                    minimumInputLength: 2,
                 });
             });
 
