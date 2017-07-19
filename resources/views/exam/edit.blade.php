@@ -16,7 +16,7 @@
 
                     <div class="panel-body">
 
-                        <form id="form_create_exam" class="form-horizontal" action="{!! route('ticket.create') !!}" method="POST">
+                        <form id="form_create_exam" class="form-horizontal" action="{!! route('ticket.edit',$exam->id) !!}" method="POST">
                             {!! csrf_field() !!}
                             {!! method_field("PUT") !!}
 
