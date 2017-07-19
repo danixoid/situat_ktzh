@@ -162,5 +162,13 @@ return [
     'success_deleted_exam' => 'Экзаменационный лист удалена',
     'failure_deleted_exam' => 'Не удалось удалить экзаменационный лист',
 
+    // TICKET
+    'success_create_ticket' => 'Успешно создан билет',
+    'failure_create_ticket' => 'Не удалось создать билет',
+    'success_save_ticket' => 'Успешно сохранен билет',
+    'failure_save_ticket' => 'Не удалось сохранить билет',
+    'success_deleted_ticket' => 'Билет удален',
+    'failure_deleted_ticket' => 'Не удалось удалить билет',
+
 
 ];
