@@ -177,7 +177,7 @@
         });
 
         function generatePassword() {
-            var length = 8,
+            var length = 6,
                 charset = "1234567890",
                 retVal = "";
             for (var i = 0, n = charset.length; i < length; ++i) {
