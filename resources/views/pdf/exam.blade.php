@@ -77,7 +77,7 @@
                             @if($sign->signer_id == $exam->chief_id)
                                 {!! trans('interface.chief') !!}
                             @else
-                                {!! trans('interface.employee') !!}
+                                {!! trans('interface.user') !!}
                             @endif
                         </strong>
                         <p>{!! $sign->signer->name !!}</p>
