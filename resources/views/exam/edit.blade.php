@@ -18,6 +18,7 @@
 
                         <form id="form_create_exam" class="form-horizontal" action="{!! route('ticket.create') !!}" method="POST">
                             {!! csrf_field() !!}
+                            {!! method_field("PUT") !!}
 
                             <input type="hidden" name="exam_id" {!! $exam->id !!}>
 
