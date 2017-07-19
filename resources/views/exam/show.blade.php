@@ -118,11 +118,6 @@
 
                                             <div class="form-group">
                                                 <div class="my_mark">
-
-                                                    @if($ticket->mark == 1)@endif
-                                                    @if($ticket->mark == 2){{ trans('interface.satisfy') }}@endif
-                                                    @if($ticket->mark == 3){{ trans('interface.good') }}@endif
-
                                                         <label>
                                                             <input type="radio" name="mark" class="rating" value="1"
                                                                @if($ticket->mark == 1) checked @endif
@@ -132,12 +127,12 @@
                                                             <input type="radio" name="mark" class="rating" value="2"
                                                                @if($ticket->mark == 2) checked @endif
                                                                title="{{ trans('interface.satisfy') }}" />
-                                                            {{ trans('interface.bad') }}</label>
+                                                            {{ trans('interface.satisfy') }}</label>
                                                         <label>
                                                             <input type="radio" name="mark" class="rating" value="3"
                                                                @if($ticket->mark == 3) checked @endif
                                                                title="{{ trans('interface.good') }}" />
-                                                            {{ trans('interface.bad') }}</label>
+                                                            {{ trans('interface.good') }}</label>
                                                 </div>
                                             </div>
 
