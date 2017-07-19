@@ -40,7 +40,7 @@
                                 <label class="col-md-3 control-label">{!! trans('interface.email_address') !!}</label>
                                 <div class="col-md-9">
                                     <input type="email" class="form-control" name="email"
-                                           value="{!! old('email') !!}" required>
+                                           value="{!! old('email') !!}" >
                                 </div>
                             </div>
 
@@ -105,7 +105,7 @@
 
     function generatePassword() {
         var length = 8,
-            charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+            charset = "1234567890",
             retVal = "";
         for (var i = 0, n = charset.length; i < length; ++i) {
             retVal += charset.charAt(Math.floor(Math.random() * n));
