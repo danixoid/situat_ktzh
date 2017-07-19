@@ -31,7 +31,7 @@ class ExamEditRequest extends FormRequest
             'chief_id' => 'int|min:1',
             'count' => 'int|min:1',
             'mark' => 'int|min:0',
-            'note' => 'string',
+//            'note' => 'string',
             'user_sign' => 'string',
             'chief_sign' => 'string',
         ];
