@@ -33,9 +33,15 @@ class QuestController extends Controller
         $func_id = request('func_id');
         $position_id = request('position_id');
         $text = request('text');
+        $trashed = request('trashed');
 
 
         $query = \App\Quest::whereNotNull('created_at');
+
+        if($trashed &&  $trashed > 0)
+        {
+            $query = $query->onlyTrashed();
+        }
 
         if($org_id &&  $org_id > 0)
         {
@@ -244,7 +250,7 @@ class QuestController extends Controller
                 ->json(\App\Quest::find($id));
         }
 
-        $quest = \App\Quest::find($id);
+        $quest = \App\Quest::withTrashed()->find($id);
 
         if(request()->has('type') && \request('type') == "minimum"){
             return view('layouts.clear',['content' => $quest->task]);
@@ -261,7 +267,7 @@ class QuestController extends Controller
      */
     public function edit($id)
     {
-        $quest = \App\Quest::find($id);
+        $quest = \App\Quest::withTrashed()->find($id);
         return view('quest.edit',['quest' => $quest]);
     }
 
@@ -332,7 +338,16 @@ class QuestController extends Controller
      */
     public function destroy($id)
     {
-        $quest = \App\Quest::find($id);
+        $quest = \App\Quest::withTrashed()->find($id);
+
+        if($quest->trashed())
+        {
+            $quest->restore();
+
+            return redirect()
+                ->back()
+                ->with('message',trans('interface.success_restored_quest'));
+        }
 
         if(!$quest) {
 
@@ -343,12 +358,12 @@ class QuestController extends Controller
             return redirect()->back()->with('warning',trans('interface.failure_deleted_quest'));
         }
 
-        if(count($quest->tickets) == 0) {
+//        if(count($quest->tickets) == 0) {
             $quest->delete();
-        }
+//        }
 
         return redirect()
-            ->route('quest.index')
+            ->back()
             ->with('message',trans('interface.success_deleted_quest'));
 
     }

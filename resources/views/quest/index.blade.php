@@ -99,6 +99,17 @@
                                 </div>
                             </div>
 
+                            <input type="hidden" name="trashed" value="0">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">{!! trans('interface.position') !!}</label>
+                                <div class="col-md-9">
+                                    <div class="checkbox">
+                                        <label><input type="checkbox" @if(request('trashed')) checked @endif
+                                            onchange="$('#form_quest_search').submit()" name="trashed" value="1"> {{ trans('interface.search_in_archive') }}</label>
+                                    </div>
+                                </div>
+                            </div>
+
                         </form>
 
                         <table class="table table-condensed">
@@ -109,6 +120,7 @@
                                     <th>{!! trans('interface.task') !!}</th>
 {{--                                    <th>{!! trans('interface.position') !!}</th>--}}
                                     <th>{!! trans('interface.timer') !!}</th>
+                                    <th></th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -123,10 +135,21 @@
                                                 <a href="{!! route('quest.index',['position_id' => $position->id]) !!}">
                                                     <span title="{!! $position->orgPath !!}" class="text-info">{!! $position->name !!}</span>
                                                 </a>,
-                                            @endforeach--}}
-                                        </td>
+                                            @endforeach
+                                        </td>--}}
                                         <td><span class="text-warning">{{ $quest->timer }} {{ trans('interface.minutes') }}</span></td>
                                         <td><a href="{!! route('quest.show',['id'=>$quest->id]) !!}">{!! trans('interface.show') !!}</a></td>
+                                        <td>
+
+                                            <form id="form_delete_quest{{ $quest->id }}" action="{!! route('quest.destroy',['id' => $quest->id]) !!}" method="POST">
+                                                {!! csrf_field() !!}
+                                                {!! method_field("DELETE") !!}
+                                            </form>
+                                            <a href="#form_delete_quest{{ $quest->id }}"
+                                               onclick="$('#form_delete_quest{{ $quest->id }}').submit();">{!!
+                                                $quest->trashed() ? trans('interface.restore') : trans('interface.destroy')
+                                                !!}</a>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -138,6 +161,7 @@
             </div>
         </div>
     </div>
+
 @endsection
 
 

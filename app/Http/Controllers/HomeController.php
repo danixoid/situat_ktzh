@@ -106,6 +106,10 @@ class HomeController extends Controller
         return $arr;
     }
 
+    public function help() {
+        return view('help');
+    }
+
     public function __test() {
         $exam = \App\Exam::find(1);
         return view('pdf.exam',['exam' => $exam]);

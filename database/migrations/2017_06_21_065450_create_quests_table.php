@@ -20,6 +20,7 @@ class CreateQuestsTable extends Migration
 //            $table->text("source"); //исходные данные
             $table->text("task"); //задание
             $table->unsignedInteger('timer')->default(20); //Обратный отсчет
+            $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('author_id')

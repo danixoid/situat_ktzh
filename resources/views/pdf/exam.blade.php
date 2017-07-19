@@ -26,6 +26,9 @@
                 <p>{{ date('d.m.Y',strtotime($exam->finishedDate)) }}г.</p>
             </div>
             <div>
+                <p><strong>{{ trans('interface.org') }}</strong>: {{ $exam->org->name }}</p>
+                <p><strong>{{ trans('interface.func') }}</strong>: {{ $exam->func ? $exam->func->name : "-"}}</p>
+                <p><strong>{{ trans('interface.position') }}</strong>: {{ $exam->position->name }}</p>
                 <p><strong>{{ trans('interface.employee') }}</strong>: {{ $exam->user->name }}</p>
                 <p><strong>{{ trans('interface.chief') }}</strong>: {{ $exam->chief->name }}</p>
             </div>
@@ -33,10 +36,11 @@
             <div style="clear:both"></div>
         </div>
 
+        <?php $inc = 1; ?>
         @foreach($exam->tickets as $ticket)
 
             <fieldset>
-            <p><strong>{!! trans('interface.quest_number',['num' => $ticket->quest->id]) !!}</strong></p>
+            <p><strong>{!! trans('interface.quest_number',['num' => $inc ]) !!}</strong></p>
             <p>{!! $ticket->quest->task !!}</p>
             <p><strong>{{ trans('interface.answer') }}</strong></p>
             <p>{{ $ticket->answer }}</p>
@@ -47,6 +51,8 @@
             </p>
             <p><strong>{{ trans('interface.note') }}</strong>: {{ $ticket->note }}</p>
             </fieldset>
+
+            <?php $inc++; ?>
         @endforeach
         <br />
         @if(count($exam->signs) > 0)

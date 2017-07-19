@@ -31,7 +31,7 @@ class ChiefMail extends Mailable
     {
         return $this
             ->to($this->ticket->exam->chief->email)
-            ->from(env("MAIL_USERNAME", "danixoid@gmail.com"),
+            ->from(env("MAIL_USERNAME", "admin@situat.kz"),
                 'Администратор SITUAT.KZ')
             ->view('email.exam_finished',['exam' => $this->ticket->exam]);
     }

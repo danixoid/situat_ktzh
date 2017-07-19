@@ -67,7 +67,7 @@
                         </a>
                     </label>
                     <div class="col-md-2 text-right">
-                        <a href="{!! route('exam.show',['id'=>$exam->id,'type' => "pdf"]) !!}">
+                        <a target="_blank" href="{!! route('exam.show',['id'=>$exam->id,'type' => "pdf"]) !!}">
                             {{ trans('interface.print_to_pdf') }}
                         </a>
                     </div>

@@ -29,6 +29,8 @@ class Ticket extends Model
     }
 
     public function quest() {
-        return $this->belongsTo(\App\Quest::class);
+        return $this
+            ->belongsTo(\App\Quest::class)
+            ->withTrashed();
     }
 }

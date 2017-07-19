@@ -71,7 +71,8 @@ class Exam extends Model
     {
         return $this->hasManyThrough(\App\Quest::class,
             \App\Ticket::class,"exam_id",
-            "id","id");
+            "id","id")
+            ->withTrashed();
     }
 
     public function getIsUserAttribute()

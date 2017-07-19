@@ -89,6 +89,8 @@ return [
     'references' => 'Справочники',
     'list' => 'Список',
     'generate_password' => 'Сгенерировать пароль',
+    'search_in_archive' => 'Искать в архиве',
+    'restore' => 'Восстановить',
 
     'quest' => 'Ситуация',
     'quests' => 'Ситуации',
@@ -110,6 +112,7 @@ return [
     'good' => 'Хорошо',
     'funcs' => 'Функциональные направления',
     'func' => 'Функциональное направление',
+    'help' => 'Помощь',
 
 
     // ROLES
@@ -118,12 +121,13 @@ return [
     'admin' => 'Администратор',
 
     // QUEST
-    'success_create_quest' => 'Успешно создано новая ситуация',
-    'failure_create_quest' => 'Не удалось создать ситуацию',
-    'success_save_quest' => 'Успешно сохранена ситуация',
-    'failure_save_quest' => 'Не удалось сохранить ситуацию',
-    'success_deleted_quest' => 'Ситуация удалено',
-    'failure_deleted_quest' => 'Не удалось удалить ситуацию',
+    'success_create_quest' => 'Успешно создано новая ситуационная задача',
+    'failure_create_quest' => 'Не удалось создать ситуационную задачу',
+    'success_save_quest' => 'Успешно сохранена ситуационная задача',
+    'failure_save_quest' => 'Не удалось сохранить ситуационную задачу',
+    'success_deleted_quest' => 'Ситуационная задача архивирована',
+    'failure_deleted_quest' => 'Не удалось удалить ситуационную задачу',
+    'success_restored_quest' => 'Ситуационная задача восстановлена',
 
     // ORG
     'success_create_org' => 'Успешно создано новое подразделение',

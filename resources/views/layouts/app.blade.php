@@ -15,6 +15,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
     @yield('meta')
+
 </head>
 <body>
     <div id="app">
@@ -55,6 +56,9 @@
                                     <li{!! preg_match("/user/",request()->path()) ? " class=\"active\"" : "" !!}><a href="{{ route('user.index') }}">{!! trans('interface.users') !!}</a></li>
                                 </ul>
                             </li>
+                            <li{!! preg_match("/help/",request()->path()) ? " class=\"active\"" : "" !!}><a href="{{ route('help') }}">{!! trans('interface.help') !!}</a></li>
+                            {{--                            <li><a href="{{ route('ticket.index') }}">{!! trans('interface.tickets') !!}</a></li>--}}
+
                         @endif
                     </ul>
 

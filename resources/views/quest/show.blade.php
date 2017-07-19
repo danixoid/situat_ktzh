@@ -68,11 +68,13 @@
                                 <a href="{!! route('quest.edit',['id'=>$quest->id]) !!}" class="btn btn-block btn-info">{!! trans('interface.edit') !!}</a>
                             </div>
 
-                            @if(count($quest->tickets) == 0)
+{{--                            @if(count($quest->tickets) == 0)--}}
                             <div class="col-md-2">
-                                <a href="#" id="deleteQuest" class="btn btn-block btn-danger">{!! trans('interface.destroy') !!}</a>
+                                <a href="#" id="deleteQuest" class="btn btn-block btn-danger">{!!
+                                 $quest->trashed() ? trans('interface.restore') : trans('interface.destroy')
+                                 !!}</a>
                             </div>
-                            @endif
+                            {{--@endif--}}
                         </div>
                         <div class="form-group">
                             <div class="col-md-offset-2 col-md-9">

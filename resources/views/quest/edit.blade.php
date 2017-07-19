@@ -60,12 +60,12 @@
                                                 ?>
                                                 <tr>
                                                     <td>{{ $org->name ?: "" }}</td>
-                                                    <td>{{ $func->name ?: "" }}</td>
+                                                    <td>{{ $func ? $func->name : "" }}</td>
                                                     <td>{{ $position->name ?: "" }}</td>
                                                     <td>
                                                         <a class="remove" href="#struct_table">{{ trans('interface.destroy') }}</a>
                                                         <input type="hidden" name="struct[{{ $i }}][org_id]" value="{{ $org->id }}" />
-                                                        <input type="hidden" name="struct[{{ $i }}][func_id]" value="{{ $func->id }}" />
+                                                        @if($func)<input type="hidden" name="struct[{{ $i }}][func_id]" value="{{ $func->id }}" />@endif
                                                         <input type="hidden" name="struct[{{ $i }}][position_id]" value="{{ $position->id }}" />
                                                     </td>
                                                 </tr>

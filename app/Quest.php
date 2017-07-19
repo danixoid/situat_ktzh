@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Quest extends Model
 {
+    use SoftDeletes;
+
     protected $fillable = ['author_id','task','timer'];
 
     protected $appends = ['shortTask'];
