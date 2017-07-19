@@ -118,15 +118,26 @@
 
                                             <div class="form-group">
                                                 <div class="my_mark">
-                                                    <input type="radio" name="mark" class="rating" value="1"
-                                                           @if($ticket->mark == 1) checked @endif
-                                                           title="{{ trans('interface.bad') }}" />
-                                                    <input type="radio" name="mark" class="rating" value="2"
-                                                           @if($ticket->mark == 2) checked @endif
-                                                           title="{{ trans('interface.satisfy') }}" />
-                                                    <input type="radio" name="mark" class="rating" value="3"
-                                                           @if($ticket->mark == 3) checked @endif
-                                                           title="{{ trans('interface.good') }}" />
+
+                                                    @if($ticket->mark == 1)@endif
+                                                    @if($ticket->mark == 2){{ trans('interface.satisfy') }}@endif
+                                                    @if($ticket->mark == 3){{ trans('interface.good') }}@endif
+
+                                                        <label>
+                                                            <input type="radio" name="mark" class="rating" value="1"
+                                                               @if($ticket->mark == 1) checked @endif
+                                                               title="{{ trans('interface.bad') }}" />
+                                                            {{ trans('interface.bad') }}</label>
+                                                        <label>
+                                                            <input type="radio" name="mark" class="rating" value="2"
+                                                               @if($ticket->mark == 2) checked @endif
+                                                               title="{{ trans('interface.satisfy') }}" />
+                                                            {{ trans('interface.bad') }}</label>
+                                                        <label>
+                                                            <input type="radio" name="mark" class="rating" value="3"
+                                                               @if($ticket->mark == 3) checked @endif
+                                                               title="{{ trans('interface.good') }}" />
+                                                            {{ trans('interface.bad') }}</label>
                                                 </div>
                                             </div>
 
@@ -146,15 +157,13 @@
                             </div><!-- /.modal-content -->
                         </div><!-- /.modal-dialog -->
                     </div><!-- /.modal -->
-                    @elseif(!$exam->isUser)
+                    @elseif(!$exam->isUser && $ticket->mark)
                         <div class="form-group">
                             <label class="text-primary">{!! trans('interface.mark') !!}</label>
-                            <div class="marks">
-                                <div class="stars">
-                                    <a class="star @if($ticket->mark >= 1) fullStar @endif" title="{{ trans('interface.bad') }}"></a>
-                                    <a class="star @if($ticket->mark >= 2) fullStar @endif" title="{{ trans('interface.satisfy') }}"></a>
-                                    <a class="star @if($ticket->mark >= 3) fullStar @endif" title="{{ trans('interface.good') }}"></a>
-                                </div>
+                            <div>
+                                @if($ticket->mark == 1){{ trans('interface.bad') }}@endif
+                                @if($ticket->mark == 2){{ trans('interface.satisfy') }}@endif
+                                @if($ticket->mark == 3){{ trans('interface.good') }}@endif
                             </div>
                         </div>
                         <div class="form-group">
@@ -284,7 +293,7 @@
 
 
 @section('javascript')
-    <script type="text/javascript" src="{!! asset('js/rating.js') !!}"></script>
+    {{--<script type="text/javascript" src="{!! asset('js/rating.js') !!}"></script>--}}
     <script>
 
         function resizeIframe(obj) {
@@ -359,8 +368,8 @@
 
 
 
-        jQuery(document).ready(function(){
-            jQuery("#signing_modal").bmdIframe();
-        });
+//        jQuery(document).ready(function(){
+//            jQuery("#signing_modal").bmdIframe();
+//        });
     </script>
 @endsection

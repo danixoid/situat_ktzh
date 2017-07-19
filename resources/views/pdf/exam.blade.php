@@ -45,9 +45,12 @@
             <p><strong>{{ trans('interface.answer') }}</strong></p>
             <p>{{ $ticket->answer }}</p>
             <p><strong>{{ trans('interface.mark') }}</strong>:
-                @for($i = 0; $i < 3; $i++)
+                {{--@for($i = 0; $i < 3; $i++)
                 <img src="@if($ticket->mark > $i){!! asset('images/star.png') !!}@else{!! asset('images/star-empty.png') !!}@endif"></a>
-                @endfor
+                @endfor--}}
+                @if($ticket->mark == 1){{ trans('interface.bad') }}@endif
+                @if($ticket->mark == 2){{ trans('interface.satisfy') }}@endif
+                @if($ticket->mark == 3){{ trans('interface.good') }}@endif
             </p>
             <p><strong>{{ trans('interface.note') }}</strong>: {{ $ticket->note }}</p>
             </fieldset>
