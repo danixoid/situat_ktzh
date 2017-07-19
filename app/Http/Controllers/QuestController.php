@@ -221,7 +221,10 @@ class QuestController extends Controller
                 ]);
             }
 
-            return redirect()->back()->with('warning',trans('interface.failure_create_quest'));
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('warning',trans('interface.failure_create_quest'));
         }
 
         if(isset($data['struct']) && is_array($data['struct'])) {
@@ -295,6 +298,7 @@ class QuestController extends Controller
             \App\Quest::whereNotNull('created_at')->update(['timer'=>$data['timer']]);
             return redirect()
                 ->back()
+                ->withInput()
 //                ->with('message',trans('interface.success_save_quest'))
             ;
         }
@@ -311,7 +315,10 @@ class QuestController extends Controller
                 return response()->json(['success' => false, 'message' => trans('interface.failure_save_quest')]);
             }
 
-            return redirect()->back()->with('warning',trans('interface.failure_save_quest'));
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('warning',trans('interface.failure_save_quest'));
         }
 
 
@@ -336,7 +343,9 @@ class QuestController extends Controller
             ]);
         }
 
-        return redirect()->route('quest.show',$id)->with('message',trans('interface.success_save_quest'));
+        return redirect()
+            ->route('quest.show',$id)
+            ->with('message',trans('interface.success_save_quest'));
     }
 
     /**
@@ -364,7 +373,10 @@ class QuestController extends Controller
                 return response()->json(['success' => false, 'message' => trans('interface.failure_deleted_quest')]);
             }
 
-            return redirect()->back()->with('warning',trans('interface.failure_deleted_quest'));
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('warning',trans('interface.failure_deleted_quest'));
         }
 
 //        if(count($quest->tickets) == 0) {

@@ -241,7 +241,10 @@ class ExamController extends Controller
                 ]);
             }
 
-            return redirect()->back()->with('warning',trans('interface.failure_create_exam'));
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('warning',trans('interface.failure_create_exam'));
         }
 
         $exam = \App\Exam::create($data);
@@ -255,7 +258,10 @@ class ExamController extends Controller
                 ]);
             }
 
-            return redirect()->back()->with('warning',trans('interface.failure_create_exam'));
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('warning',trans('interface.failure_create_exam'));
         }
 
         // ЗАПИСЬ ЗАДАНИЙ ДЛЯ ЭКЗАМЕНА

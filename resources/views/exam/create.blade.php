@@ -35,21 +35,36 @@
                                     <div class="form-group">
                                         <label class="col-md-3 control-label">{!! trans('interface.org') !!}</label>
                                         <div class="col-md-9">
-                                            <select class="form-control select2-single" name="org_id" id="org">
+                                            <select class="form-control select2-single" id="org" name="org_id">
+                                                <option value="0">{{ trans('interface.no_value') }}</option>
+                                                @foreach(\App\Org::all() as $org)
+                                                    <option value="{{ $org->id }}"
+                                                            @if(old('org_id') == $org->id) selected @endif>{{ $org->name }}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-3 control-label">{!! trans('interface.func') !!}</label>
                                         <div class="col-md-9">
-                                            <select class="form-control select2-single" name="func_id" id="func">
+                                            <select class="form-control select2-single" id="func" name="func_id">
+                                                <option value="0">{{ trans('interface.no_value') }}</option>
+                                                @foreach(\App\Func::all() as $func)
+                                                    <option value="{{ $func->id }}"
+                                                            @if(old('func_id') == $func->id) selected @endif>{{ $func->name }}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-3 control-label">{!! trans('interface.position') !!}</label>
                                         <div class="col-md-9">
-                                            <select class="form-control select2-single" name="position_id" id="position">
+                                            <select class="form-control select2-single" id="position" name="position_id">
+                                                <option value="0">{{ trans('interface.no_value') }}</option>
+                                                @foreach(\App\Position::all() as $position)
+                                                    <option value="{{ $position->id }}"
+                                                            @if(old('position_id') == $position->id) selected @endif>{{ $position->name }}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
@@ -150,24 +165,6 @@
 
             var data = {
 
-                org : {
-                    id: '{!! old('org_id') ?: 0 !!}',
-                    name: '{!! (old('org_id'))
-                                ? \App\Org::find(old('org_id'))->name
-                                : trans('interface.no_value') !!}',
-                },
-                func : {
-                    id: '{!! old('func_id') ?: 0 !!}',
-                    name: '{!! (old('func_id'))
-                                ? \App\Func::find(old('func_id'))->name
-                                : trans('interface.no_value') !!}',
-                },
-                position : {
-                    id: '{!! old('position_id') ?: 0 !!}',
-                    name: '{!! (old('position_id') > 0)
-                                ? \App\Position::find(old('position_id'))->name
-                                : trans('interface.no_value') !!}',
-                },
                 user : {
                     id: '{!! old('user_id') ?: 0 !!}',
                     name: '{!! (old('user_id'))
@@ -182,7 +179,19 @@
                 }
             };
 
-            $("#org,#func,#position,#user,#chief").each(function(){
+            $("#org,#func,#position").each(function(){
+                var id = $(this).attr('id');
+
+                $(this).select2({
+                    theme: "bootstrap",
+                    placeholder: '{!! trans('interface.select_position') !!}',
+                    allowClear: true,
+                    language: '{!! config()->get('app.locale') !!}',
+//                    minimumInputLength: 2,
+                });
+            });
+
+            $("#user,#chief").each(function(){
                 var id = $(this).attr('id');
 
                 userId = id === 'chief' ? 'user' : id;

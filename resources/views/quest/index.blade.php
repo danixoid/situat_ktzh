@@ -65,12 +65,10 @@
                                 <label class="col-md-3 control-label">{!! trans('interface.org') !!}</label>
                                 <div class="col-md-9">
                                     <select class="form-control select2-single" id="org" name="org_id">
-                                        <option value="{!! old('org_id') ?: 0 !!}">{!! (old('org_id'))
-                                            ? \App\Org::find(old('org_id'))->name
-                                            : trans('interface.no_value') !!}</option>
+                                        <option value="0">{{ trans('interface.no_value') }}</option>
                                         @foreach(\App\Org::all() as $org)
                                             <option value="{{ $org->id }}"
-                                                    @if(request('org_id')) selected @endif>{{ $org->name }}</option>
+                                                    @if(request('org_id') == $org->id) selected @endif>{{ $org->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -79,12 +77,10 @@
                                 <label class="col-md-3 control-label">{!! trans('interface.func') !!}</label>
                                 <div class="col-md-9">
                                     <select class="form-control select2-single" id="func" name="func_id">
-                                        <option value="{!! old('func_id') ?: 0 !!}">{!! (old('func_id'))
-                                            ? \App\Func::find(old('func_id'))->name
-                                            : trans('interface.no_value') !!}</option>
+                                        <option value="0">{{ trans('interface.no_value') }}</option>
                                         @foreach(\App\Func::all() as $func)
                                             <option value="{{ $func->id }}"
-                                                    @if(request('func_id')) selected @endif>{{ $func->name }}</option>
+                                                    @if(request('func_id') == $func->id) selected @endif>{{ $func->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -93,12 +89,10 @@
                                 <label class="col-md-3 control-label">{!! trans('interface.position') !!}</label>
                                 <div class="col-md-9">
                                     <select class="form-control select2-single" id="position" name="position_id">
-                                        <option value="{!! old('position_id') ?: 0 !!}">{!! (old('position_id'))
-                                            ? \App\Position::find(old('position_id'))->name
-                                            : trans('interface.no_value') !!}</option>
+                                        <option value="0">{{ trans('interface.no_value') }}</option>
                                         @foreach(\App\Position::all() as $position)
                                             <option value="{{ $position->id }}"
-                                                    @if(request('func_id')) selected @endif>{{ $position->name }}</option>
+                                                    @if(request('position_id') == $position->id) selected @endif>{{ $position->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
