@@ -27,10 +27,23 @@
                             </div>
 
                             <div class="form-group">
+                                <label class="control-label col-md-3">{!! trans('interface.org') !!}</label>
+                                <div class="col-md-9 form-control-static">
+                                    <label class="text-info">{!! $exam->org->name !!}</label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-3">{!! trans('interface.func') !!}</label>
+                                <div class="col-md-9 form-control-static">
+                                    <label class="text-info">{!! $exam->func ? $exam->func->name : "" !!}</label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
                                 <label class="control-label col-md-3">{!! trans('interface.position') !!}</label>
                                 <div class="col-md-9 form-control-static">
-                                    <label class="text-info">{!! $exam->position->orgPath
-                                    !!}/{!! $exam->position->name !!}</label>
+                                    <label class="text-info">{!! $exam->position->name !!}</label>
                                 </div>
                             </div>
 

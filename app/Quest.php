@@ -77,4 +77,26 @@ class Quest extends Model
 
         return false;
     }
+
+
+    public function scopeGetQuestForExam($query,$data) {
+        return $query
+            ->whereHas('orgs',function($q) use ($data) {
+                return $q->whereOrgId($data['org_id']);
+            })
+            ->whereHas('positions',function($q) use ($data) {
+                return $q->wherePositionId($data['position_id']);
+            })
+            ->where(function($q) use ($data)
+            {
+                if(isset($data['func_id']))
+                {
+                    return $q->whereHas('funcs',function($q) use ($data) {
+                        return $q->whereFuncId($data['func_id']);
+                    });
+                }
+                return $q;
+            })
+            ->inRandomOrder();
+    }
 }

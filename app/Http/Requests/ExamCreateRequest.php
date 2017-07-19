@@ -24,11 +24,12 @@ class ExamCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'org_id' => 'required|int|min:1',
-//            'func_id' => 'required|int|min:1',
-            'position_id' => 'required|int|min:1',
-            'user_id' => 'required|int|min:1',
-            'chief_id' => 'required|int|min:1',
+            'file' => 'required_without:org_id,position_id,user_id,chief_id,count|file',
+            'org_id' => 'required_without:file|int|min:1',
+//            'func_id' => 'required_without:file|int|min:1',
+            'position_id' => 'required_without:file|int|min:1',
+            'user_id' => 'required_without:file|int|min:1',
+            'chief_id' => 'required_without:file|int|min:1',
             'count' => 'required|int|min:1',
         ];
     }

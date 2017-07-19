@@ -16,7 +16,7 @@ class CreateExamsTable extends Migration
         Schema::create('exams', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('org_id');
-            $table->unsignedInteger('func_id');
+            $table->unsignedInteger('func_id')->nullable();
             $table->unsignedInteger('position_id');
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('chief_id');

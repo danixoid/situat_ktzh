@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 class Exam extends Model
 {
 
-    protected $fillable = ['position_id','user_id','chief_id','count'];
+    protected $fillable = ['org_id','func_id','position_id','user_id','chief_id','count'];
 
     protected $hidden = [
         'signs', 'started','finished','color','amISigner',

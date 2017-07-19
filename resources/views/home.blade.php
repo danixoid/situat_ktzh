@@ -14,8 +14,7 @@
                         <thead>
                             <tr>
                                 <th>№</th>
-                                <th>{{ trans('interface.org') }}</th>
-                                <th>{{ trans('interface.func') }}</th>
+                                <th>{{ trans('interface.org') }} / {{ trans('interface.func') }}</th>
                                 <th>{{ trans('interface.position') }}</th>
                                 <th>{{ trans('interface.user') }}</th>
 {{--                                <th>{{ trans('interface.quests') }}</th>--}}
@@ -28,10 +27,8 @@
                                 <tr>
                                     <td>{!! $num++ !!}</td>
                                     <td>
-                                        <span class="text-info">{!! $exam->org->name !!}</span>
-                                    </td>
-                                    <td>
-                                        <span class="text-info">{!! $exam->func->name !!}</span>
+                                        <span class="text-info">{!! $exam->org->name !!}</span><span
+                                                class="text-primary">{{ $exam->func ? "/".$exam->func->name : "" }}</span>
                                     </td>
                                     <td>
                                         <span class="text-info">{!! $exam->position->name !!}</span>

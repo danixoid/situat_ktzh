@@ -71,16 +71,18 @@
 
                             <div class="form-group">
                                 <label class="col-md-3 control-label">{!! trans('interface.started_date') !!}</label>
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <input type="date" class="form-control" value="{!! request('date_started') !!}"
                                            name="date_started" id="date_started" />
                                 </div>
-                                <div class="col-md-3">
-                                    <input type="date" class="form-control" value="{!! request('date_finished') !!}"
-                                           name="date_finished" id="date_finished" />
-                                </div>
-                                <div class="col-md-3">
-                                    <button type="submit" class="btn btn-info btn-block">{!! trans("interface.search") !!}</button>
+                                <div class="col-md-5">
+                                    <div class="input-group">
+                                        <input type="date" class="form-control" value="{!! request('date_finished') !!}"
+                                            name="date_finished" id="date_finished" />
+                                        <div class="input-group-btn">
+                                            <button type="submit" class="btn btn-info btn-block">{!! trans("interface.search") !!}</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 

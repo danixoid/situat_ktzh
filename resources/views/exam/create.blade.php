@@ -10,76 +10,121 @@
 @section('content')
     <div class="container">
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
+            <div class="col-md-10 col-md-offset-1">
                 <div class="panel panel-default">
                     <div class="panel-heading">{!! trans('interface.exam') !!} | {!! trans('interface.create') !!}</div>
 
                     <div class="panel-body">
 
-                        <form id="form_create_exam" class="form-horizontal" action="{!! route('exam.store') !!}" method="POST">
-                            {!! csrf_field() !!}
 
-                            <div class="form-group">
-                                <label class="col-md-3 control-label">{!! trans('interface.org') !!}</label>
-                                <div class="col-md-9">
-                                    <select class="form-control select2-single" name="org_id" id="org">
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-3 control-label">{!! trans('interface.func') !!}</label>
-                                <div class="col-md-9">
-                                    <select class="form-control select2-single" name="func_id" id="func">
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-3 control-label">{!! trans('interface.position') !!}</label>
-                                <div class="col-md-9">
-                                    <select class="form-control select2-single" name="position_id" id="position">
-                                    </select>
-                                </div>
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">{{ trans('interface.create') }}</a></li>
+                            <li role="presentation"><a href="#import" aria-controls="import" role="tab" data-toggle="tab">{{ trans('interface.import') }}</a></li>
+                        </ul>
+
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+
+                            <!-- TAB 1 -->
+                            <div role="tabpanel" class="tab-pane active" id="home">
+
+                                <form id="form_create_exam" class="form-horizontal" action="{!! route('exam.store') !!}" method="POST">
+                                    {!! csrf_field() !!}
+
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">{!! trans('interface.org') !!}</label>
+                                        <div class="col-md-9">
+                                            <select class="form-control select2-single" name="org_id" id="org">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">{!! trans('interface.func') !!}</label>
+                                        <div class="col-md-9">
+                                            <select class="form-control select2-single" name="func_id" id="func">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">{!! trans('interface.position') !!}</label>
+                                        <div class="col-md-9">
+                                            <select class="form-control select2-single" name="position_id" id="position">
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">{!! trans('interface.user') !!}</label>
+                                        <div class="col-md-9">
+                                            <select class="form-control select2-single" name="user_id" id="user">
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">{!! trans('interface.chief') !!}</label>
+                                        <div class="col-md-9">
+                                            <select class="form-control select2-single" name="chief_id" id="chief">
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">{!! trans('interface.ticket_count') !!}</label>
+                                        <div class="col-md-3">
+                                            <input type="number" class="form-control" name="count" value="{!! old('count') ?: "2" !!}"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-md-offset-3 col-md-3">
+                                            <button class="btn btn-block btn-danger" >{!! trans('interface.create') !!}</button>
+                                        </div>
+                                    </div>
+                                </form>
+                                <table id="quests_table" class="table table-condensed">
+                                    <thead>
+                                    <tr>
+                                        <th>№</th>
+                                        <th>{{ trans('interface.task') }}</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
                             </div>
 
-                            <div class="form-group">
-                                <label class="col-md-3 control-label">{!! trans('interface.user') !!}</label>
-                                <div class="col-md-9">
-                                    <select class="form-control select2-single" name="user_id" id="user">
-                                    </select>
-                                </div>
-                            </div>
+                            <!-- TAB 2 -->
+                            <div role="tabpanel" class="tab-pane" id="import">
+                                <form id="form_create_exam" class="form-horizontal"  enctype="multipart/form-data"
+                                      action="{!! route('exam.store') !!}" method="POST">
+                                    {!! csrf_field() !!}
 
-                            <div class="form-group">
-                                <label class="col-md-3 control-label">{!! trans('interface.chief') !!}</label>
-                                <div class="col-md-9">
-                                    <select class="form-control select2-single" name="chief_id" id="chief">
-                                    </select>
-                                </div>
-                            </div>
+                                    <div class="form-group">
+                                        <div class="col-md-9 col-md-offset-3">
+                                            <input type="file" name="file" class="form-control" required>
+                                        </div>
+                                    </div>
 
-                            <div class="form-group">
-                                <label class="col-md-3 control-label">{!! trans('interface.ticket_count') !!}</label>
-                                <div class="col-md-3">
-                                    <input type="number" class="form-control" name="count" value="{!! old('count') ?: "2" !!}"/>
-                                </div>
-                            </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">{!! trans('interface.ticket_count') !!}</label>
+                                        <div class="col-md-3">
+                                            <input type="number" class="form-control" name="count" value="{!! old('count') ?: "2" !!}"/>
+                                        </div>
+                                    </div>
 
-                            <div class="form-group">
-                                <div class="col-md-offset-3 col-md-3">
-                                    <button class="btn btn-block btn-danger" >{!! trans('interface.create') !!}</button>
-                                </div>
+                                    <div class="form-group">
+                                        <div class="col-md-offset-3 col-md-3">
+                                            <button class="btn btn-block btn-danger" >{!! trans('interface.import') !!}</button>
+                                        </div>
+                                    </div>
+                                </form>
+
                             </div>
-                        </form>
-                        <table id="quests_table" class="table table-condensed">
-                            <thead>
-                            <tr>
-                                <th>№</th>
-                                <th>{{ trans('interface.task') }}</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
+                        </div>
+
+
                     </div>
                 </div>
             </div>

@@ -7,6 +7,7 @@ use App\Http\Requests\ExamEditRequest;
 use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ExamController extends Controller
 {
@@ -100,23 +101,139 @@ class ExamController extends Controller
      */
     public function store(ExamCreateRequest $request)
     {
+        set_time_limit(60);
+        if($request->hasFile('file'))
+        {
+            $path = $request->file('file')->getRealPath();
+            $data = Excel::load($path, function($reader) {})->get();
+
+//            dd($data);
+            if(!empty($data) && $data->count()) {
+
+                $i = 0;
+                foreach ($data->toArray() as $key => $value) {
+                    if (!empty($value)) {
+                        foreach ($value as $v) {
+
+                            $org = $v['strukturnoe_podrazdelenie']
+                                ? \App\Org::where('name','LIKE',$v['strukturnoe_podrazdelenie'])->first()
+                                : null;
+                            $func = $v['funtsionalnoe_napravlenie']
+                                ? \App\Func::where('name','LIKE',$v['funtsionalnoe_napravlenie'])->first()
+                                : null;
+                            $position = $v['vakantnaya_dolzhnost']
+                                ? \App\Position::where('name','LIKE',$v['vakantnaya_dolzhnost'])->first()
+                                : null;
+
+//                            dd([$org,$position]);
+
+                            $role = \App\Role::whereName('employee')->firstOrFail();
+
+
+                            $user = \App\User::whereIin($v['iin_kandidata'])->first();
+                            if(!$user) {
+                                $user = new \App\User();
+                                $user->iin = $v['iin_kandidata'];
+                                $user->password = bcrypt('12345');
+                            }
+                            $user->name = $v['fio'];
+                            $user->save();
+
+                            $user->roles()->detach();
+                            $user->roles()->attach($role);
+
+                            $chief = \App\User::whereIin($v['iin_rukovoditelya'])->first();
+                            if(!$chief) {
+                                $chief = new \App\User();
+                                $chief->iin = $v['iin_rukovoditelya'];
+                                $chief->password = bcrypt('12345');
+                            }
+                            $chief->name = $v['fio_rukovoditelya'];
+                            $chief->email = $v['el.adres'];
+                            $chief->save();
+
+                            $chief->roles()->detach();
+                            $chief->roles()->attach($role);
+
+                            if( !$user || !$chief || !$org || !$position)
+                            {
+                                continue;
+                            }
+
+                            $arr = [
+                                'org_id' => $org->id,
+                                'position_id' => $position->id
+                            ];
+
+                            if ($func) {
+                                $arr['func_id'] = $func->id;
+                            }
+
+                            $quests = \App\Quest::getQuestForExam($arr)
+                                ->take($request->get('count'))
+                                ->get();
+
+//                            dd($quests);
+                            if( count($quests) < $request->get('count'))
+                            {
+                                continue;
+                            }
+
+
+                            $exam = new \App\Exam();
+                            $exam->user_id = $user->id;
+                            $exam->chief_id = $chief->id;
+                            $exam->org_id = $org->id;
+                            $exam->position_id = $position->id;
+                            $exam->count = $request->get('count');
+
+                            if ($func)
+                            {
+                                $exam->func = $org;
+                            }
+
+                            $exam->save();
+
+                            // ЗАПИСЬ ЗАДАНИЙ ДЛЯ ЭКЗАМЕНА
+                            foreach($quests as $quest)
+                            {
+                                \App\Ticket::create([
+                                    'exam_id' => $exam->id,
+                                    'quest_id' => $quest->id
+                                ]);
+                            }
+
+                            $i++;
+                        }
+                    }
+                }
+
+                return redirect()
+                    ->route('exam.index')
+                    ->with('success',trans('interface.imported_file',['num' => $i]));
+
+            }
+
+            return redirect()
+                ->route('exam.index')
+                ->with('warning',trans('interface.failure_create_exam'));
+
+        }
+
         $data = $request->all();
 
-        $quests = \App\Quest::whereHas('orgs',function($q) use ($data) {
-            return $q->whereOrgId($data['org_id']);
-            })
-            ->whereHas('funcs',function($q) use ($data) {
-                return $q->whereFuncId($data['func_id']);
-            })
-            ->whereHas('positions',function($q) use ($data) {
-                return $q->wherePositionId($data['position_id']);
-            })
-            ->inRandomOrder()
-            ->take($data['count'])
+        if($data['func_id'] == 0 || !$data['func_id']) {
+            unset($data['func_id']);
+        }
+
+        $quests = \App\Quest::getQuestForExam($data)
+            ->take($request->get('count'))
             ->get();
+//        dd($quests);
 
         if(count($quests) < $data['count'])
         {
+
             if($request->ajax()) {
                 return response()->json([
                     'success' => false,

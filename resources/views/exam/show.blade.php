@@ -63,7 +63,7 @@
                     <label class="col-md-10">
                         <strong>{!! $exam->user->name !!}</strong>,
                         <a href="{!! route('exam.index',['position_id' => $exam->position_id]) !!}">
-                            <span class="text-primary">{!! $exam->position->orgPath !!}/{!! $exam->position->name !!}</span>
+                            <span class="text-primary">{!! $exam->position->name !!}</span>
                         </a>
                     </label>
                     <div class="col-md-2 text-right">
