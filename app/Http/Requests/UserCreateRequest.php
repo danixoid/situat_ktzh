@@ -25,7 +25,7 @@ class UserCreateRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'iin' => 'required|int|min:12|unique:users',
+            'iin' => 'required|regex:/\d{12}/|unique:users',
             'email' => 'string|email|max:255',
             'password' => 'required|string|min:6|confirmed',
         ];

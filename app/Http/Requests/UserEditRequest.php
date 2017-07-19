@@ -25,7 +25,7 @@ class UserEditRequest extends FormRequest
     {
         return [
             'name' => 'string|max:255',
-            'iin' => 'int|min:12|unique:users',
+            'iin' => 'required|regex:/\d{12}/|unique:users',
             'password' => 'string|min:6|confirmed',
         ];
     }
