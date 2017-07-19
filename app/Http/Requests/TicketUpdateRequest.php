@@ -25,7 +25,7 @@ class TicketUpdateRequest extends FormRequest
     {
         return [
             'mark' => 'required_without:answer|int|max:3|min:1',
-            'note' => 'required_without:answer|string',
+            'note' => 'string',
         ];
     }
 }
