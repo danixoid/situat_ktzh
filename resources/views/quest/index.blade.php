@@ -119,10 +119,8 @@
                                 </div>
                             </div>
 
-                            <input type="hidden" name="trashed" value="0">
                             <div class="form-group">
-                                <label class="col-md-3 control-label">{!! trans('interface.position') !!}</label>
-                                <div class="col-md-9">
+                                <div class="col-md-9 col-md-offset-3">
                                     <div class="checkbox">
                                         <label><input type="checkbox" @if(request('trashed')) checked @endif
                                             onchange="$('#form_quest_search').submit()" name="trashed" value="1"> {{ trans('interface.search_in_archive') }}</label>
@@ -167,7 +165,7 @@
                                             </form>
                                             <a href="#form_delete_quest{{ $quest->id }}"
                                                onclick="$('#form_delete_quest{{ $quest->id }}').submit();">{!!
-                                                $quest->trashed() ? trans('interface.restore') : trans('interface.destroy')
+                                                $quest->trashed() ? trans('interface.restore') : trans('interface.to_archive')
                                                 !!}</a>
                                         </td>
                                     </tr>

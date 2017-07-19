@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\QuestCreateRequest;
 use App\Http\Requests\QuestUpdateRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Storage;
@@ -37,6 +38,11 @@ class QuestController extends Controller
 
 
         $query = \App\Quest::whereNotNull('created_at');
+
+        if (!Auth::user()->hasRole('admin') && Auth::user()->hasRole('manager'))
+        {
+            $query = $query->whereAuthorId(Auth::user()->id);
+        }
 
         if($trashed &&  $trashed > 0)
         {
