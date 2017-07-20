@@ -16,7 +16,7 @@ class UserTableSeeder extends Seeder
         $admin = new User();
         $admin->name = "Администратор";
         $admin->email = "danixoid@gmail.com";
-        $admin->iin = "870307401142";
+        $admin->iin = "123456789012";
         $admin->password = bcrypt("12345");
         $admin->save();
 
@@ -24,9 +24,9 @@ class UserTableSeeder extends Seeder
         $admin->roles()->attach($role_admin);
 
         $manager = new User();
-        $manager->name = "Марья Валильевна";
+        $manager->name = "Менеджер";
         $manager->email = "manager@example.com";
-        $manager->iin = "870307401140";
+        $manager->iin = "123456789013";
         $manager->password = bcrypt("12345");
         $manager->save();
 

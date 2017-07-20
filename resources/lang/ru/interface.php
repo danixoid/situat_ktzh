@@ -117,7 +117,7 @@ return [
 
 
     // ROLES
-    'employee' => 'Работник',
+    'employee' => 'Кандидат',
     'manager' => 'Менеджер',
     'admin' => 'Администратор',
 
