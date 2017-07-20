@@ -62,51 +62,65 @@
             <?php $inc++; ?>
         @endforeach
         <br />
-        @if(count($exam->signs) > 0)
-            <div><strong>{!! trans('interface.signers') !!}</strong>:</div>
-            <br />
-            <div>
-                @foreach($exam->signs as $sign)
-                    <?php
-                    $root = simplexml_load_string($sign->xml);
-                    $errors = libxml_get_errors();
-                    $root->registerXPathNamespace('ds', 'http://www.w3.org/2000/09/xmldsig#');
-                    $pub = ("-----BEGIN CERTIFICATE-----".
-                        $root->xpath('//ds:Signature/ds:KeyInfo/ds:X509Data/ds:X509Certificate')[0]->__toString()
-                        ."-----END CERTIFICATE-----");
-                    $pub_key = openssl_x509_parse(openssl_x509_read($pub));
-                    ?>
-                    <div style="border: 1px solid #555555; margin-right: 20px; padding:10px 20px;float: left;">
-                        <strong>
-                            @if($sign->signer_id == $exam->chief_id)
-                                {!! trans('interface.chief') !!}
-                            @else
-                                {!! trans('interface.user') !!}
-                            @endif
-                        </strong>
-                        <p>{!! $sign->signer->name !!}</p>
-                        <p>{!! trans('interface.signer') !!}: {!! $pub_key['subject']['CN'] !!}</p>
-                        <p>{!! trans('interface.iin') !!}:
-                            {!! mb_ereg_replace("^(I|B)IN","",$pub_key['subject']['serialNumber']) !!}</p>
-                        <p>{!! trans('interface.sign') !!}:</p>
-                        <img src="data:image/png;base64,
-                            {!! base64_encode(\QrCode::format('png')
-                                ->size(150)
-                                ->generate($root->xpath('//ds:Signature/ds:SignatureValue')[0]))  !!}"/>
-                    </div>
-                @endforeach
-{{--
+        <div><strong>{!! trans('interface.signer') !!}</strong>:</div>
+        <br />
+        <div>
+            <?php
 
-                <div style="clear:both;">
+            $root = $exam;
+            $errors = libxml_get_errors();
+            $root->registerXPathNamespace('ds', 'http://www.w3.org/2000/09/xmldsig#');
+            $pub = ("-----BEGIN CERTIFICATE-----".
+                $root->xpath('//ds:Signature/ds:KeyInfo/ds:X509Data/ds:X509Certificate')[0]->__toString()
+                ."-----END CERTIFICATE-----");
+            $pub_key = openssl_x509_parse(openssl_x509_read($pub));
+            ?>
+            <div style="border: 1px solid #555555; margin-right: 20px; padding:10px 20px;">
+                <p>{!! trans('interface.signer') !!}: {!! $pub_key['subject']['CN'] !!}</p>
+                <p>{!! trans('interface.iin') !!}:
+                    {!! mb_ereg_replace("^(I|B)IN","",$pub_key['subject']['serialNumber']) !!}</p>
+                <p>{!! trans('interface.sign') !!}:</p>
+                <img src="data:image/png;base64,
+                    {!! base64_encode(\QrCode::format('png')
+                        ->size(150)
+                        ->generate("" . $root->xpath('//ds:Signature/ds:SignatureValue')[0]))  !!}"/>
+
+                <p>{!! trans('interface.public_key') !!}:</p>
+
+                <div style="margin-top:50px;">
+                    <?php
+                    $public_key = [];
+                    $count = 255;
+                    $str_key = $root->xpath('//ds:Signature/ds:KeyInfo/ds:X509Data/ds:X509Certificate')[0];
+                    while($str_key) :
+                        $pub_key = mb_substr($str_key,0,strlen($str_key) > $count ? $count : strlen($str_key));
+                        array_push($public_key,$pub_key);
+                        $str_key = mb_substr($str_key,$count,strlen($str_key));
+                    endwhile;
+
+                    foreach ($public_key as $part) :
+                    ?>
+                    {{--<p>{!! $part !!}</p>--}}
 
                     <img src="data:image/png;base64,
-                            {!! base64_encode(\QrCode::format('png')
-                                ->size(150)
-                                ->generate(route('exam.show',$root->xpath('//ds:Signature/ds:SignatureValue')[0])))  !!}"/>
+                        {!! base64_encode(\QrCode::format('png')
+                            ->size(150)
+                            ->generate($part)) !!}"/>
+                    <?php endforeach; ?>
                 </div>
---}}
 
             </div>
-        @endif
+{{--
+
+            <div style="clear:both;">
+
+                <img src="data:image/png;base64,
+                        {!! base64_encode(\QrCode::format('png')
+                            ->size(150)
+                            ->generate(route('exam.show',$root->xpath('//ds:Signature/ds:SignatureValue')[0])))  !!}"/>
+            </div>
+--}}
+
+        </div>
     </div>
 @endsection

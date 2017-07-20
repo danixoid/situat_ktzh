@@ -333,7 +333,7 @@ var json2xml = (function () {
                     type = typeof value;
                 if (value instanceof Array && type === 'object') {
                     for (var sub in value) {
-                        xml += json2xml(value[sub]);
+                        xml += tag(i) + json2xml(value[sub]) + tag(i, 1);;
                     }
                 } else if (value instanceof Object && type === 'object') {
                     xml += tag(i) + json2xml(value) + tag(i, 1);

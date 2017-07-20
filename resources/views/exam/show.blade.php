@@ -89,10 +89,10 @@
                     <div class="form-group">
                         <label class="text-primary">{!! trans('interface.quest') !!}
                             @if(\Auth::user()->hasAnyRole(['manager','admin']))
-                                №{!! $ticket->quest->id !!}</label>
+                                №{!! $ticket->quest->id !!}
                             @else
                                 {{ $inc_tic++ }}
-                            @endif
+                            @endif</label>
                         <iframe id="iframe" src="{!! route('ticket.show', ['id'=>$ticket->id,'type'=>'minimum']) !!}"
                             onload="resizeIframe(this)" style="width:100%; background: #FFFFFF;"></iframe>
                     </div>
@@ -238,6 +238,11 @@
                                        "data:application/octet-stream;charset=utf-8;base64,{!!
                                        $root->xpath('//ds:Signature/ds:SignatureValue')[0]
                                        !!}">{!! trans('interface.sign') !!}</a>
+                                </p>
+                                <p>
+                                    <a href="{!! route('signed.xml',[
+                                        'id' => $sign->id,'type' => 'pdf'
+                                     ]) !!}" target="_blank">{!! trans('interface.print_to_pdf') !!}</a>
                                 </p>
                                 <p>
                                     <a download="public_key.cer" href=

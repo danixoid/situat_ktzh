@@ -64,7 +64,20 @@ class HomeController extends Controller
 
     public function signedXml($id)
     {
-        return response(\App\Sign::find($id)->xml,200,[
+        $sign = \App\Sign::find($id);
+        $root = simplexml_load_string($sign->xml, "SimpleXMLElement", LIBXML_NOCDATA);
+        if(\request()->has('type') && \request('type') == 'pdf')
+        {
+//            dd(XML2Array($root));
+//            return response($sign->xml,200,['Content-Type' => 'Application/xml']);
+
+//            return view('pdf.signed',['exam' => $root]);
+
+            $pdf = \PDF::loadView('pdf.signed',['exam' => $root]);
+            return $pdf->stream('signed_'. $id . 'pdf');
+        }
+
+        return response($sign->xml,200,[
             'Content-Type' => 'application/xml'
         ]);
     }

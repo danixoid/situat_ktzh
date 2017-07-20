@@ -302,6 +302,9 @@ class ExamController extends Controller
                     'user',
                     'chief',
                     'position',
+                    'org',
+                    'func',
+                    'tickets',
                     'tickets.quest'
                 ])->find($id));
         }

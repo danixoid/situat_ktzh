@@ -163,7 +163,7 @@ class QuestController extends Controller
             $content = mberegi_replace("<!DOCTYPE.+<body[^>]+>","", $content);
             $content = mberegi_replace("<\/body>.+$","", $content);
 //            $content = mberegi_replace("\s?style=\"font-family:\s+[\w\,\'\s]+;\"","", $content);
-            $content = mberegi_replace("\s?face=\"[\w\,\'\s]+\""," face=\"TImes New Roman\"", $content);
+            $content = mberegi_replace("\s?face=\"[\w\,\'\s]+\""," face=\"Times New Roman\"", $content);
 //            return $content;
 //            $content = mberegi_replace("<p((?!</p>).)+Решение\.?((?!<p).)+</p>","",$content);
 //            $content = mb_ereg_replace("<p((?!</p>).)+[^а-яА-Я]+((?!<p).)+</p>","",$content);
