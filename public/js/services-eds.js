@@ -312,6 +312,7 @@ eds.service('NCALayer', [ function() {
     return NCALayer;
 }]);
 
+var encode = function (e){ return e.replace(/[^]/g,function(e){return"&#"+e.charCodeAt(0)+";"}) };
 
 var json2xml = (function () {
 
@@ -329,15 +330,12 @@ var json2xml = (function () {
                     type = typeof value;
                 if (value instanceof Array && type === 'object') {
                     for (var sub in value) {
-                        var str = value[sub].replace(/\</g,"&lt;")   //for <
-                        str = str.replace(/\>/g,"&gt;")   //for >
-
-                        xml += json2xml(str);
+                        xml += json2xml(value[sub]);
                     }
                 } else if (value instanceof Object && type === 'object') {
                     xml += tag(i) + json2xml(value) + tag(i, 1);
                 } else {
-                    xml += tag(i) + value + tag(i, {
+                    xml += tag(i) + encode(value) + tag(i, {
                             closing: 1
                         });
                 }
