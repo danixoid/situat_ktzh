@@ -143,7 +143,7 @@
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
 {{--<script type="text/javascript" src="{!! asset('/js/angular.min.js') !!}"></script>--}}
-<script type="text/javascript" src="{!! asset('/js/services-eds.js?ver=4') !!}"></script>
+<script type="text/javascript" src="{!! asset('/js/services-eds.js?ver=5') !!}"></script>
 <script>
 
     eds.controller('EDSController',function($scope,$http,NCALayer) {
