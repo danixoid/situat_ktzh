@@ -329,7 +329,10 @@ var json2xml = (function () {
                     type = typeof value;
                 if (value instanceof Array && type === 'object') {
                     for (var sub in value) {
-                        xml += json2xml('<![CDATA[' + value[sub] + ']]>');
+                        var str = value[sub].replace(/\</g,"&lt;")   //for <
+                        str = str.replace(/\>/g,"&gt;")   //for >
+
+                        xml += json2xml(str);
                     }
                 } else if (value instanceof Object && type === 'object') {
                     xml += tag(i) + json2xml(value) + tag(i, 1);
