@@ -312,8 +312,9 @@ eds.service('NCALayer', [ function() {
     return NCALayer;
 }]);
 
+
 var encode = function (e){
-    return value
+    return e
         .replace(/&/g, "&amp;")
         .replace(/>/g, "&gt;")
         .replace(/</g, "&lt;")
