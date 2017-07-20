@@ -211,51 +211,53 @@
                 @if(count($exam->signs) > 0)
                 <div class="form-group">
                     <label class="text-primary">{!! trans('interface.signers') !!}</label>
-                    @foreach($exam->signs as $sign)
-                        <?php
-                        $root = simplexml_load_string($sign->xml);
-                        $errors = libxml_get_errors();
-                        $root->registerXPathNamespace('ds', 'http://www.w3.org/2000/09/xmldsig#');
-                        $pub = ("-----BEGIN CERTIFICATE-----".
-                            $root->xpath('//ds:Signature/ds:KeyInfo/ds:X509Data/ds:X509Certificate')[0]->__toString()
-                            ."-----END CERTIFICATE-----");
-                        $pub_key = openssl_x509_parse(openssl_x509_read($pub));
-                        ?>
-                        <div class="form-control-static">
-                            <div class="well">
-                                <strong>
-                                @if($sign->signer_id == $exam->chief_id)
-                                    {!! trans('interface.chief') !!}
-                                @else
-                                    {!! trans('interface.employee') !!}
-                                @endif
-                                </strong>
-                                <p>{!! $sign->signer->name !!}</p>
-                                <p>{!! trans('interface.signer') !!}: {!! $pub_key['subject']['CN'] !!}</p>
-                                <p>{!! trans('interface.iin') !!}: {!! mb_ereg_replace("^(I|B)IN","",$pub_key['subject']['serialNumber']) !!}</p>
-                                <p>
-                                    <a download="signature.p7b" href=
-                                       "data:application/octet-stream;charset=utf-8;base64,{!!
-                                       $root->xpath('//ds:Signature/ds:SignatureValue')[0]
-                                       !!}">{!! trans('interface.sign') !!}</a>
-                                </p>
-                                <p>
-                                    <a href="{!! route('signed.xml',[
-                                        'id' => $sign->id,'type' => 'pdf'
-                                     ]) !!}" target="_blank">{!! trans('interface.print_to_pdf') !!}</a>
-                                </p>
-                                <p>
-                                    <a download="public_key.cer" href=
-                                       "data:application/octet-stream;charset=utf-8;base64,{!!
-                                       $root->xpath('//ds:Signature/ds:KeyInfo/ds:X509Data/ds:X509Certificate')[0]
-                                       !!}">{!! trans('interface.public_key') !!}</a>
-                                </p>
-                                <p>
-                                    <a download="signature.xml" href="{!! route('signed.xml',$sign->id) !!}">{!! trans('interface.xml_file') !!}</a>
-                                </p>
+                    <div class="form-control-static row">
+                        @foreach($exam->signs as $sign)
+                            <?php
+                            $root = simplexml_load_string($sign->xml);
+                            $errors = libxml_get_errors();
+                            $root->registerXPathNamespace('ds', 'http://www.w3.org/2000/09/xmldsig#');
+                            $pub = ("-----BEGIN CERTIFICATE-----".
+                                $root->xpath('//ds:Signature/ds:KeyInfo/ds:X509Data/ds:X509Certificate')[0]->__toString()
+                                ."-----END CERTIFICATE-----");
+                            $pub_key = openssl_x509_parse(openssl_x509_read($pub));
+                            ?>
+                            <div class="col-md-6">
+                                <div class="well">
+                                    <strong>
+                                    @if($sign->signer_id == $exam->chief_id)
+                                        {!! trans('interface.chief') !!}
+                                    @else
+                                        {!! trans('interface.employee') !!}
+                                    @endif
+                                    </strong>
+                                    <p>{!! $sign->signer->name !!}</p>
+                                    <p>{!! trans('interface.signer') !!}: {!! $pub_key['subject']['CN'] !!}</p>
+                                    <p>{!! trans('interface.iin') !!}: {!! mb_ereg_replace("^(I|B)IN","",$pub_key['subject']['serialNumber']) !!}</p>
+                                    <p>
+                                        <a download="signature.p7b" href=
+                                           "data:application/octet-stream;charset=utf-8;base64,{!!
+                                           $root->xpath('//ds:Signature/ds:SignatureValue')[0]
+                                           !!}">{!! trans('interface.sign') !!}</a>
+                                    </p>
+                                    <p>
+                                        <a href="{!! route('signed.xml',[
+                                            'id' => $sign->id,'type' => 'pdf'
+                                         ]) !!}" target="_blank">{!! trans('interface.print_to_pdf') !!}</a>
+                                    </p>
+                                    <p>
+                                        <a download="public_key.cer" href=
+                                           "data:application/octet-stream;charset=utf-8;base64,{!!
+                                           $root->xpath('//ds:Signature/ds:KeyInfo/ds:X509Data/ds:X509Certificate')[0]
+                                           !!}">{!! trans('interface.public_key') !!}</a>
+                                    </p>
+                                    <p>
+                                        <a download="signature.xml" href="{!! route('signed.xml',$sign->id) !!}">{!! trans('interface.xml_file') !!}</a>
+                                    </p>
+                                </div>
                             </div>
-                        </div>
-                    @endforeach
+                        @endforeach
+                    </div>
                 </div>
                 @endif
             </div>
