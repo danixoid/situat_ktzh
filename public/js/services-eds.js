@@ -314,11 +314,7 @@ eds.service('NCALayer', [ function() {
 
 
 var encode = function (e){
-    return e
-        .replace(/&/g, "&amp;")
-        .replace(/>/g, "&gt;")
-        .replace(/</g, "&lt;")
-        .replace(/"/g, "&quot;")
+    return e.replace(/&/g, "&amp;").replace(/>/g, "&gt;").replace(/</g, "&lt;").replace(/"/g, "&quot;")
 };
 
 var json2xml = (function () {
