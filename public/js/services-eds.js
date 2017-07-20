@@ -314,8 +314,7 @@ eds.service('NCALayer', [ function() {
 
 
 var encode = function (e){
-    var str = e.toString();
-    return str.replace(/&/g, "&amp;").replace(/>/g, "&gt;").replace(/</g, "&lt;").replace(/"/g, "&quot;")
+    return e.replace(/&/g, "&amp;").replace(/>/g, "&gt;").replace(/</g, "&lt;").replace(/"/g, "&quot;")
 };
 
 var json2xml = (function () {
@@ -339,9 +338,16 @@ var json2xml = (function () {
                 } else if (value instanceof Object && type === 'object') {
                     xml += tag(i) + json2xml(value) + tag(i, 1);
                 } else {
-                    xml += tag(i) + encode(value) + tag(i, {
+                    if (typeof value == 'string') {
+
+                        xml += tag(i) + encode(value) + tag(i, {
                             closing: 1
                         });
+                    } else {
+                        xml += tag(i) + value + tag(i, {
+                            closing: 1
+                        });
+                    }
                 }
             }
         }
