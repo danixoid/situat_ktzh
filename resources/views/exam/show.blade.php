@@ -199,13 +199,6 @@
                             {{--<a href="{!! route('signing.data',$exam->id) !!}" id="signing" class="btn btn-primary"></a>--}}
                         </div>
                         @endif
-
-                            <div class="col-md-2">
-                                <a href="#signing_modal" class="btn btn-info btn-lg bmd-modalButton" data-toggle="modal"
-                                   data-bmdSrc="{!! route('signing.data',$exam->id) !!}"
-                                   data-bmdWidth="600" data-bmdHeight="550" data-target="#signing_modal">{!! trans('interface.eds_signing') !!}</a>
-                                {{--<a href="{!! route('signing.data',$exam->id) !!}" id="signing" class="btn btn-primary"></a>--}}
-                            </div>
                     </div>
                 </div>
 
