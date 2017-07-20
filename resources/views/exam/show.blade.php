@@ -171,7 +171,7 @@
 
                 <div class="form-group">
                     <div class="row">
-                        @if(\AUTH::user()->hasAnyRole(['manager','admin']))
+                        @if(\Auth::user()->hasAnyRole(['manager','admin']))
                         <div class="col-md-2">
                             <a href="{!! route('exam.edit',['id'=>$exam->id]) !!}" class="btn btn-block btn-info">{!! trans('interface.edit') !!}</a>
                         </div>
