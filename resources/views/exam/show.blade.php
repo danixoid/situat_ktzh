@@ -200,6 +200,12 @@
                         </div>
                         @endif
 
+                            <div class="col-md-2">
+                                <a href="#signing_modal" class="btn btn-info btn-lg bmd-modalButton" data-toggle="modal"
+                                   data-bmdSrc="{!! route('signing.data',$exam->id) !!}"
+                                   data-bmdWidth="600" data-bmdHeight="550" data-target="#signing_modal">{!! trans('interface.eds_signing') !!}</a>
+                                {{--<a href="{!! route('signing.data',$exam->id) !!}" id="signing" class="btn btn-primary"></a>--}}
+                            </div>
                     </div>
                 </div>
 
@@ -283,7 +289,7 @@
 @endsection
 
 @section('meta')
-    <link rel="stylesheet" href="{!! asset('css/rating.css') !!}" type="text/css" media="screen" title="Rating CSS">
+{{--    <link rel="stylesheet" href="{!! asset('css/rating.css') !!}" type="text/css" media="screen" title="Rating CSS">--}}
 @endsection
 
 
@@ -300,7 +306,7 @@
                 $('#form_delete_exam').submit();
             });
 
-            $('.my_mark').rating();
+//            $('.my_mark').rating();
 
             @foreach($exam->tickets as $ticket)
             $('#chief_form{{ $ticket->id }} .form').submit(function (ev) {
@@ -363,8 +369,8 @@
 
 
 
-//        jQuery(document).ready(function(){
-//            jQuery("#signing_modal").bmdIframe();
-//        });
+        jQuery(document).ready(function(){
+            jQuery("#signing_modal").bmdIframe();
+        });
     </script>
 @endsection
