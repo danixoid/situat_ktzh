@@ -314,10 +314,7 @@ eds.service('NCALayer', [ function() {
 
 
 var encode = function (e){
-    var str = '';
-    if(e) {
-        str = e;
-    }
+    var str = e.toString();
     return str.replace(/&/g, "&amp;").replace(/>/g, "&gt;").replace(/</g, "&lt;").replace(/"/g, "&quot;")
 };
 
