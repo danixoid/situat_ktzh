@@ -12,7 +12,7 @@ class Exam extends Model
 
     protected $hidden = [
         'signs', 'started','finished','color','amISigner',
-        'startedDate','finishedDate','chiefHasNoteMark'
+        'startedDate','chiefHasNoteMark'
     ];
 
     protected $appends = [
