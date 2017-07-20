@@ -84,9 +84,15 @@
 
                 @if(!$exam->isUser || $exam->finished)
 
+                    <?php $inc_tic = 1 ?>
                     @foreach($exam->tickets as $ticket)
                     <div class="form-group">
-                        <label class="text-primary">{!! trans('interface.quest') !!} №{!! $ticket->quest->id !!}</label>
+                        <label class="text-primary">{!! trans('interface.quest') !!}
+                            @if(\Auth::user()->hasAnyRole(['manager','admin']))
+                                №{!! $ticket->quest->id !!}</label>
+                            @else
+                                {{ $inc_tic++ }}
+                            @endif
                         <iframe id="iframe" src="{!! route('ticket.show', ['id'=>$ticket->id,'type'=>'minimum']) !!}"
                             onload="resizeIframe(this)" style="width:100%; background: #FFFFFF;"></iframe>
                     </div>
