@@ -312,7 +312,13 @@ eds.service('NCALayer', [ function() {
     return NCALayer;
 }]);
 
-var encode = function (e){ return e.replace(/[^]/g,function(e){return"&#"+e.charCodeAt(0)+";"}) };
+var encode = function (e){
+    return value
+        .replace(/&/g, "&amp;")
+        .replace(/>/g, "&gt;")
+        .replace(/</g, "&lt;")
+        .replace(/"/g, "&quot;")
+};
 
 var json2xml = (function () {
 
