@@ -16,7 +16,23 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth',['except' => ['welcome']]);
+    }
+
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function welcome()
+    {
+        if(Auth::check())
+        {
+            return $this->index();
+        }
+
+        return view('welcome');
+
     }
 
     /**
@@ -36,7 +52,20 @@ class HomeController extends Controller
                 ->orWhere('chief_id', Auth::user()->id);
             })
             ->paginate(10);
-        return view('home',['exams' => $exams->appends(Input::except('page'))]);
+
+        $evaluaters = \App\Evaluater::where(function($q) {
+                if(Auth::user()->hasAnyRole(['admin','manager'])) {
+                    return $q;
+                }
+                return $q->whereUserId(Auth::user()->id);
+            })
+            ->paginate(10);
+
+
+        return view('home',[
+            'exams' => $exams->appends(Input::except('page')),
+            'evaluaters' => $evaluaters->appends(Input::except('page'))
+        ]);
     }
 
     /**

@@ -106,7 +106,10 @@ return [
     'bad' => 'Нашар',
     'satisfy' => 'Қанағаттанарлық',
     'good' => 'Жақсы',
-
+    'funcs' => 'Функциональные направления',
+    'func' => 'Функциональное направление',
+    'to_archive' => 'В архив',
+    'help' => 'Помощь',
 
     // ROLES
     'employee' => 'Қызметкер',
@@ -120,6 +123,34 @@ return [
     'failure_save_quest' => 'жағдайды сақтау мүмкін емес',
     'success_deleted_quest' => 'Жағдай жойылды',
     'failure_deleted_quest' => 'Жағдайды жою мүмкін емес',
+    'success_restored_quest' => 'Ситуационная задача восстановлена',
+
+    //NEW WORDS FOR EVALUATION PERSONAL
+    'evaluation_personal' => 'Оценка персонала',
+    'evaluation_list' => 'Список',
+    'evaluation_type' => 'Градус оценки',
+    'evaluated' => 'Оцениваемый работник',
+    'evaluater' => 'Оценивающий работник',
+    'evaluaters' => 'Оценивающие работники',
+    'competence' => 'Компетенция',
+    'competences' => 'Компетенции',
+    'competence_type' => 'Вид компетенции',
+    'notes' => 'Описание',
+    'maximum' => 'Максимум',
+    'minimum' => 'Минимум',
+    'level' => 'Уровень',
+    'add_competences_line' => 'Добавляйте компетенции через построчно, через запятую указывайте комментарий',
+    'evaluation_started' => 'Оценка начата',
+    'evaluation_finished' => 'Оценка завершена',
+    'started' => 'Начато',
+    'finished' => 'Завершено',
+    'not_finished' => 'Не начато',
+    'status' => 'Статус',
+    'reports' => 'Отчеты',
+    'value' => 'Значение',
+    'remaining_time' => 'Құрметті кандидат бір ситуациялық есепті шешу үшін сізге 15 минут уақыт беріледі.',
+//    '' => '',
+
 
     // ORG
     'success_create_org' => 'Жаңа бөлім сәтті құрылды',

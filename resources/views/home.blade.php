@@ -16,7 +16,7 @@
                                 <th>№</th>
                                 <th>{{ trans('interface.org') }} / {{ trans('interface.func') }}</th>
                                 <th>{{ trans('interface.position') }}</th>
-                                <th>{{ trans('interface.user') }}</th>
+                                <th>{{ trans('interface.employee') }}</th>
 {{--                                <th>{{ trans('interface.quests') }}</th>--}}
                                 <th>{{ trans('interface.exam_status') }}</th>
                             </tr>

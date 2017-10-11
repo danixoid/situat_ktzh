@@ -120,34 +120,16 @@
         </div>
     </div>
 
-    <!-- Modal -->
-
-    <div class="modal" id="response" tabindex="-1" role="dialog" aria-labelledby="signModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Ответ сервера</h4>
-                </div>
-                <div class="modal-body table-responsive">
-                    @{{ jsonResponse }}
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 
 
 <!-- Scripts -->
-<script src="{{ asset('js/app.js') }}"></script>
-
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
-{{--<script type="text/javascript" src="{!! asset('/js/angular.min.js') !!}"></script>--}}
+{{--<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>--}}
+<script type="text/javascript" src="{!! asset('/js/angular.min.js') !!}"></script>
 <script type="text/javascript" src="{!! asset('/js/services-eds.js?ver=15') !!}"></script>
 <script>
 
     eds.controller('EDSController',function($scope,$http,NCALayer) {
-        $scope.jsonResponse = "";
 
         $scope.detail = {
             signed : false,

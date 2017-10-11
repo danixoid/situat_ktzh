@@ -35,6 +35,8 @@ Route::get('/ticket', 'HomeController@ticket')->name('ticket');
 
 Route::get('/admin', 'AdminController@index')->name('admin.index');
 
+
+// СИТУАЦИОННЫЕ ЗАДАЧИ
 Route::resource('/quest',"QuestController");
 Route::resource('/ticket',"TicketController");
 Route::resource('/exam',"ExamController");
