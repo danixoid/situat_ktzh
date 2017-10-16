@@ -23,7 +23,7 @@ Route::get('/lang/{lang}', function ($lang) {
 Auth::routes();
 
 
-Route::get('/', 'HomeController@index')->name('index');
+Route::get('/', 'HomeController@welcome')->name('index');
 Route::get('/help', 'HomeController@help')->name('help');
 Route::get('/_test', 'HomeController@__test')->name('_test');
 Route::get('/signing/{id}', 'HomeController@signingData')->name('signing.data');
