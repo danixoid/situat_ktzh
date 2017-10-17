@@ -89,9 +89,8 @@
                                 <label class="col-md-3 control-label">{!! trans('interface.org') !!}</label>
                                 <div class="col-md-9">
                                     <select class="form-control select2-single" id="org">
-                                        <option value="{!! old('org_id') ?: 0 !!}">{!! (old('org_id'))
-                                            ? \App\Org::find(old('org_id'))->name
-                                            : trans('interface.no_value') !!}</option>
+                                        <option value="0">
+                                            {!! trans('interface.no_value') !!}</option>
                                         @foreach(\App\Org::all() as $org)
                                             <option value="{{ $org->id }}">{{ $org->name }}</option>
                                         @endforeach
@@ -102,9 +101,8 @@
                                 <label class="col-md-3 control-label">{!! trans('interface.func') !!}</label>
                                 <div class="col-md-9">
                                     <select class="form-control select2-single" id="func">
-                                        <option value="{!! old('func_id') ?: 0 !!}">{!! (old('func_id'))
-                                            ? \App\Func::find(old('func_id'))->name
-                                            : trans('interface.no_value') !!}</option>
+                                        <option value="0">
+                                            {!! trans('interface.no_value') !!}</option>
                                         @foreach(\App\Func::all() as $func)
                                             <option value="{{ $func->id }}">{{ $func->name }}</option>
                                         @endforeach
@@ -115,9 +113,8 @@
                                 <label class="col-md-3 control-label">{!! trans('interface.position') !!}</label>
                                 <div class="col-md-9">
                                     <select class="form-control select2-single" id="position">
-                                        <option value="{!! old('position_id') ?: 0 !!}">{!! (old('position_id'))
-                                            ? \App\Position::find(old('position_id'))->name
-                                            : trans('interface.no_value') !!}</option>
+                                        <option value="0">
+                                            {!! trans('interface.no_value') !!}</option>
                                         @foreach(\App\Position::all() as $position)
                                             <option value="{{ $position->id }}">{{ $position->name }}</option>
                                         @endforeach
@@ -200,9 +197,9 @@
                         '</td>' +
                         '</tr>'
                     );
-                    $('#func').select2("val", 0);
-                    $('#position').select2('val',0);
-                    $('#org').select2('val',0);
+                    $('#func').select2("val", "0");
+                    $('#position').select2('val',"0");
+                    $('#org').select2('val',"0");
 
                 } else {
                     alert('Выберите должность и структуру подразделения.');

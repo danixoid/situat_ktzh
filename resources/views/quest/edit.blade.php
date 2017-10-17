@@ -198,9 +198,9 @@
                         '</td>' +
                         '</tr>'
                     );
-                    $('#func').select2("val", 0);
-                    $('#position').select2('val',0);
-                    $('#org').select2('val',0);
+                    $('#func').select2("val", "0");
+                    $('#position').select2('val',"0");
+                    $('#org').select2('val',"0");
 
                 } else {
                     alert('Выберите должность и структуру подразделения.');
