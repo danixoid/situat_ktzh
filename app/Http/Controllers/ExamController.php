@@ -116,13 +116,18 @@ class ExamController extends Controller
                         foreach ($value as $v) {
 
                             $org = $v['strukturnoe_podrazdelenie']
-                                ? \App\Org::where('name','LIKE',$v['strukturnoe_podrazdelenie'])->first()
+                                ? \App\Org::where('name','LIKE',$v['strukturnoe_podrazdelenie'])
+                                    ->orWhere('name',$v['strukturnoe_podrazdelenie'])
+                                    ->first()
                                 : null;
                             $func = $v['funtsionalnoe_napravlenie']
-                                ? \App\Func::where('name','LIKE',$v['funtsionalnoe_napravlenie'])->first()
+                                ? \App\Func::where('name','LIKE',$v['funtsionalnoe_napravlenie'])
+                                    ->orWhere('name',$v['funtsionalnoe_napravlenie'])->first()
                                 : null;
                             $position = $v['vakantnaya_dolzhnost']
-                                ? \App\Position::where('name','LIKE',$v['vakantnaya_dolzhnost'])->first()
+                                ? \App\Position::where('name','LIKE',$v['vakantnaya_dolzhnost'])
+                                    ->orWhere('name',$v['vakantnaya_dolzhnost'])
+                                    ->first()
                                 : null;
 
 //                            dd([$org,$position]);
@@ -152,8 +157,10 @@ class ExamController extends Controller
                             $chief->email = $v['el.adres'];
                             $chief->save();
 
-                            $chief->roles()->detach();
-                            $chief->roles()->attach($role);
+                            if(!$chief->has('roles')) {
+                                $chief->roles()->detach();
+                                $chief->roles()->attach($role);
+                            }
 
                             if( !$user || !$chief || !$org || !$position)
                             {
@@ -176,6 +183,7 @@ class ExamController extends Controller
 //                            dd($quests);
                             if( count($quests) < $request->get('count'))
                             {
+                                dd($user,$chief,$org,$position);
                                 continue;
                             }
 
