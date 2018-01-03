@@ -183,7 +183,7 @@ class ExamController extends Controller
 //                            dd($quests);
                             if( count($quests) < $request->get('count'))
                             {
-                                dd($user,$chief,$org,$position);
+                                // dd($user,$chief,$org,$position);
                                 continue;
                             }
 
